@@ -1,0 +1,32 @@
+{
+    "name": "cradlephp/framework",
+    "type": "library",
+    "description": "Cradle Meta Framework focused on the core features.",
+    "minimum-stability": "dev",
+    "keywords": [
+        "library", 
+        "cradle", 
+        "cradlephp"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christian Blanquera",
+            "email": "cblanquera@openovate.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "~5.4",
+        "squizlabs/php_codesniffer": "~2.6",
+        "satooshi/php-coveralls": "^1.0"
+    },
+    "require": {
+        "php": ">=5.6.0",
+		"cradlephp/packages": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cradle\\Framework\\": "src/"
+        }
+    }
+}
