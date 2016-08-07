@@ -41,22 +41,22 @@ class Session
      */
     public static function flash($message = null, $type = 'info')
     {
-        return function($request, $response) use ($message, $type) {
+        return function ($request, $response) use ($message, $type) {
             $flash = array(
                 'type' => $type,
                 'message' => $message
             );
-			
-			//if no message was passed
-			if(is_null($flash['message'])) {
-				//get it from the response
-				$flash['message'] = $response->getMessage();
-				if($response->isError()) {
-					$flash['type'] = 'error';
-				} else if($response->isSuccess()) {
-					$flash['type'] = 'success';
-				}
-			}
+            
+            //if no message was passed
+            if (is_null($flash['message'])) {
+                //get it from the response
+                $flash['message'] = $response->getMessage();
+                if ($response->isError()) {
+                    $flash['type'] = 'error';
+                } else if ($response->isSuccess()) {
+                    $flash['type'] = 'success';
+                }
+            }
             
             //because we could be in CLI mode
             if (isset($_SESSION)) {
@@ -109,7 +109,7 @@ class Session
      */
     public static function redirectTo($url)
     {
-        return function() use ($url) {
+        return function () use ($url) {
             if (strpos($url, '://') === false 
                 && strpos($url, '/') !== 0
             ) 
