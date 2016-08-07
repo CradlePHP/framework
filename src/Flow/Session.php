@@ -34,18 +34,29 @@ class Session
     /**
      * Sets up a flash message
      *
-     * @param *string $message
-     * @param string  $type
+     * @param string|null $message
+     * @param string      $type
      *
      * @return Closure
      */
-    public static function flash($message, $type = 'info')
+    public static function flash($message = null, $type = 'info')
     {
         return function($request, $response) use ($message, $type) {
             $flash = array(
                 'type' => $type,
                 'message' => $message
             );
+			
+			//if no message was passed
+			if(is_null($flash['message'])) {
+				//get it from the response
+				$flash['message'] = $response->getMessage();
+				if($response->isError()) {
+					$flash['type'] = 'error';
+				} else if($response->isSuccess()) {
+					$flash['type'] = 'success';
+				}
+			}
             
             //because we could be in CLI mode
             if (isset($_SESSION)) {
