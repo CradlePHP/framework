@@ -120,8 +120,15 @@ class App
     {
         $this->route('all', $root . '**', function($request, $response) use ($root, $handler) {
             //we need the original path
-            $path = $request->getPath('string');
-            $request->setPath(substr($path, strlen($root)));
+            $path = $request->getPath('string'); 
+
+            $subPath = substr($path, strlen($root));
+
+            if(strpos($subPath, '/') !== 0) {
+                $subPath = '/' . $subPath;
+            }
+
+            $request->setPath($subPath);
 
             $handler
                 ->setParent($this)
