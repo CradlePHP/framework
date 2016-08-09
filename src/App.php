@@ -339,7 +339,7 @@ class App
         $event = $method . ' ' . $path;
         
         //which is now an event driven route
-        $this->flow($event, ...$args);
+        $this->flow($event, $callback, ...$args);
 
         $callback = function ($request, $response) use ($event) {
             $this->trigger($event, $request, $response);
