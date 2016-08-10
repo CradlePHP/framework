@@ -26,9 +26,9 @@ class Session
      *
      * @return Closure
      */
-    public static function error($message)
+    public function error($message)
     {
-        return self::flash($message, 'error');
+        return $this->flash($message, 'error');
     }
 
     /**
@@ -39,7 +39,7 @@ class Session
      *
      * @return Closure
      */
-    public static function flash($message = null, $type = 'info')
+    public function flash($message = null, $type = 'info')
     {
         return function ($request, $response) use ($message, $type) {
             $flash = array(
@@ -83,9 +83,9 @@ class Session
      *
      * @return Closure
      */
-    public static function info($message)
+    public function info($message)
     {
-        return self::flash($message, 'info');
+        return $this->flash($message, 'info');
     }
 
     /**
@@ -95,9 +95,9 @@ class Session
      *
      * @return Closure
      */
-    public static function success($message)
+    public function success($message)
     {
-        return self::flash($message, 'success');
+        return $this->flash($message, 'success');
     }
 
     /**
@@ -107,7 +107,7 @@ class Session
      *
      * @return Closure
      */
-    public static function redirectTo($url)
+    public function redirectTo($url)
     {
         return function () use ($url) {
             if (strpos($url, '://') === false 

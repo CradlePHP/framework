@@ -31,7 +31,7 @@ class Log
      *
      * @return Closure
      */
-    public static function report($message)
+    public function report($message)
     {
         $logger = static::i();
         return function () use ($logger, $message) {
@@ -47,7 +47,7 @@ class Log
      *
      * @return Closure
      */
-    public static function debug($message, $quit = false)
+    public function debug($message, $quit = false)
     {
         return function () use ($message, $quit) {
             echo $message;
@@ -63,8 +63,10 @@ class Log
      *
      * @param *callable $logger
      */
-    public static function register($logger)
+    public function register($logger)
     {
         static::i()->addLogger($logger);
+        
+        return $this;
     }
 }

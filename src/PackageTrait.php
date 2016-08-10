@@ -74,11 +74,12 @@ trait PackageTrait
     /**
      * Registers and initializes a plugin
      *
-     * @param *string $vendor The vendor/package name
+     * @param *string $vendor  The vendor/package name
+     * @param mixed   ...$args
      *
      * @return PackageTrait
      */
-    public function register($vendor)
+    public function register($vendor, ...$args)
     {
         //create a space
         if (method_exists($this, 'resolve')) {
@@ -89,14 +90,15 @@ trait PackageTrait
         
         //luckily we know where we are in vendor folder :)
         //is there a better recommended way?
-        $root = __DIR__ . '/../../../';
+        $root = __DIR__ . '/../../..';
         
         if (strpos($vendor, '/') === 0) {
-            $root .= '../';
+            $root .= '/..';
+            $vendor = substr($vendor, 1);
         }
         
         //we should check for events
-        $file = $root . $vendor . '/' . $this->bootstrapFile;
+        $file = $root . '/' . $vendor . '/' . $this->bootstrapFile;
         if (file_exists($file)) {
             //so you can access cradle
             //within the included file
