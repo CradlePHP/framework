@@ -44,7 +44,7 @@ trait FlowTrait
      *
      * @return string
      */
-    public function __callController($name, $args)
+    public function __callFlow($name, $args)
     {
         if(is_null($this->current)) {
             if(!isset($this->actions[$name])) {
@@ -84,8 +84,8 @@ trait FlowTrait
      *
      * @return string|callable
      */
-    public function __get($name)
+    public function __getFlow($name)
     {
-        return $this->__callController($name, array());
+        return $this->__callFlow($name, array());
     }
 }
