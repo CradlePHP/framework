@@ -46,7 +46,7 @@ class Session
                 'type' => $type,
                 'message' => $message
             );
-            
+
             //if no message was passed
             if (is_null($flash['message'])) {
                 //get it from the response
@@ -57,21 +57,21 @@ class Session
                     $flash['type'] = 'success';
                 }
             }
-            
+
             //because we could be in CLI mode
             if (isset($_SESSION)) {
                 $_SESSION['flash'] = $flash;
             }
 
-            $response->set('flash', $flash);
-            
+            $response->set('page', 'flash', $flash);
+
             $error = null;
             if ($type === 'error') {
                 $error = true;
             } else if ($type === 'success') {
                 $error = false;
             }
-            
+
             $response->setError($error, $message);
         };
     }
@@ -110,14 +110,14 @@ class Session
     public function redirectTo($url)
     {
         return function () use ($url) {
-            if (strpos($url, '://') === false 
+            if (strpos($url, '://') === false
                 && strpos($url, '/') !== 0
-            ) 
+            )
             {
                 $url = '/' . $url;
             }
 
-            $this->getDispatcher()->redirect($url);  
+            $this->getDispatcher()->redirect($url);
         };
     }
 }
