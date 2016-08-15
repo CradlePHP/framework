@@ -53,7 +53,7 @@ class App
             PackageTrait::register as registerPackage;
             PackageTrait::__constructPackage as __construct;
         }
-    
+
     /**
      * Attempts to use __callData then __callResolver
      *
@@ -70,7 +70,7 @@ class App
             throw new Exception($e->getMessage());
         }
     }
-    
+
     /**
      * Custom Invoker for package calling
      *
@@ -96,7 +96,7 @@ class App
     {
         return $this->route('all', $path, $callback, ...$args);
     }
-    
+
     /**
      * Sets up a sub handler given the path.
      * Notes when setting this:
@@ -120,7 +120,7 @@ class App
     {
         $this->route('all', $root . '**', function($request, $response) use ($root, $handler) {
             //we need the original path
-            $path = $request->getPath('string'); 
+            $path = $request->getPath('string');
 
             $subPath = substr($path, strlen($root));
 
@@ -139,10 +139,10 @@ class App
             //bring the path back
             $request->setPath($path);
         });
-        
+
         return $this;
     }
-    
+
     /**
      * Adds routing middleware for DELETE method
      *
@@ -156,7 +156,7 @@ class App
     {
         return $this->route('delete', $path, $callback, ...$args);
     }
-    
+
     /**
      * Adds routing middleware for GET method
      *
@@ -170,7 +170,7 @@ class App
     {
         return $this->route('get', $path, $callback, ...$args);
     }
-    
+
     /**
      * Returns all the packages
      *
@@ -180,7 +180,7 @@ class App
     {
         return $this->packages;
     }
-    
+
     /**
      * Returns all the protocols
      *
@@ -190,7 +190,7 @@ class App
     {
         return $this->protocols;
     }
-    
+
     /**
      * Exports a flow to another external interface
      *
@@ -202,7 +202,7 @@ class App
     public function export($event, $map = false)
     {
         $handler = $this;
-        
+
         $next = function (...$args) use ($handler, $event, $map) {
             $request = $handler->getRequest();
             $response = $handler->getResponse();
@@ -215,28 +215,28 @@ class App
                 //if our events returns false
                 //lets tell the interface the same
                 ->getMeta();
-            
+
             //no map ? let's try our best
             //if we have meta
             if ($meta) {
                 //return the response
                 return $response->getContent(true);
             }
-            
+
             //otherwise return false
             return false;
         };
-        
+
         if (!$map) {
             return $next;
         }
-    
+
         $request = $handler->getRequest();
         $response = $handler->getResponse();
-    
+
         return array($request, $response, $next);
     }
-    
+
     /**
      * Imports a set of flows
      *
@@ -251,13 +251,13 @@ class App
             if (!is_array($flow)) {
                 continue;
             }
-            
+
             $this->flow(...$flow);
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Adds routing middleware for POST method
      *
@@ -271,7 +271,7 @@ class App
     {
         return $this->route('post', $path, $callback, ...$args);
     }
-    
+
     /**
      * Adds routing middleware for PUT method
      *
@@ -285,7 +285,7 @@ class App
     {
         return $this->route('put', $path, $callback, ...$args);
     }
-    
+
     /**
      * Registers and initializes a package
      *
@@ -315,7 +315,7 @@ class App
      * @return App
      */
     public function route($method, $path, $callback, ...$args)
-    {   
+    {
         //if no args
         if (empty($args)) {
             //if it's a string
@@ -324,34 +324,34 @@ class App
                 $event = $callback;
                 $callback = function ($request, $response) use ($event) {
                     $this->trigger($event, $request, $response);
-                };    
+                };
             }
-            
+
             //if it's closure
             if ($callback instanceof Closure) {
                 //bind it
                 $callback = $this->bindCallback($callback);
             }
-            
+
             //if it's callable
             if (is_callable($callback)) {
                 //route it
                 $this->routeHttp($method, $path, $callback);
             }
-            
+
             return $this;
         }
 
         //we are going to make a flow
         $event = $method . ' ' . $path;
-        
+
         //which is now an event driven route
         $this->flow($event, $callback, ...$args);
 
         $callback = function ($request, $response) use ($event) {
             $this->trigger($event, $request, $response);
         };
-        
+
         $this->routeHttp($method, $path, $this->bindCallback($callback));
 
         return $this;
@@ -383,7 +383,7 @@ class App
         $this->protocols = $parent->getProtocols();
         //use the parent packages
         $this->packages = $parent->getPackages();
-        
+
         return $this;
     }
 }

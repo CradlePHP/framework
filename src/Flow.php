@@ -15,7 +15,7 @@ use Cradle\Framework\Flow\Session;
 use Cradle\Resolver\ResolverHandler;
 
 /**
- * A Flow is a facade that delays actual 
+ * A Flow is a facade that delays actual
  * methods from being called immediately
  * or otherwise a delayed controller class
  *
@@ -25,7 +25,7 @@ use Cradle\Resolver\ResolverHandler;
  * To
  * `Flow::auth()->dosomething()`
  *
- * Except that there should be a real 
+ * Except that there should be a real
  * class and a facade class separately
  *
  * @vendor   Cradle
@@ -44,7 +44,7 @@ class Flow
      * @var object $controller
      */
     protected $controller = null;
-    
+
     /**
      * Sets up the action
      *
@@ -52,10 +52,10 @@ class Flow
      * @param *string $action
      */
     public function __construct($controller)
-    {    
+    {
         $this->controller = $controller;
     }
-    
+
     /**
      * Delays an action step call for
      * example `Flow::auth()->task()`
@@ -71,15 +71,15 @@ class Flow
         return function($request, $response) use ($controller, $name, &$args) {
             //we should throw a method exist error at runtime
             $results = $controller->$name(...$args);
-            
+
             if ($results instanceof $controller) {
                 return;
             }
-            
+
             return $results;
         };
     }
-    
+
     /**
      * Sets up the flow for
      * example `Flow::auth()`
@@ -91,10 +91,10 @@ class Flow
      */
     public static function __callStatic($name, $args)
     {
-        //NOTE: Resolvers should provide a cache   
-        return self::getResolver()->shared($name, ...$args);
+        //NOTE: Resolvers should provide a cache
+        return self::getResolver()->resolve($name, ...$args);
     }
-    
+
     /**
      * Returns the action property
      * example `Flow::auth()->yes`
@@ -108,7 +108,7 @@ class Flow
     {
         return $this->controller->$name;
     }
-    
+
     /**
      * Tries to get a resolver
      * if not it makes one
@@ -120,10 +120,10 @@ class Flow
         if (is_null(self::$resolver)) {
             self::setResolver(new ResolverHandler());
         }
-        
+
         return self::$resolver;
     }
-    
+
     /**
      * Registers a Controller
      *
@@ -134,7 +134,7 @@ class Flow
     {
         self::getResolver()->register($name, $callback);
     }
-    
+
     /**
      * You can overwrite the resolver with this
      *
@@ -143,42 +143,42 @@ class Flow
     public static function setResolver(ResolverHandler $resolver)
     {
         self::$resolver = $resolver;
-        
+
         //self add some default flows
         self::register('session', function() {
 			static $instance;
-			
+
 			if(!$instance) {
 				$instance = new Session();
 			}
-			
+
             return $instance;
         });
-        
+
         self::register('file', function() {
             static $instance;
-			
+
 			if(!$instance) {
 				$instance = new File();
 			}
-			
+
             return $instance;
         });
-        
+
         self::register('log', function() {
             static $instance;
-			
+
 			if(!$instance) {
 				$instance = new Log();
 			}
-			
+
             return $instance;
         });
-        
+
         self::register('reset', function() {
             return self::reset();
         });
-        
+
         self::register('forward', function() {
             return self::forward();
         });
@@ -193,11 +193,11 @@ class Flow
     {
         return function ($request, $response) {
             $stage = $request->getStage();
-            
+
             if (empty($stage)) {
                 return;
             }
-            
+
             foreach ($stage as $key => $value) {
                 $response->setResults($key, $value);
             }
@@ -213,13 +213,13 @@ class Flow
     {
         return function ($request, $response) {
             $results = $response->getResults();
-            
+
             if (empty($results)) {
                 return;
             }
-            
+
             foreach ($results as $key => $value) {
-                //it's quite impossible for a POST or 
+                //it's quite impossible for a POST or
                 //GET to be a number for example
                 if (is_numeric($key)) {
                     continue;
