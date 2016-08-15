@@ -155,16 +155,6 @@ class Flow
             return $instance;
         });
 
-        self::register('file', function() {
-            static $instance;
-
-			if(!$instance) {
-				$instance = new File();
-			}
-
-            return $instance;
-        });
-
         self::register('log', function() {
             static $instance;
 
