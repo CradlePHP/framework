@@ -56,6 +56,23 @@ class Flow
     }
 
     /**
+     * Pattern to solve:
+     * Cannot bind an instance to a static closure
+     * for PHP 5.6, a PHP Quirk :)
+     */
+    public function __construct()
+    {
+        $self = $this;
+        self::register('reset', function () use ($self) {
+            return $self->reset();
+        });
+
+        self::register('forward', function () use ($self) {
+            return $self->forward();
+        });
+    }
+
+    /**
      * Tries to get a resolver
      * if not it makes one
      *
@@ -111,13 +128,7 @@ class Flow
             return $instance;
         });
 
-        self::register('reset', function () {
-            return self::reset();
-        });
-
-        self::register('forward', function () {
-            return self::forward();
-        });
+        new static();
     }
 
     /**
@@ -125,7 +136,7 @@ class Flow
      *
      * @return Closure
      */
-    private static function forward()
+    private function forward()
     {
         return function ($request, $response) {
             $stage = $request->getStage();
@@ -145,7 +156,7 @@ class Flow
      *
      * @return Closure
      */
-    private static function reset()
+    private function reset()
     {
         return function ($request, $response) {
             $results = $response->getResults();
