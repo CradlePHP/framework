@@ -1,6 +1,6 @@
 <?php
 
-namespace Cradle\Frame;
+namespace Cradle\Framework;
 
 use StdClass;
 use PHPUnit_Framework_TestCase;
@@ -33,42 +33,42 @@ class Cradle_Frame_PackageTrait_Test extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * covers Cradle\Frame\PackageTrait::isPackage
+     * covers Cradle\Framework\PackageTrait::isPackage
      */
     public function testIsPackage()
     {
 		$actual = $this->object->isPackage('foobar');
 		$this->assertFalse($actual);
-		
+
 		$actual = $this->object->register('foobar')->isPackage('foobar');
 		$this->assertTrue($actual);
     }
 
     /**
-     * covers Cradle\Frame\PackageTrait::package
+     * covers Cradle\Framework\PackageTrait::package
      */
     public function testPackage()
     {
 		$instance = $this->object->register('foobar')->package('foobar');
-		$this->assertInstanceOf('Cradle\Frame\Package', $instance);
+		$this->assertInstanceOf('Cradle\Framework\Package', $instance);
     }
 
     /**
-     * covers Cradle\Frame\PackageTrait::register
+     * covers Cradle\Framework\PackageTrait::register
      */
     public function testRegister()
     {
 		$instance = $this->object->register('foobar')->package('foobar');
-		$this->assertInstanceOf('Cradle\Frame\Package', $instance);
+		$this->assertInstanceOf('Cradle\Framework\Package', $instance);
     }
 
     /**
-     * covers Cradle\Frame\PackageTrait::setBoostrapFile
+     * covers Cradle\Framework\PackageTrait::setBoostrapFile
      */
     public function testSetBoostrapFile()
     {
 		$instance = $this->object->setBootstrapFile('foobar');
-		$this->assertInstanceOf('Cradle\Frame\PackageTraitStub', $instance);
+		$this->assertInstanceOf('Cradle\Framework\PackageTraitStub', $instance);
     }
 }
 

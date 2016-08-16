@@ -112,8 +112,7 @@ class Session
         return function () use ($url) {
             if (strpos($url, '://') === false
                 && strpos($url, '/') !== 0
-            )
-            {
+            ) {
                 $url = '/' . $url;
             }
 

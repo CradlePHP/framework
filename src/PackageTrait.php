@@ -30,7 +30,7 @@ trait PackageTrait
      * @var string $bootstrapFile A file to call on when a package is registered
      */
     protected $bootstrapFile = '.cradle';
-    
+
     /**
      * Setups dispatcher and global package
      */
@@ -42,7 +42,7 @@ trait PackageTrait
             $this->packages['global'] = new Package;
         }
     }
-    
+
     /**
      * Returns true if given is a registered package
      *
@@ -54,7 +54,7 @@ trait PackageTrait
     {
         return isset($this->packages[$vendor]);
     }
-    
+
     /**
      * Returns a package space
      *
@@ -67,10 +67,10 @@ trait PackageTrait
         if (!isset($this->packages[$vendor])) {
             throw Exception::forPackageNotFound($vendor);
         }
-        
+
         return $this->packages[$vendor];
     }
-    
+
     /**
      * Registers and initializes a plugin
      *
@@ -87,16 +87,16 @@ trait PackageTrait
         } else {
             $this->packages[$vendor] = new Package;
         }
-        
+
         //luckily we know where we are in vendor folder :)
         //is there a better recommended way?
         $root = __DIR__ . '/../../..';
-        
+
         if (strpos($vendor, '/') === 0) {
             $root .= '/..';
             $vendor = substr($vendor, 1);
         }
-        
+
         //we should check for events
         $file = $root . '/' . $vendor . '/' . $this->bootstrapFile;
         if (file_exists($file)) {
@@ -105,10 +105,10 @@ trait PackageTrait
             $cradle = $this;
             include_once($file);
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Returns a package space
      *
@@ -119,7 +119,7 @@ trait PackageTrait
     public function setBootstrapFile($file)
     {
         $this->bootstrapFile = $file;
-        
+
         return $this;
     }
 }

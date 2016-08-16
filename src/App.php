@@ -55,23 +55,6 @@ class App
         }
 
     /**
-     * Attempts to use __callData then __callResolver
-     *
-     * @param *string $name name of method
-     * @param *array  $args arguments to pass
-     *
-     * @return mixed
-     */
-    public function __call($name, $args)
-    {
-        try {
-            return $this->__callResolver($name, $args);
-        } catch (ResolverException $e) {
-            throw new Exception($e->getMessage());
-        }
-    }
-
-    /**
      * Custom Invoker for package calling
      *
      * @param *string $package name of package
@@ -118,7 +101,7 @@ class App
      */
     public function app($root, App $handler)
     {
-        $this->route('all', $root . '**', function($request, $response) use ($root, $handler) {
+        $this->route('all', $root . '**', function ($request, $response) use ($root, $handler) {
             //we need the original path
             $path = $request->getPath('string');
 

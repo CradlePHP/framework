@@ -17,6 +17,11 @@
       <file>test/PackageTrait.php</file>
       <file>test/Package.php</file>
       <file>test/App.php</file>
+      <file>test/Flow.php</file>
+      <file>test/FlowTrait.php</file>
+      <file>test/Decorator.php</file>
+      <file>test/Flow/Log.php</file>
+      <file>test/Flow/Session.php</file>
     </testsuite>
   </testsuites>
 
@@ -25,7 +30,7 @@
       <directory suffix=".php">./src</directory>
 	  <exclude>
         <directory>./vendor</directory>
-        <directory>./tests</directory>
+        <directory>./test</directory>
       </exclude>
     </whitelist>
   </filter>

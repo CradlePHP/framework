@@ -41,46 +41,6 @@ class Flow
     protected static $resolver = null;
 
     /**
-     * @var object $controller
-     */
-    protected $controller = null;
-
-    /**
-     * Sets up the action
-     *
-     * @param *Model  $model
-     * @param *string $action
-     */
-    public function __construct($controller)
-    {
-        $this->controller = $controller;
-    }
-
-    /**
-     * Delays an action step call for
-     * example `Flow::auth()->task()`
-     *
-     * @param *string $name
-     * @param *array  $args
-     *
-     * @return array
-     */
-    public function __call($name, $args)
-    {
-        $controller = $this->controller;
-        return function($request, $response) use ($controller, $name, &$args) {
-            //we should throw a method exist error at runtime
-            $results = $controller->$name(...$args);
-
-            if ($results instanceof $controller) {
-                return;
-            }
-
-            return $results;
-        };
-    }
-
-    /**
      * Sets up the flow for
      * example `Flow::auth()`
      *
@@ -93,20 +53,6 @@ class Flow
     {
         //NOTE: Resolvers should provide a cache
         return self::getResolver()->resolve($name, ...$args);
-    }
-
-    /**
-     * Returns the action property
-     * example `Flow::auth()->yes`
-	 *         `Flow::auth()->search->load`
-     *
-     * @param *string $name
-     *
-     * @return string
-     */
-    public function __get($name)
-    {
-        return $this->controller->$name;
     }
 
     /**
@@ -145,31 +91,31 @@ class Flow
         self::$resolver = $resolver;
 
         //self add some default flows
-        self::register('session', function() {
-			static $instance;
-
-			if(!$instance) {
-				$instance = new Session();
-			}
-
-            return $instance;
-        });
-
-        self::register('log', function() {
+        self::register('session', function () {
             static $instance;
 
-			if(!$instance) {
-				$instance = new Log();
-			}
+            if (!$instance) {
+                $instance = new Session();
+            }
 
             return $instance;
         });
 
-        self::register('reset', function() {
+        self::register('log', function () {
+            static $instance;
+
+            if (!$instance) {
+                $instance = new Log();
+            }
+
+            return $instance;
+        });
+
+        self::register('reset', function () {
             return self::reset();
         });
 
-        self::register('forward', function() {
+        self::register('forward', function () {
             return self::forward();
         });
     }

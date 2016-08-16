@@ -30,7 +30,7 @@ class Exception extends PHPException
      * @const ERROR_METHOD_NOT_FOUND Error template
      */
     const ERROR_METHOD_NOT_FOUND = 'No method named %s was found';
-    
+
     /**
      * Create a new exception for invalid package
      *
@@ -42,7 +42,7 @@ class Exception extends PHPException
     {
         return new static(sprintf(static::ERROR_PACKAGE_NOT_FOUND, $vendor));
     }
-    
+
     /**
      * Create a new exception for invalid method
      *

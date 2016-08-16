@@ -4,8 +4,8 @@
     "description": "Cradle Meta Framework focused on the core features.",
     "minimum-stability": "dev",
     "keywords": [
-        "library", 
-        "cradle", 
+        "framework", 
+        "cradle",
         "cradlephp"
     ],
     "license": "MIT",

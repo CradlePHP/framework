@@ -46,9 +46,9 @@ trait FlowTrait
      */
     public function __callFlow($name, $args)
     {
-        if(is_null($this->current)) {
-            if(!isset($this->actions[$name])) {
-              return $this;
+        if (is_null($this->current)) {
+            if (!isset($this->actions[$name])) {
+                return $this;
             }
 
             //its the search part in `Flow::auth()->search()->load()`
@@ -60,11 +60,11 @@ trait FlowTrait
         $action = $this->current;
         $this->current = null;
 
-        if(property_exists($action, $name)) {
-          return $action->$name;
+        if (property_exists($action, $name)) {
+            return $action->$name;
         }
 
-        return function($request, $response) use ($action, $name, &$args) {
+        return function ($request, $response) use ($action, $name, &$args) {
             //we should throw a method exist error at runtime
             $results = $action->$name($request, $response, ...$args);
 

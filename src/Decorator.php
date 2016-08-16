@@ -7,7 +7,8 @@
  * distributed with this package.
  */
 
-namespace 
+namespace
+
 {
     use Cradle\Framework\App;
 
@@ -28,7 +29,7 @@ namespace
          * - you can use any registered package
          *
          * `cradle(Controller::class, 1, 2, 3)`
-         * - Instantiates the given class 
+         * - Instantiates the given class
          * - with the following arguments
          *
          * @param mixed ...$args
@@ -38,52 +39,53 @@ namespace
         function cradle(...$args)
         {
             static $framework = null;
-            
+
             //if no framework set
             if (is_null($framework)) {
                 //set a new framework
                 $framework = new App;
             }
-            
+
             //if no arguments
             if (func_num_args() == 0) {
                 //return the static framework
                 return $framework;
             }
-            
+
             //if the first argument is callable
             if (is_callable($args[0])) {
                 //call it
                 $callback = array_shift($args);
-                
+
                 if ($callback instanceof Closure) {
                     $callback = $callback->bindTo(
-                        $framework, 
+                        $framework,
                         get_class($framework)
                     );
                 }
-                
+
                 //and return the results
                 return call_user_func_array($callback, $args);
             }
-            
+
             //it could be a package
-            if (count($args) === 1 
-                && is_string($args[0]) 
+            if (count($args) === 1
+                && is_string($args[0])
                 && $framework->isPackage($args[0])
             ) {
                 //yay, return it
                 return $framework->package($args[0]);
             }
-            
+
             //not sure what else would be useful
             //so lets just resolve things...
-            return $framework->resolve($callback, ...$args);
+            return $framework->resolve(...$args);
         }
     }
 }
 
-namespace Cradle\Framework 
+namespace Cradle\Framework
+
 {
     /**
      * When you do add in your file:

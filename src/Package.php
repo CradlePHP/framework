@@ -25,7 +25,7 @@ class Package
      * @const NO_METHOD Error template
      */
     const NO_METHOD = 'No method named %s was found';
-    
+
     /**
      * @var array $methods A list of virtual methods
      */
@@ -60,7 +60,7 @@ class Package
     public function addMethod($name, Closure $callback)
     {
         $this->methods[$name] = $callback->bindTo($this, get_class($this));
-        
+
         return $this;
     }
 }

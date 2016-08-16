@@ -23,7 +23,7 @@ use Cradle\Helper\SingletonTrait;
 class Log
 {
     use LoggerTrait, SingletonTrait;
-    
+
     /**
      * Reports something during the flow
      *
@@ -51,7 +51,7 @@ class Log
     {
         return function () use ($message, $quit) {
             echo $message;
-            
+
             if ($quit) {
                 exit;
             }
@@ -63,10 +63,8 @@ class Log
      *
      * @param *callable $logger
      */
-    public function register($logger)
+    public static function register($logger)
     {
         static::i()->addLogger($logger);
-        
-        return $this;
     }
 }
