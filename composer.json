@@ -3,8 +3,9 @@
     "type": "library",
     "description": "Cradle Meta Framework focused on the core features.",
     "minimum-stability": "dev",
+    "homepage": "https://cradlephp.github.io/",
     "keywords": [
-        "framework", 
+        "framework",
         "cradle",
         "cradlephp"
     ],
