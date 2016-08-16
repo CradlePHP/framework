@@ -34,7 +34,7 @@ class Cradle_Framework_Decorator_Test extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers cradle()
+     * @covers ::cradle
      */
     public function testCradle()
     {
