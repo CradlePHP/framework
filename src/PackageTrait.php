@@ -97,13 +97,17 @@ trait PackageTrait
             $vendor = substr($vendor, 1);
         }
 
+        $cradle = $this;
+
         //we should check for events
         $file = $root . '/' . $vendor . '/' . $this->bootstrapFile;
         if (file_exists($file)) {
             //so you can access cradle
             //within the included file
-            $cradle = $this;
             include_once($file);
+        } else if (file_exists($file . '.php')) {
+            //so the IDE can have color
+            include_once($file . '.php');
         }
 
         return $this;
