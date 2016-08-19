@@ -90,7 +90,7 @@ trait PackageTrait
 
         //luckily we know where we are in vendor folder :)
         //is there a better recommended way?
-        $root = __DIR__ . '/../../..';
+        $root = __DIR__ . '/../../../..';
 
         if (strpos($vendor, '/') === 0) {
             $root .= '/..';
