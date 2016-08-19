@@ -12,27 +12,7 @@
          bootstrap="test/bootstrap.php"
 >
   <testsuites>
-  	<testsuite name="CradlePHP Helper Test Suite">
-      <file>test/Helper/BinderTrait.php</file>
-      <file>test/Helper/ConditionalTrait.php</file>
-      <file>test/Helper/InstanceTrait.php</file>
-      <file>test/Helper/LoopTrait.php</file>
-      <file>test/Helper/SingletonTrait.php</file>
-    </testsuite>
-    <testsuite name="CradlePHP Resolver Test Suite">
-      <file>test/Resolver/ResolverException.php</file>
- 	  <file>test/Resolver/ResolverHandler.php</file>
-	  <file>test/Resolver/ResolverTrait.php</file>
-	  <file>test/Resolver/StateTrait.php</file>
-    </testsuite>
-    <testsuite name="CradlePHP Profiler Test Suite">
-      <file>test/Profiler/CallerTrait.php</file>
-  	  <file>test/Profiler/InspectorHandler.php</file>
-	  <file>test/Profiler/InspectorTrait.php</file>
-	  <file>test/Profiler/LoggerException.php</file>
-	  <file>test/Profiler/LoggerTrait.php</file>
-    </testsuite>
-    <testsuite name="CradlePHP Event Test Suite">
+  	<testsuite name="CradlePHP Event Test Suite">
       <file>test/Event/EventException.php</file>
       <file>test/Event/EventHandler.php</file>
       <file>test/Event/EventObserver.php</file>
@@ -121,8 +101,6 @@
 		<file>src/Http/Router/RouterInterface.php</file>
 		<file>src/Http/map/output.php</file>
 		<file>src/Http/map/redirect.php</file>
-		<file>src/Profiler/InspectorInterface.php</file>
-		<file>src/Resolver/ResolverInterface.php</file>
       </exclude>
     </whitelist>
   </filter>
