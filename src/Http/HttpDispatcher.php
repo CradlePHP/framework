@@ -9,6 +9,7 @@
 
 namespace Cradle\Http;
 
+use Closure;
 use Cradle\Http\Dispatcher\DispatcherInterface;
 use Cradle\Http\Response\ResponseInterface;
 
@@ -27,12 +28,12 @@ class HttpDispatcher implements DispatcherInterface
      * @const string HEADER_CONNECTION_CLOSE Template for closing
      */
     const HEADER_CONNECTION_CLOSE = "Connection: close\r\n";
-    
+
     /**
      * @const string HEADER_CONTENT_ENCODING Template for encoding
      */
     const HEADER_CONTENT_ENCODING = "Content-Encoding: none\r\n";
-    
+
     /**
      * @const string HEADER_CONTENT_LENGTH Template for length
      */
@@ -42,17 +43,17 @@ class HttpDispatcher implements DispatcherInterface
      * @var bool $successful If we were able to output it
      */
     protected $successful = false;
-       
+
     /**
      * @var array $mapCache The global curl callback
      */
     protected static $mapCache = array();
-       
+
     /**
      * @var array $map The actual response callbacks
      */
     protected $map = array();
-    
+
     /**
      * Set response maps, which is usually good for testing
      *
@@ -67,16 +68,16 @@ class HttpDispatcher implements DispatcherInterface
         }
 
         $this->map = self::$mapCache;
-        
+
         if (!is_null($output)) {
             $this->map['output'] = $output;
         }
-        
+
         if (!is_null($redirect)) {
             $this->map['redirect'] = $redirect;
         }
     }
-    
+
     /**
      * Starts to process the request
      *
@@ -88,14 +89,14 @@ class HttpDispatcher implements DispatcherInterface
     public function dispatch(ResponseInterface $response, $emulate = false)
     {
         $redirect = $response->getHeaders('Location');
-        
+
         if ($redirect) {
             return $this->redirect($redirect, false, $emulate);
         }
-        
+
         if (!$response->hasContent() && !$response->hasJson()) {
             $response->setStatus(404, '404 Not Found');
-            
+
             //throw an exception
             throw HttpException::forResponseNotFound();
         }
@@ -104,14 +105,14 @@ class HttpDispatcher implements DispatcherInterface
             $response->addHeader('Content-Type', 'text/json');
             $response->setContent($response->get('json'));
         }
-        
+
         if (!$response->getHeaders('Content-Type')) {
             $response->addHeader('Content-Type', 'text/html; charset=utf-8');
         }
 
         return $this->output($response, $emulate);
     }
-    
+
     /**
      * Evaluates the response in order to determine the
      * output. Then of course, output it
@@ -126,23 +127,23 @@ class HttpDispatcher implements DispatcherInterface
         $code = $response->getStatus();
         $headers = $response->getHeaders();
         $body = $response->getContent();
-        
+
         //make sure it's a string
         $body = (string) $body;
-        
+
         if ($emulate) {
             $this->successful = true;
             return $body;
         }
-        
+
         //now map it out
         call_user_func($this->map['output'], $code, $headers, $body);
-        
+
         $this->successful = true;
-        
+
         return $this;
     }
-    
+
     /**
      * Browser redirect
      *
@@ -155,13 +156,13 @@ class HttpDispatcher implements DispatcherInterface
         if ($emulate) {
             return $path;
         }
-        
+
         //now map it out
         call_user_func($this->map['redirect'], $path, $force);
-        
+
         return $this;
     }
-    
+
     /**
      * Returns true if we were able to output
      * something

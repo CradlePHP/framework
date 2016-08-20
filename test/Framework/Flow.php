@@ -20,6 +20,9 @@ class Cradle_Framework_Flow_Test extends PHPUnit_Framework_TestCase
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
+     *
+     * @covers Cradle\Framework\Flow::__construct
+     * @covers Cradle\Framework\Flow::getResolver
      */
     protected function setUp()
     {
@@ -38,6 +41,7 @@ class Cradle_Framework_Flow_Test extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Cradle\Framework\Flow::__callStatic
+     * @covers Cradle\Framework\Flow::__construct
      */
     public function test__callStatic()
     {
@@ -62,6 +66,22 @@ class Cradle_Framework_Flow_Test extends PHPUnit_Framework_TestCase
         });
 
         $this->assertEquals('foobar', Flow::foo('bar'));
+
+        $callback = Flow::log()->report('foobar');
+
+        $request = new Request;
+        $response = new Response;
+
+        $actual = $callback($request, $response);
+        $this->assertNull($actual);
+
+        $callback = Flow::session()->flash('foobar');
+
+        $request = new Request;
+        $response = new Response;
+
+        $actual = $callback($request, $response);
+        $this->assertNull($actual);
     }
 
     /**
@@ -74,6 +94,7 @@ class Cradle_Framework_Flow_Test extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Cradle\Framework\Flow::forward
+     * @covers Cradle\Framework\Flow::__construct
      */
     public function testForward()
     {
@@ -95,6 +116,7 @@ class Cradle_Framework_Flow_Test extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Cradle\Framework\Flow::reset
+     * @covers Cradle\Framework\Flow::__construct
      */
     public function testReset()
     {

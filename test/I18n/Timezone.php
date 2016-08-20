@@ -35,10 +35,16 @@ class Cradle_I18n_Timezone_Test extends PHPUnit_Framework_TestCase
     /**
      * @covers Cradle\I18n\Timezone::__construct
      * @covers Cradle\I18n\Timezone::calculateOffset
+     * @covers Cradle\I18n\Timezone::getOffsetFromAbbr
+     * @covers Cradle\I18n\Timezone::getOffsetFromLocation
+     * @covers Cradle\I18n\Timezone::getOffsetFromUtc
+     * @covers Cradle\I18n\Timezone::getUtcParts
      */
     public function test__construct()
     {
         $this->object->__construct('Asia/Manila');
+        $this->object->__construct('GMT+8');
+        $this->object->__construct('ADT');
     }
 
     /**

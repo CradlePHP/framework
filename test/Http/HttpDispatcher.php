@@ -23,12 +23,14 @@ class Cradle_Http_HttpDispatcher_Test extends PHPUnit_Framework_TestCase
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
+     *
+     * @covers Cradle\Http\HttpDispatcher::__construct
      */
     protected function setUp()
     {
         $this->object = new HttpDispatcher;
         $this->response = new Response;
-        
+
         $this->response
             ->load()
             ->addHeader('foo', 'bar')
@@ -50,6 +52,14 @@ class Cradle_Http_HttpDispatcher_Test extends PHPUnit_Framework_TestCase
     {
         $actual = $this->object->output($this->response, true);
         $this->assertEquals('foobar', $actual);
+
+        $this->object = new HttpDispatcher(
+            function() {},
+            function() {}
+        );
+
+        $instance = $this->object->output($this->response);
+        $this->assertInstanceOf('Cradle\Http\HttpDispatcher', $instance);
     }
 
     /**
@@ -59,10 +69,20 @@ class Cradle_Http_HttpDispatcher_Test extends PHPUnit_Framework_TestCase
     {
         $actual = $this->object->dispatch($this->response, true);
         $this->assertEquals('foobar', $actual);
-        
+
         $this->response->addHeader('Location', '/foo/bar');
         $actual = $this->object->dispatch($this->response, true);
         $this->assertEquals('/foo/bar', $actual);
+
+        $this->response = new Response;
+        $trigger = false;
+        try {
+            $this->object->dispatch($this->response, true);
+        } catch(HttpException $e) {
+            $trigger = true;
+        }
+
+        $this->assertTrue($trigger);
     }
 
     /**
@@ -72,6 +92,14 @@ class Cradle_Http_HttpDispatcher_Test extends PHPUnit_Framework_TestCase
     {
         $actual = $this->object->redirect('/foo/bar', false, true);
         $this->assertEquals('/foo/bar', $actual);
+
+        $this->object = new HttpDispatcher(
+            function() {},
+            function() {}
+        );
+
+        $instance = $this->object->redirect('/foo/bar');
+        $this->assertInstanceOf('Cradle\Http\HttpDispatcher', $instance);
     }
 
     /**
