@@ -31,48 +31,50 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-		$this->object->off('foobar');
+        $this->object->off('foobar');
     }
 
     /**
      * @covers Cradle\Event\EventHandler::off
+     * @covers Cradle\Event\EventHandler::removeObserversByEvent
+     * @covers Cradle\Event\EventHandler::removeObserversByCallback
      */
     public function testOff()
     {
-		$trigger = new StdClass();
-		$trigger->success = null;
-		
+        $trigger = new StdClass();
+        $trigger->success = null;
+
         $callback = function() use ($trigger) {
-			$trigger->success = true;
-		};
-		
-		$this
-			->object
-			->on('foobar', $callback)
-			->off('foobar')
-			->trigger('foobar');
-		
-		$this->assertNull($trigger->success);
-		
-		$this->object->off();
-		
-		$this->assertNull($trigger->success);
-		
-		$this
-			->object
-			->on('foobar', $callback)
-			->off(null, $callback)
-			->trigger('foobar');
-		
-		$this->assertNull($trigger->success);
-		
-		$this
-			->object
-			->on('foobar', $callback)
-			->off('foobar', $callback)
-			->trigger('foobar');
-		
-		$this->assertNull($trigger->success);
+            $trigger->success = true;
+        };
+
+        $this
+            ->object
+            ->on('foobar', $callback)
+            ->off('foobar')
+            ->trigger('foobar');
+
+        $this->assertNull($trigger->success);
+
+        $this->object->off();
+
+        $this->assertNull($trigger->success);
+
+        $this
+            ->object
+            ->on('foobar', $callback)
+            ->off(null, $callback)
+            ->trigger('foobar');
+
+        $this->assertNull($trigger->success);
+
+        $this
+            ->object
+            ->on('foobar', $callback)
+            ->off('foobar', $callback)
+            ->trigger('foobar');
+
+        $this->assertNull($trigger->success);
     }
 
     /**
@@ -81,19 +83,25 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
     public function testOn()
     {
         $trigger = new StdClass();
-		$trigger->success = null;
-		
+        $trigger->success = null;
+
         $callback = function() use ($trigger) {
-			$trigger->success = true;
-		};
-		
-		$instance = $this
-			->object
-			->on('foobar', $callback)
-			->trigger('foobar');
-		
-		$this->assertInstanceOf('Cradle\Event\EventHandler', $instance);
-		$this->assertTrue($trigger->success);
+            $trigger->success = true;
+        };
+
+        $instance = $this
+            ->object
+            ->on(['foobar', 'bar %s foo'], $callback)
+            ->trigger('foobar');
+
+        $this->assertInstanceOf('Cradle\Event\EventHandler', $instance);
+        $this->assertTrue($trigger->success);
+
+        $trigger->success = null;
+        $instance = $this->object->trigger('bar zoo foo');
+
+        $this->assertInstanceOf('Cradle\Event\EventHandler', $instance);
+        $this->assertTrue($trigger->success);
     }
 
     /**
@@ -102,22 +110,29 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
     public function testTrigger()
     {
         $trigger = new StdClass();
-		$trigger->success = null;
-		$trigger->test = $this;
-		
+        $trigger->success = null;
+        $trigger->test = $this;
+
         $callback = function($foo, $bar) use ($trigger) {
-			$trigger->success = true;
-			$trigger->test->assertEquals(1, $foo);
-			$trigger->test->assertEquals(2, $bar);
-		};
-		
-		$instance = $this
-			->object
-			->on('foobar', $callback)
-			->trigger('foobar', 1, 2);
-		
-		$this->assertInstanceOf('Cradle\Event\EventHandler', $instance);
-		$this->assertTrue($trigger->success);
+            $trigger->success = true;
+            $trigger->test->assertEquals(1, $foo);
+            $trigger->test->assertEquals(2, $bar);
+
+            return false;
+        };
+
+        $callback2 = function($foo, $bar) use ($trigger) {
+            $trigger->success = false;
+        };
+
+        $instance = $this
+            ->object
+            ->on('foobar', $callback)
+            ->on('foobar', $callback2)
+            ->trigger('foobar', 1, 2);
+
+        $this->assertInstanceOf('Cradle\Event\EventHandler', $instance);
+        $this->assertTrue($trigger->success);
     }
 
     /**
@@ -126,7 +141,7 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
     public function test__callResolver()
     {
         $actual = $this->object->__callResolver(ResolverCallStub::class, [])->foo('bar');
-		$this->assertEquals('barfoo', $actual);
+        $this->assertEquals('barfoo', $actual);
     }
 
     /**
@@ -135,7 +150,7 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
     public function testAddResolver()
     {
         $actual = $this->object->addResolver(ResolverCallStub::class, function() {});
-		$this->assertInstanceOf('Cradle\Event\EventHandler', $actual);
+        $this->assertInstanceOf('Cradle\Event\EventHandler', $actual);
     }
 
     /**
@@ -143,8 +158,8 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
      */
     public function testGetResolverHandler()
     {
-		$actual = $this->object->getResolverHandler();
-		$this->assertInstanceOf('Cradle\Resolver\ResolverInterface', $actual);
+        $actual = $this->object->getResolverHandler();
+        $this->assertInstanceOf('Cradle\Resolver\ResolverInterface', $actual);
     }
 
     /**
@@ -152,15 +167,15 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
      */
     public function testResolve()
     {
-		$actual = $this->object->addResolver(
-			ResolverCallStub::class, 
-			function() {
-				return new ResolverAddStub();
-			}
-		)
-		->resolve(ResolverCallStub::class)
-		->foo('bar');
-		
+        $actual = $this->object->addResolver(
+            ResolverCallStub::class,
+            function() {
+                return new ResolverAddStub();
+            }
+        )
+        ->resolve(ResolverCallStub::class)
+        ->foo('bar');
+
         $this->assertEquals('barfoo', $actual);
     }
 
@@ -170,18 +185,18 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
     public function testResolveShared()
     {
         $actual = $this
-			->object
-			->resolveShared(ResolverSharedStub::class)
-			->reset()
-			->foo('bar');
-		
+            ->object
+            ->resolveShared(ResolverSharedStub::class)
+            ->reset()
+            ->foo('bar');
+
         $this->assertEquals('barfoo', $actual);
-		
-		$actual = $this
-			->object
-			->resolveShared(ResolverSharedStub::class)
-			->foo('bar');
-		
+
+        $actual = $this
+            ->object
+            ->resolveShared(ResolverSharedStub::class)
+            ->foo('bar');
+
         $this->assertEquals('barbar', $actual);
     }
 
@@ -191,13 +206,13 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
     public function testResolveStatic()
     {
         $actual = $this
-			->object
-			->resolveStatic(
-				ResolverStaticStub::class, 
-				'foo', 
-				'bar'
-			);
-		
+            ->object
+            ->resolveStatic(
+                ResolverStaticStub::class,
+                'foo',
+                'bar'
+            );
+
         $this->assertEquals('barfoo', $actual);
     }
 
@@ -207,7 +222,7 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
     public function testSetResolverHandler()
     {
         $actual = $this->object->setResolverHandler(new ResolverHandlerStub);
-		$this->assertInstanceOf('Cradle\Event\EventHandler', $actual);
+        $this->assertInstanceOf('Cradle\Event\EventHandler', $actual);
     }
 
     /**
@@ -215,49 +230,49 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
      */
     public function testMatch()
     {
-		$trigger = new StdClass();
-		$trigger->success1 = null;
-		
-		$this->object->on('#foo.*bar#is', function($trigger) {
-			$trigger->success1 = true;
-		})
-		->trigger('foo zoo bar', $trigger);
-		
-		$this->assertTrue($trigger->success1);
-		
-		$trigger->success2 = null;
-		
-		$this->object->on('#(?=.*create)(?=.*address)(?=.*sql)#is', function($trigger) {
-			$trigger->success2 = true;
-		})
-		->trigger('Create SQL Address', $trigger);
-		
-		$this->assertTrue($trigger->success2);
-		
-		$trigger->success3 = null;
-		
-		$this->object->on('Create %s Address', function($trigger) {
-			$trigger->success3 = true;
-		})
-		->trigger('Create SQL Address', $trigger);
-		
-		$this->assertTrue($trigger->success3);
-		
-		$trigger->success4 = null;
-		
-		$this->object->on('Create %s', function($trigger) {
-			$trigger->success4 = true;
-		})
-		->trigger('SQL Address', $trigger);
-		
-		$this->assertNull($trigger->success4);
-		
-		$this->object->on('Create', function($trigger) {
-			$trigger->success4 = true;
-		})
-		->trigger('Create', $trigger);
-		
-		$this->assertTrue($trigger->success4);
+        $trigger = new StdClass();
+        $trigger->success1 = null;
+
+        $this->object->on('#foo.*bar#is', function($trigger) {
+            $trigger->success1 = true;
+        })
+        ->trigger('foo zoo bar', $trigger);
+
+        $this->assertTrue($trigger->success1);
+
+        $trigger->success2 = null;
+
+        $this->object->on('#(?=.*create)(?=.*address)(?=.*sql)#is', function($trigger) {
+            $trigger->success2 = true;
+        })
+        ->trigger('Create SQL Address', $trigger);
+
+        $this->assertTrue($trigger->success2);
+
+        $trigger->success3 = null;
+
+        $this->object->on('Create %s Address', function($trigger) {
+            $trigger->success3 = true;
+        })
+        ->trigger('Create SQL Address', $trigger);
+
+        $this->assertTrue($trigger->success3);
+
+        $trigger->success4 = null;
+
+        $this->object->on('Create %s', function($trigger) {
+            $trigger->success4 = true;
+        })
+        ->trigger('SQL Address', $trigger);
+
+        $this->assertNull($trigger->success4);
+
+        $this->object->on('Create', function($trigger) {
+            $trigger->success4 = true;
+        })
+        ->trigger('Create', $trigger);
+
+        $this->assertTrue($trigger->success4);
     }
 
     /**
@@ -265,117 +280,117 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
      */
     public function testGetMeta()
     {
-		$trigger = new StdClass();
-		$trigger->success1 = null;
-		$trigger->success2 = null;
-		$trigger->success3 = null;
-		$trigger->success4 = null;
-		$trigger->success5 = null;
-		
-		$this
-			->object
-			->on('foo zoo bar', function($trigger, $handler, $test) {
-				$trigger->success1 = true;
-				
-				$event = $handler->getMeta();
-				
-				$test->assertEquals('foo zoo bar', $event['event']);
-				$test->assertEquals('foo zoo bar', $event['pattern']);
-				$test->assertTrue(empty($event['variables']));
-				$this->assertCount(3, $event['args']);
-			})
-			->on('foo %s bar', function($trigger, $handler, $test) {
-				$trigger->success2 = true;
-				
-				$event = $handler->getMeta();
-				
-				$test->assertEquals('foo zoo bar', $event['event']);
-				$test->assertEquals('#foo (.+) bar#s', $event['pattern']);
-				$test->assertEquals('zoo', $event['variables'][0]);
-				$this->assertCount(3, $event['args']);
-			})
-			->on('#foo\s*(.*)\s+bar#is', function($trigger, $handler, $test) {
-				$trigger->success3 = true;
-				
-				$event = $handler->getMeta();
-				
-				$test->assertEquals('foo zoo bar', $event['event']);
-				$test->assertEquals('#foo\s*(.*)\s+bar#is', $event['pattern']);
-				$test->assertEquals('zoo', $event['variables'][0]);
-				$this->assertCount(3, $event['args']);
-			})
-			->on('#foo\s*(.*)\s+bar#is', function($trigger, $handler, $test) {
-				$trigger->success4 = true;
-				
-				return false;
-			})
-			->on('#foo\s*(.*)\s+bar#is', function($trigger, $handler, $test) {
-				$trigger->success5 = true;
-			})
-			
-			->trigger('foo zoo bar', $trigger, $this->object, $this);
-		
-		$this->assertTrue($trigger->success1);
-		$this->assertTrue($trigger->success2);
-		$this->assertTrue($trigger->success3);
-		$this->assertTrue($trigger->success4);
-		$this->assertNull($trigger->success5);
-		
+        $trigger = new StdClass();
+        $trigger->success1 = null;
+        $trigger->success2 = null;
+        $trigger->success3 = null;
+        $trigger->success4 = null;
+        $trigger->success5 = null;
+
+        $this
+            ->object
+            ->on('foo zoo bar', function($trigger, $handler, $test) {
+                $trigger->success1 = true;
+
+                $event = $handler->getMeta();
+
+                $test->assertEquals('foo zoo bar', $event['event']);
+                $test->assertEquals('foo zoo bar', $event['pattern']);
+                $test->assertTrue(empty($event['variables']));
+                $this->assertCount(3, $event['args']);
+            })
+            ->on('foo %s bar', function($trigger, $handler, $test) {
+                $trigger->success2 = true;
+
+                $event = $handler->getMeta();
+
+                $test->assertEquals('foo zoo bar', $event['event']);
+                $test->assertEquals('#foo (.+) bar#s', $event['pattern']);
+                $test->assertEquals('zoo', $event['variables'][0]);
+                $this->assertCount(3, $event['args']);
+            })
+            ->on('#foo\s*(.*)\s+bar#is', function($trigger, $handler, $test) {
+                $trigger->success3 = true;
+
+                $event = $handler->getMeta();
+
+                $test->assertEquals('foo zoo bar', $event['event']);
+                $test->assertEquals('#foo\s*(.*)\s+bar#is', $event['pattern']);
+                $test->assertEquals('zoo', $event['variables'][0]);
+                $this->assertCount(3, $event['args']);
+            })
+            ->on('#foo\s*(.*)\s+bar#is', function($trigger, $handler, $test) {
+                $trigger->success4 = true;
+
+                return false;
+            })
+            ->on('#foo\s*(.*)\s+bar#is', function($trigger, $handler, $test) {
+                $trigger->success5 = true;
+            })
+
+            ->trigger('foo zoo bar', $trigger, $this->object, $this);
+
+        $this->assertTrue($trigger->success1);
+        $this->assertTrue($trigger->success2);
+        $this->assertTrue($trigger->success3);
+        $this->assertTrue($trigger->success4);
+        $this->assertNull($trigger->success5);
+
     }
 }
 
 if(!class_exists('Cradle\Event\ResolverCallStub')) {
-	class ResolverCallStub
-	{
-		public function foo($string)
-		{
-			return $string . 'foo';
-		}
-	}
+    class ResolverCallStub
+    {
+        public function foo($string)
+        {
+            return $string . 'foo';
+        }
+    }
 }
 
 if(!class_exists('Cradle\Event\ResolverAddStub')) {
-	class ResolverAddStub
-	{
-		public function foo($string)
-		{
-			return $string . 'foo';
-		}
-	}
+    class ResolverAddStub
+    {
+        public function foo($string)
+        {
+            return $string . 'foo';
+        }
+    }
 }
 
 if(!class_exists('Cradle\Event\ResolverSharedStub')) {
-	class ResolverSharedStub
-	{
-		public $name = 'foo';
-		
-		public function foo($string)
-		{
-			$name = $this->name;
-			$this->name = $string;
-			return $string . $name;
-		}
-		
-		public function reset()
-		{
-			$this->name = 'foo';
-			return $this;
-		}
-	}
+    class ResolverSharedStub
+    {
+        public $name = 'foo';
+
+        public function foo($string)
+        {
+            $name = $this->name;
+            $this->name = $string;
+            return $string . $name;
+        }
+
+        public function reset()
+        {
+            $this->name = 'foo';
+            return $this;
+        }
+    }
 }
 
 if(!class_exists('Cradle\Event\ResolverStaticStub')) {
-	class ResolverStaticStub
-	{
-		public static function foo($string)
-		{
-			return $string . 'foo';
-		}
-	}
+    class ResolverStaticStub
+    {
+        public static function foo($string)
+        {
+            return $string . 'foo';
+        }
+    }
 }
 
 if(!class_exists('Cradle\Event\ResolverHandlerStub')) {
-	class ResolverHandlerStub extends ResolverHandler
-	{
-	}
+    class ResolverHandlerStub extends ResolverHandler
+    {
+    }
 }

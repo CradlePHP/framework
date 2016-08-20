@@ -41,7 +41,7 @@ class EventHandler implements EventInterface
      * @var array|bool $meta The meta data for the current event
      */
     protected $meta = true;
-    
+
     /**
      * Returns the current matched handler
      *
@@ -94,7 +94,7 @@ class EventHandler implements EventInterface
 
         return $matches;
     }
-    
+
     /**
      * Stops listening to an event
      *
@@ -117,7 +117,7 @@ class EventHandler implements EventInterface
             $this->observers = [];
             return $this;
         }
-        
+
         //if there are callbacks listening to
         //this and no callback was specified
         if (isset($this->observers[$event]) && is_null($callback)) {
@@ -126,13 +126,13 @@ class EventHandler implements EventInterface
             unset($this->observers[$event]);
             return $this;
         }
-        
+
         //if there are callbacks listening
         //to this and we have a callback
         if (isset($this->observers[$event]) && is_callable($callback)) {
             return $this->removeObserversByEvent($event, $callback);
         }
-        
+
         //if no event, but there is a callback
         if (is_null($event) && is_callable($callback)) {
             return $this->removeObserversByCallback($callback);
@@ -140,7 +140,7 @@ class EventHandler implements EventInterface
 
         return $this;
     }
-     
+
     /**
      * Attaches an instance to be notified
      * when an event has been triggered
@@ -158,7 +158,7 @@ class EventHandler implements EventInterface
             foreach ($event as $item) {
                 $this->on($item, $callback, $priority);
             }
-            
+
             return $this;
         }
 
@@ -177,10 +177,10 @@ class EventHandler implements EventInterface
             $event = preg_quote($event, '#');
             $event = preg_replace('#%[sducoxXbgGeEfF]#s', '(.+)', $event);
             $event = '#' . $event . '#s';
-            
+
             $this->regex[] = $event;
         }
-        
+
         $this->observers[$event][$priority][] = $observer;
 
         return $this;
@@ -229,12 +229,12 @@ class EventHandler implements EventInterface
                 }
             }
         }
-        
+
         $this->meta = true;
-        
+
         return $this;
     }
-    
+
     /**
      * Removes all observers matching this callback
      *
@@ -248,10 +248,10 @@ class EventHandler implements EventInterface
         foreach ($this->observers as $event => $priorities) {
             $this->removeObserversByEvent($event, $callback);
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Removes all observers matching this event and callback
      *
@@ -278,7 +278,7 @@ class EventHandler implements EventInterface
                 }
             }
         }
-        
+
         return $this;
     }
 }
