@@ -56,7 +56,7 @@ trait PipeTrait
             $meta = $this->getEventHandler()->getMeta();
 
             //if meta is false
-            if($meta === false) {
+            if ($meta === false) {
                 //we should also stop the flow
                 return false;
             }
@@ -216,7 +216,7 @@ trait PipeTrait
             $meta = $this->getEventHandler()->getMeta();
 
             //if meta is false
-            if($meta === false) {
+            if ($meta === false) {
                 //we should also stop the flow
                 break;
             }
