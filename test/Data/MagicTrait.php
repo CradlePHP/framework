@@ -37,11 +37,21 @@ class Cradle_Data_MagicTrait_Test extends PHPUnit_Framework_TestCase
     public function test__callData()
     {
         $instance = $this->object->__callData('setZoo', array(2));
-		$this->assertInstanceOf('Cradle\Data\MagicTraitStub', $instance);
-		
+        $this->assertInstanceOf('Cradle\Data\MagicTraitStub', $instance);
+
         $actual = $this->object->__callData('getZoo', array());
-		
-		$this->assertEquals(2, $actual);
+
+        $this->assertEquals(2, $actual);
+
+        $trigger = false;
+
+        try {
+            $this->object->__callData('foobar', array());
+        } catch(DataException $e) {
+                $trigger = true;
+        }
+
+        $this->assertTrue($trigger);
     }
 
     /**
@@ -50,7 +60,10 @@ class Cradle_Data_MagicTrait_Test extends PHPUnit_Framework_TestCase
     public function test__getData()
     {
         $actual = $this->object->__getData('foo');
-		$this->assertEquals('bar', $actual);
+        $this->assertEquals('bar', $actual);
+
+        $actual = $this->object->__getData('foobar');
+        $this->assertNull($actual);
     }
 
     /**
@@ -60,8 +73,8 @@ class Cradle_Data_MagicTrait_Test extends PHPUnit_Framework_TestCase
     {
         $this->object->__setData('zoo', 2);
         $actual = $this->object->__getData('zoo');
-		
-		$this->assertEquals(2, $actual);
+
+        $this->assertEquals(2, $actual);
     }
 
     /**
@@ -70,21 +83,21 @@ class Cradle_Data_MagicTrait_Test extends PHPUnit_Framework_TestCase
      */
     public function test__toStringData()
     {
-		$this->assertEquals(json_encode([
-			'foo' => 'bar',
-			'bar' => 'foo'
-		], JSON_PRETTY_PRINT), $this->object->__toStringData());
+        $this->assertEquals(json_encode([
+            'foo' => 'bar',
+            'bar' => 'foo'
+        ], JSON_PRETTY_PRINT), $this->object->__toStringData());
     }
 }
 
 if(!class_exists('Cradle\Data\MagicTraitStub')) {
-	class MagicTraitStub
-	{
-		use MagicTrait;
-		
-		protected $data = array(
-			'foo' => 'bar',
-			'bar' => 'foo'
-		);
-	}
+    class MagicTraitStub
+    {
+        use MagicTrait;
+
+        protected $data = array(
+            'foo' => 'bar',
+            'bar' => 'foo'
+        );
+    }
 }

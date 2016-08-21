@@ -2,6 +2,7 @@
 
 namespace Cradle\Profiler;
 
+use Throwable;
 use PHPUnit_Framework_TestCase;
 
 /**
@@ -45,6 +46,15 @@ class Cradle_Profiler_InspectorHandler_Test extends PHPUnit_Framework_TestCase
         ob_end_clean();
 
         $this->assertFalse(!!strlen($contents));
+
+        $trigger = false;
+        try {
+            $this->object->next($stub)->__call('call2', array());
+        } catch(Throwable $e) {
+            $trigger = true;
+        }
+
+        $this->assertTrue($trigger);
 
         ob_start();
         $number = $this->object->next($stub)->__call('call1', array());

@@ -91,6 +91,7 @@ class Cradle_Http_Response_PageTrait_Test extends PHPUnit_Framework_TestCase
     public function testHasPage()
     {
         $this->assertTrue($this->object->hasPage());
+        $this->assertTrue($this->object->hasPage('title'));
     }
 
     /**
@@ -117,6 +118,8 @@ class Cradle_Http_Response_PageTrait_Test extends PHPUnit_Framework_TestCase
     public function testSetPage()
     {
         $instance = $this->object->setPage('foo', 'bar');
+        $this->assertInstanceOf('Cradle\Http\Response\PageTraitStub', $instance);
+        $instance = $this->object->setPage();
         $this->assertInstanceOf('Cradle\Http\Response\PageTraitStub', $instance);
     }
 

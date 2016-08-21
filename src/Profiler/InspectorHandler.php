@@ -23,17 +23,17 @@ class InspectorHandler implements InspectorInterface
      * @const int INSPECT Output template
      */
     const INSPECT = 'INSPECTING %s:';
-    
+
     /**
      * @var object|null $scope the inspected instance
      */
     protected $scope = null;
-    
+
     /**
      * @var string|null $name name of method to be used before/after inspection
      */
     protected $name  = null;
-    
+
     /**
      * Call a method of the scope and output it
      *
@@ -71,15 +71,15 @@ class InspectorHandler implements InspectorInterface
 
         //at this point we should output the results
         $class = get_class($scope);
-        
+
         $output = sprintf(self::INSPECT, $class.'->'.$name);
-        
+
         $this->output($output)->output($results);
 
         //and return the results
         return $results;
     }
-    
+
     /**
      * Hijacks the class and reports the results of the next
      * method call
@@ -117,7 +117,7 @@ class InspectorHandler implements InspectorInterface
         echo '<pre>'.print_r($variable, true).'</pre>';
         return $this;
     }
-    
+
     /**
      * Virtually calls the scope's method considering routes
      *
@@ -132,6 +132,6 @@ class InspectorHandler implements InspectorInterface
             return call_user_func_array([$this->scope, $name], $args);
         }
 
-        return $this->scope->call($name, $args);
+        return $this->scope->__call($name, $args);
     }
 }

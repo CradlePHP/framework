@@ -46,5 +46,10 @@ class Cradle_Http_Middleware_Test extends PHPUnit_Framework_TestCase
     public function testProcess()
     {
         $this->assertTrue($this->object->process());
+        $this->object->register(function() {
+            return false;
+        });
+
+        $this->assertFalse($this->object->process());
     }
 }

@@ -19,6 +19,8 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
     /**
      * Sets up the fixture, for example, opens a network connection.
      * This method is called before a test is executed.
+     *
+     * @covers Cradle\Data\Collection::__construct
      */
     protected function setUp()
     {
@@ -28,7 +30,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
 				'post_title' => 'Foobar 1',
 				'post_detail' => 'foobar 1',
 				'post_active' => 1
-			], 
+			],
 			[
 				'post_id' => 2,
 				'post_title' => 'Foobar 2',
@@ -59,26 +61,26 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
     {
         $instance = $this->object->__call('setPostTitle', array('Foobar 4'));
 		$this->assertInstanceOf('Cradle\Data\Collection', $instance);
-		
+
         $actual = $this->object->__call('getPostTitle', array());
-		
+
 		foreach($actual as $title) {
 			$this->assertEquals('Foobar 4', $title);
 		}
-		
+
 		$instance = $this->object->__call('isDot', array('post_title'));
 		$this->assertInstanceOf('Cradle\Data\Collection', $instance);
-		
+
 		$instance = $this->object->__call(Model::class, array());
 		$this->assertInstanceOf('Cradle\Data\Model', $instance);
-		
+
 		$thrown = false;
 		try {
 			$this->object->__call('foobar', array());
 		} catch(CollectionException $e) {
 			$thrown = true;
 		}
-		
+
 		$this->assertTrue($thrown);
     }
 
@@ -88,7 +90,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
     public function test__get()
     {
         $actual = $this->object->post_title;
-		
+
 		foreach($actual as $title) {
 			$this->assertContains('Foobar', $title);
 		}
@@ -101,7 +103,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
     {
 		$this->object->post_title = 'Foobar 4';
         $actual = $this->object->post_title;
-		
+
 		foreach($actual as $title) {
 			$this->assertEquals('Foobar 4', $title);
 		}
@@ -118,7 +120,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
 				'post_title' => 'Foobar 1',
 				'post_detail' => 'foobar 1',
 				'post_active' => 1
-			], 
+			],
 			[
 				'post_id' => 2,
 				'post_title' => 'Foobar 2',
@@ -145,7 +147,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
 			'post_detail' => 'foobar 4',
 			'post_active' => 0
 		]);
-		
+
 		$this->assertInstanceOf('Cradle\Data\Collection', $instance);
     }
 
@@ -155,21 +157,21 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
     public function testCut()
     {
         $instance = $this->object->cut(1);
-		
+
 		$this->assertInstanceOf('Cradle\Data\Collection', $instance);
 		$this->assertEquals(2, count($instance));
-		
+
 		$this->setUp();
-		
+
         $instance = $this->object->cut('first');
-		
+
 		$this->assertInstanceOf('Cradle\Data\Collection', $instance);
 		$this->assertEquals(2, count($instance));
-		
+
 		$this->setUp();
-		
+
         $instance = $this->object->cut('last');
-		
+
 		$this->assertInstanceOf('Cradle\Data\Collection', $instance);
 		$this->assertEquals(2, count($instance));
     }
@@ -185,7 +187,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
         $instance = $this->object->each(function($i, $row) use ($trigger) {
 			$trigger->total++;
 		});
-		
+
 		$this->assertInstanceOf('Cradle\Data\Collection', $instance);
 		$this->assertEquals(3, $trigger->total);
     }
@@ -197,7 +199,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
     public function testGet()
     {
         $data = $this->object->get();
-		
+
 		$this->assertTrue(is_array($data));
 		$this->assertTrue(is_array($data[2]));
     }
@@ -214,7 +216,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
 			'post_detail' => 'foobar 4',
 			'post_active' => 0
 		]);
-		
+
 		$this->assertInstanceOf('Cradle\Data\Model', $instance);
     }
 
@@ -232,7 +234,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
 				'post_active' => 0
 			]
 		]);
-		
+
 		$this->assertInstanceOf('Cradle\Data\Collection', $instance);
 		$this->assertEquals(4, count($instance));
     }
@@ -266,7 +268,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
 			'post_detail' => 'foobar 4',
 			'post_active' => 0
 		]);
-		
+
 		$this->assertEquals(4, count($this->object));
     }
 
@@ -305,14 +307,14 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
         $trigger = new StdClass;
         $trigger->success = null;
 		$trigger->test = $this;
-		
+
 		$callback = $this->object->bindCallback(function() use ($trigger) {
 	    	$trigger->success = true;
 			$trigger->test->assertInstanceOf('Cradle\Data\Collection', $this);
 		});
-		
+
 		$callback();
-		
+
 		$this->assertTrue($trigger->success);
     }
 
@@ -378,16 +380,16 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
     {
         $trigger = new StdClass();
 		$trigger->success = null;
-		
+
         $callback = function() use ($trigger) {
 			$trigger->success = true;
 		};
-		
+
 		$instance = $this
 			->object
 			->on('foobar', $callback)
 			->trigger('foobar');
-		
+
 		$this->assertInstanceOf('Cradle\Data\Collection', $instance);
 		$this->assertTrue($trigger->success);
     }
@@ -408,16 +410,16 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
     {
         $trigger = new StdClass();
 		$trigger->success = null;
-		
+
         $callback = function() use ($trigger) {
 			$trigger->success = true;
 		};
-		
+
 		$instance = $this
 			->object
 			->on('foobar', $callback)
 			->trigger('foobar');
-		
+
 		$this->assertInstanceOf('Cradle\Data\Collection', $instance);
 		$this->assertTrue($trigger->success);
     }
@@ -429,7 +431,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
     {
         $instance1 = Collection::i();
 		$this->assertInstanceOf('Cradle\Data\Collection', $instance1);
-		
+
 		$instance2 = Collection::i();
 		$this->assertTrue($instance1 !== $instance2);
     }
@@ -442,7 +444,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
         $self = $this;
         $this->object->loop(function($i) use ($self) {
             $self->assertInstanceOf('Cradle\Data\Collection', $this);
-            
+
             if ($i == 2) {
                 return false;
             }
@@ -463,7 +465,7 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
             $self->assertInstanceOf('Cradle\Data\Collection', $this);
             $test = 'Bad';
         });
-        
+
         $this->assertSame('Good', $test);
     }
 
@@ -484,10 +486,10 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
         ob_start();
 		$this->object->inspect('foobar');
 		$contents = ob_get_contents();
-		ob_end_clean();  
-		
+		ob_end_clean();
+
 		$this->assertEquals(
-			'<pre>INSPECTING Variable:</pre><pre>foobar</pre>', 
+			'<pre>INSPECTING Variable:</pre><pre>foobar</pre>',
 			$contents
 		);
     }
@@ -521,8 +523,8 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
 			$trigger->success = true;
 		})
 		->log($trigger);
-		
-		
+
+
 		$this->assertTrue($trigger->success);
     }
 
@@ -533,10 +535,10 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
     {
 		$state1 = new Collection(array());
 		$state2 = new Collection(array());
-		
+
 		$state1->saveState('state1');
 		$state2->saveState('state2');
-		
+
 		$this->assertTrue($state2 === $state1->loadState('state2'));
 		$this->assertTrue($state1 === $state2->loadState('state1'));
     }
@@ -548,10 +550,10 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
     {
 		$state1 = new Collection(array());
 		$state2 = new Collection(array());
-		
+
 		$state1->saveState('state1');
 		$state2->saveState('state2');
-		
+
 		$this->assertTrue($state2 === $state1->loadState('state2'));
 		$this->assertTrue($state1 === $state2->loadState('state1'));
     }
@@ -589,14 +591,14 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
     public function testResolve()
     {
         $actual = $this->object->addResolver(
-			ResolverCallStub::class, 
+			ResolverCallStub::class,
 			function() {
 				return new ResolverAddStub();
 			}
 		)
 		->resolve(ResolverCallStub::class)
 		->foo('bar');
-		
+
         $this->assertEquals('barfoo', $actual);
     }
 
@@ -610,14 +612,14 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
 			->resolveShared(ResolverSharedStub::class)
 			->reset()
 			->foo('bar');
-		
+
         $this->assertEquals('barfoo', $actual);
-		
+
 		$actual = $this
 			->object
 			->resolveShared(ResolverSharedStub::class)
 			->foo('bar');
-		
+
         $this->assertEquals('barbar', $actual);
     }
 
@@ -629,11 +631,11 @@ class Cradle_Data_Collection_Test extends PHPUnit_Framework_TestCase
         $actual = $this
 			->object
 			->resolveStatic(
-				ResolverStaticStub::class, 
-				'foo', 
+				ResolverStaticStub::class,
+				'foo',
 				'bar'
 			);
-		
+
         $this->assertEquals('barfoo', $actual);
     }
 
@@ -671,14 +673,14 @@ if(!class_exists('Cradle\Data\ResolverSharedStub')) {
 	class ResolverSharedStub
 	{
 		public $name = 'foo';
-		
+
 		public function foo($string)
 		{
 			$name = $this->name;
 			$this->name = $string;
 			return $string . $name;
 		}
-		
+
 		public function reset()
 		{
 			$this->name = 'foo';

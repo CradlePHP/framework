@@ -42,6 +42,15 @@ class Cradle_Framework_Package_Test extends PHPUnit_Framework_TestCase
 
 		$actual = $this->object->__call('foo', array());
 		$this->assertEquals('bar', $actual);
+
+        $trigger = false;
+        try {
+            $actual = $this->object->__call('bar', array());
+        } catch(Exception $e) {
+            $trigger = true;
+        }
+
+        $this->assertTrue($trigger);
     }
 
     /**

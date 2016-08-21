@@ -37,8 +37,8 @@ class Cradle_Event_EventObserver_Test extends PHPUnit_Framework_TestCase
     public function testGetCallback()
     {
         $actual = $this->object->getCallback();
-    	$this->assertInstanceOf('Closure', $actual);
-	}
+        $this->assertInstanceOf('Closure', $actual);
+    }
 
     /**
      * @covers Cradle\Event\EventObserver::setCallback
@@ -46,7 +46,17 @@ class Cradle_Event_EventObserver_Test extends PHPUnit_Framework_TestCase
     public function testSetCallback()
     {
         $actual = $this->object->setCallback(function() {})->getCallback();
-    	$this->assertInstanceOf('Closure', $actual);
+        $this->assertInstanceOf('Closure', $actual);
+
+        $trigger = false;
+
+        try {
+            $this->object->setCallback('foobar');
+        } catch(EventException $e) {
+            $trigger = true;
+        }
+
+        $this->assertTrue($trigger);
     }
 
     /**
@@ -54,11 +64,25 @@ class Cradle_Event_EventObserver_Test extends PHPUnit_Framework_TestCase
      */
     public function testAssertEquals()
     {
-		$callback1 = function() {};
-		$callback2 = function() {};
-		
+        $callback1 = function() {};
+        $callback2 = function() {};
+
         $this->object->setCallback($callback1);
-    	$this->assertTrue($this->object->assertEquals($callback1));
-    	$this->assertFalse($this->object->assertEquals($callback2));
+        $this->assertTrue($this->object->assertEquals($callback1));
+        $this->assertFalse($this->object->assertEquals($callback2));
+
+        $callback2 = 'foobar';
+
+        $this->object->setCallback($callback1);
+
+        $trigger = false;
+
+        try {
+            $this->object->assertEquals($callback2);
+        } catch(EventException $e) {
+            $trigger = true;
+        }
+
+        $this->assertTrue($trigger);
     }
 }
