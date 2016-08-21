@@ -58,10 +58,12 @@ class Session
                 }
             }
 
+            // @codeCoverageIgnoreStart
             //because we could be in CLI mode
             if (isset($_SESSION)) {
                 $_SESSION['flash'] = $flash;
             }
+            // @codeCoverageIgnoreEnd
 
             $response->set('page', 'flash', $flash);
 

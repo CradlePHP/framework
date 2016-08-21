@@ -51,10 +51,11 @@ class Log
     {
         return function () use ($message, $quit) {
             echo $message;
-
+            // @codeCoverageIgnoreStart
             if ($quit) {
                 exit;
             }
+            // @codeCoverageIgnoreEnd
         };
     }
 

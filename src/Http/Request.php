@@ -44,7 +44,7 @@ class Request extends Registry implements RequestInterface
         ServerTrait,
         SessionTrait,
         StageTrait;
-    
+
     /**
      * Loads default data given by PHP
      *
@@ -57,14 +57,16 @@ class Request extends Registry implements RequestInterface
         $this
             ->setArgs($argv)
             ->setContent(file_get_contents('php://input'));
-        
+
         if (isset($_COOKIE)) {
             $this->setCookies($_COOKIE);
         }
 
+        // @codeCoverageIgnoreStart
         if (isset($_SESSION)) {
             $this->setSession($_SESSION);
         }
+        // @codeCoverageIgnoreEnd
 
         if (isset($_GET)) {
             $this->setGet($_GET)->setStage($_GET);
@@ -81,7 +83,7 @@ class Request extends Registry implements RequestInterface
         if (isset($_SERVER)) {
             $this->setServer($_SERVER);
         }
-        
+
         return $this;
     }
 }

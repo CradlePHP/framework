@@ -54,14 +54,20 @@ trait HttpTrait
             //if there is an exception
             //you may not want to out
             //right throw it out
+
+            //we are going to ignore this because
+            //there is a conflict between PHP5.6 and PHP7
+            //and how it deals with Throwable
+            // @codeCoverageIgnoreStart
             $response->setStatus(500, HttpHandler::STATUS_500);
             $continue = $this->getErrorProcessor()->process($request, $response, $e);
+            // @codeCoverageIgnoreEnd
             //if there's an error in the errorware then let it be thrown
         }
 
         return $continue;
     }
-    
+
     /**
      * Handles the main routing process
      *
@@ -71,7 +77,7 @@ trait HttpTrait
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
-        
+
         try {
             //dispatch an init
             $continue = $this->getRouter()->process($request, $response);
@@ -79,14 +85,19 @@ trait HttpTrait
             //if there is an exception
             //you may not want to out
             //right throw it out
+
+            //there is a conflict between PHP5.6 and PHP7
+            //and how it deals with Throwable
+            // @codeCoverageIgnoreStart
             $response->setStatus(500, HttpHandler::STATUS_500);
             $continue = $this->getErrorProcessor()->process($request, $response, $e);
+            // @codeCoverageIgnoreEnd
             //if there's an error in the error processor then let it be thrown
         }
-        
+
         return $continue;
     }
-    
+
     /**
      * Process and output
      *
@@ -99,28 +110,28 @@ trait HttpTrait
         if (!$this->prepare() || !$this->process()) {
             return $this;
         }
-        
+
         $response = $this->getResponse();
-        
+
         $continue = true;
 
         if (!$response->hasContent() && !$response->hasJson()) {
             $request = $this->getRequest();
             $response->setStatus(404, HttpHandler::STATUS_404);
-            
+
             $error = new HttpException(HttpHandler::STATUS_404, 404);
-            
+
             $continue = $this->getErrorProcessor()->process($request, $response, $error);
         }
-        
+
         if ($continue) {
             $this->getDispatcher()->dispatch($response, $emulate);
         }
-        
+
         //the connection is already closed
         //also remember there are no more sessions
         $this->shutdown();
-        
+
         return $this;
     }
 
@@ -133,7 +144,7 @@ trait HttpTrait
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
-        
+
         try {
             //dispatch an init
             $continue = $this->getPostprocessor()->process($request, $response);
@@ -141,11 +152,16 @@ trait HttpTrait
             //if there is an exception
             //you may not want to out
             //right throw it out
+
+            //there is a conflict between PHP5.6 and PHP7
+            //and how it deals with Throwable
+            // @codeCoverageIgnoreStart
             $response->setStatus(500, '500 Server Error');
             $continue = $this->getErrorProcessor()->process($request, $response, $e);
+            // @codeCoverageIgnoreEnd
             //if there's an error in the error processor then let it be thrown
         }
-        
+
         return $continue;
     }
 }

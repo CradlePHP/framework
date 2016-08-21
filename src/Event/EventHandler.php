@@ -138,7 +138,9 @@ class EventHandler implements EventInterface
             return $this->removeObserversByCallback($callback);
         }
 
+        // @codeCoverageIgnoreStart
         return $this;
+        // @codeCoverageIgnoreEnd
     }
 
     /**

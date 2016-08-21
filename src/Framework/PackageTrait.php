@@ -101,6 +101,7 @@ trait PackageTrait
 
         //we should check for events
         $file = $root . '/' . $vendor . '/' . $this->bootstrapFile;
+        // @codeCoverageIgnoreStart
         if (file_exists($file)) {
             //so you can access cradle
             //within the included file
@@ -109,6 +110,7 @@ trait PackageTrait
             //so the IDE can have color
             include_once($file . '.php');
         }
+        // @codeCoverageIgnoreEnd
 
         return $this;
     }
