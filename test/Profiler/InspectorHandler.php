@@ -47,14 +47,12 @@ class Cradle_Profiler_InspectorHandler_Test extends PHPUnit_Framework_TestCase
 
         $this->assertFalse(!!strlen($contents));
 
-        $trigger = false;
-        try {
-            $this->object->next($stub)->__call('call2', array());
-        } catch(Throwable $e) {
-            $trigger = true;
-        }
+        ob_start();
+        $number = $this->object->next($stub)->__call('call2', array());
+        $contents = ob_get_contents();
+        ob_end_clean();
 
-        $this->assertTrue($trigger);
+        $this->assertEquals('<pre>INSPECTING Cradle\Profiler\InspectorHandlerTest->:</pre><pre>4</pre>', $contents);
 
         ob_start();
         $number = $this->object->next($stub)->__call('call1', array());
@@ -140,6 +138,11 @@ if(!class_exists('Cradle\Profiler\InspectorHandlerTest')) {
         public function call1()
         {
             return $this->x + 1;
+        }
+
+        public function __call($name, $args)
+        {
+            return $this->x;
         }
     }
 }
