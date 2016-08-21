@@ -92,6 +92,24 @@ class Cradle_Framework_App_Test extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Cradle\Framework\App::getPackages
+     */
+    public function testGetPackages()
+    {
+        $packages = $this->object->getPackages();
+        $this->assertTrue(is_array($packages));
+    }
+
+    /**
+     * @covers Cradle\Framework\App::getProtocols
+     */
+    public function testGetProtocols()
+    {
+        $protocols = $this->object->getProtocols();
+        $this->assertTrue(is_array($protocols));
+    }
+
+    /**
      * @covers Cradle\Framework\App::import
      */
     public function testImport()
@@ -176,6 +194,40 @@ class Cradle_Framework_App_Test extends PHPUnit_Framework_TestCase
         $this->assertTrue($trigger->success1);
         $this->assertTrue($trigger->success2);
         $this->assertTrue($trigger->success3);
+
+        $trigger = new StdClass();
+        $trigger->success1 = null;
+        $trigger->success2 = null;
+        $trigger->success3 = null;
+
+        list($request, $response, $next) = $this
+            ->object
+            ->flow(
+                'bar2foo',
+                'step1',
+                'step2',
+                'step3'
+            )
+            ->on('step1', function($request, $response, $trigger) {
+                $trigger->success1 = true;
+
+            })
+            ->on('step2', function($request, $response, $trigger) {
+                $trigger->success2 = true;
+                return false;
+            })
+            ->on('step3', function($request, $response, $trigger) {
+                $trigger->success3 = true;
+            })
+            ->export('bar2foo', true);
+
+        $actual = $next($trigger);
+        $meta = $this->object->getEventHandler()->getMeta();
+
+        $this->assertTrue($trigger->success1);
+        $this->assertTrue($trigger->success2);
+        $this->assertNull($trigger->success3);
+        $this->assertFalse($actual);
     }
 
     /**
@@ -202,6 +254,12 @@ class Cradle_Framework_App_Test extends PHPUnit_Framework_TestCase
     public function testRoute()
     {
         $instance = $this->object->route('foobar', '/foo/bar', function() {});
+        $this->assertInstanceOf('Cradle\Framework\App', $instance);
+
+        $instance = $this->object->route('foobar', '/foo/bar', 'foobar');
+        $this->assertInstanceOf('Cradle\Framework\App', $instance);
+
+        $instance = $this->object->route('foobar', '/foo/bar', 'foobar', 'foobar2');
         $this->assertInstanceOf('Cradle\Framework\App', $instance);
     }
 
@@ -345,8 +403,10 @@ class Cradle_Framework_App_Test extends PHPUnit_Framework_TestCase
     public function testRegister()
     {
         $instance = $this->object->register('foobar')->package('foobar');
-
         $this->assertInstanceOf('Cradle\Framework\Package', $instance);
+
+        $instance = $this->object->register(function() {});
+        $this->assertInstanceOf('Cradle\Framework\App', $instance);
     }
 
     /**

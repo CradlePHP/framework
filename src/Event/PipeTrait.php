@@ -51,6 +51,15 @@ trait PipeTrait
         //listen for the main on global
         $this->on($event, function (...$args) use (&$flow) {
             $this->triggerFlow($flow, ...$args);
+
+            //analyze the meta
+            $meta = $this->getEventHandler()->getMeta();
+
+            //if meta is false
+            if($meta === false) {
+                //we should also stop the flow
+                return false;
+            }
         });
 
         return $this;
@@ -202,6 +211,15 @@ trait PipeTrait
             $this->trigger($step, ...$args);
 
             self::$flows = array();
+
+            //analyze the meta
+            $meta = $this->getEventHandler()->getMeta();
+
+            //if meta is false
+            if($meta === false) {
+                //we should also stop the flow
+                break;
+            }
         }
 
         return $this;

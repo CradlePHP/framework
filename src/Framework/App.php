@@ -107,10 +107,6 @@ class App
 
             $subPath = substr($path, strlen($root));
 
-            if (strpos($subPath, '/') !== 0) {
-                $subPath = '/' . $subPath;
-            }
-
             $request->setPath($subPath);
 
             $handler

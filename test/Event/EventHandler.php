@@ -102,6 +102,25 @@ class Cradle_Event_EventHandler_Test extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Cradle\Event\EventHandler', $instance);
         $this->assertTrue($trigger->success);
+
+        $trigger = new StdClass();
+        $trigger->success1 = null;
+        $trigger->success2 = null;
+
+        $this->object
+            ->on('barzoo', function($trigger) {
+                $trigger->success1 = true;
+                return false;
+            })
+            ->on('barzoo', function($trigger) {
+                $trigger->success2 = true;
+            })
+            ->trigger('barzoo', $trigger);
+
+        $this->assertTrue($trigger->success1);
+        $this->assertNull($trigger->success2);
+
+        $this->assertFalse($this->object->getMeta());
     }
 
     /**
