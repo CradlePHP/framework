@@ -22,7 +22,7 @@ class Cradle_Http_Request_StageTrait_Test extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new StageTraitStub;
-        
+
         $this->object->set('stage', array(
             'foo' => 'bar',
             'bar' => 'foo'
@@ -38,24 +38,24 @@ class Cradle_Http_Request_StageTrait_Test extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * covers Cradle\Http\Request\StageTrait::getStage
+     * @covers Cradle\Http\Request\StageTrait::getStage
      */
     public function testGetStage()
-    {    
+    {
         $this->assertEquals('bar', $this->object->getStage('foo'));
     }
 
     /**
-     * covers Cradle\Http\Request\StageTrait::hasStage
+     * @covers Cradle\Http\Request\StageTrait::hasStage
      */
     public function testHasStage()
-    {    
+    {
         $this->assertTrue($this->object->hasStage('foo'));
         $this->assertFalse($this->object->hasStage('zoo'));
     }
 
     /**
-     * covers Cradle\Http\Request\StageTrait::removeStage
+     * @covers Cradle\Http\Request\StageTrait::removeStage
      */
     public function testRemoveStage()
     {
@@ -64,7 +64,7 @@ class Cradle_Http_Request_StageTrait_Test extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * covers Cradle\Http\Request\StageTrait::setSoftStage
+     * @covers Cradle\Http\Request\StageTrait::setSoftStage
      */
     public function testSetSoftStage()
     {
@@ -72,13 +72,13 @@ class Cradle_Http_Request_StageTrait_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'zoo'
         ));
-        
+
         $this->assertInstanceOf('Cradle\Http\Request\StageTraitStub', $instance);
 		$this->assertEquals('foo', $this->object->getStage('bar'));
     }
 
     /**
-     * covers Cradle\Http\Request\StageTrait::setStage
+     * @covers Cradle\Http\Request\StageTrait::setStage
      */
     public function testSetStage()
     {
@@ -86,12 +86,12 @@ class Cradle_Http_Request_StageTrait_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertInstanceOf('Cradle\Http\Request\StageTraitStub', $instance);
-		
+
 		$instance = $this->object->setStage();
         $this->assertInstanceOf('Cradle\Http\Request\StageTraitStub', $instance);
-		
+
 		$instance = $this->object->setStage('zoo');
         $this->assertInstanceOf('Cradle\Http\Request\StageTraitStub', $instance);
 

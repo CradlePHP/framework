@@ -47,6 +47,16 @@ class Cradle_Resolver_ResolverTrait_Test extends PHPUnit_Framework_TestCase
     {
         $actual = $this->object->addResolver(ResolverCallStub::class, function() {});
 		$this->assertInstanceOf('Cradle\Resolver\ResolverTraitStub', $actual);
+
+        $trigger = false;
+
+        try {
+            $this->object->addResolver('foobar', 'foobar');
+        } catch(ResolverException $e) {
+            $trigger = true;
+        }
+
+        $this->assertTrue($trigger);
     }
 
     /**
@@ -64,15 +74,27 @@ class Cradle_Resolver_ResolverTrait_Test extends PHPUnit_Framework_TestCase
     public function testResolve()
     {
         $actual = $this->object->addResolver(
-			ResolverCallStub::class, 
+			ResolverCallStub::class,
 			function() {
 				return new ResolverAddStub();
 			}
 		)
 		->resolve(ResolverCallStub::class)
 		->foo('bar');
-		
+
         $this->assertEquals('barfoo', $actual);
+
+        $trigger = false;
+
+        try {
+            $this->object->resolve('barfoo');
+        } catch(ResolverException $e) {
+            $trigger = true;
+        }
+
+        $this->assertTrue($trigger);
+
+        $this->assertEquals('0', $this->object->resolve('strpos', 'Foobar', 'Foo'));
     }
 
     /**
@@ -85,14 +107,14 @@ class Cradle_Resolver_ResolverTrait_Test extends PHPUnit_Framework_TestCase
 			->resolveShared(ResolverSharedStub::class)
 			->reset()
 			->foo('bar');
-		
+
         $this->assertEquals('barfoo', $actual);
-		
+
 		$actual = $this
 			->object
 			->resolveShared(ResolverSharedStub::class)
 			->foo('bar');
-		
+
         $this->assertEquals('barbar', $actual);
     }
 
@@ -104,11 +126,11 @@ class Cradle_Resolver_ResolverTrait_Test extends PHPUnit_Framework_TestCase
         $actual = $this
 			->object
 			->resolveStatic(
-				ResolverStaticStub::class, 
-				'foo', 
+				ResolverStaticStub::class,
+				'foo',
 				'bar'
 			);
-		
+
         $this->assertEquals('barfoo', $actual);
     }
 
@@ -153,14 +175,14 @@ if(!class_exists('Cradle\Resolver\ResolverSharedStub')) {
 	class ResolverSharedStub
 	{
 		public $name = 'foo';
-		
+
 		public function foo($string)
 		{
 			$name = $this->name;
 			$this->name = $string;
 			return $string . $name;
 		}
-		
+
 		public function reset()
 		{
 			$this->name = 'foo';

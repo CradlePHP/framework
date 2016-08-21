@@ -21,7 +21,7 @@ class Cradle_Data_DotTrait_Test extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new DotTraitStub;
-		
+
 		$this->object->setDot('foo', 'bar');
 		$this->object->setDot('bar', 'foo');
 		$this->object->setDot('bar.zoo', 'zoo');
@@ -42,8 +42,9 @@ class Cradle_Data_DotTrait_Test extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals('bar', $this->object->getDot('foo'));
         $this->assertEquals('zoo', $this->object->getDot('bar.zoo'));
-		
+
 		$this->assertNull($this->object->getDot(''));
+        $this->assertNull($this->object->getDot('foo.foo.bar'));
     }
 
     /**
@@ -63,10 +64,10 @@ class Cradle_Data_DotTrait_Test extends PHPUnit_Framework_TestCase
     {
 		$instance = $this->object->removeDot('');
 		$this->assertInstanceOf('Cradle\Data\DotTraitStub', $instance);
-		
+
 		$this->object->removeDot('foo');
 		$this->assertFalse($this->object->isDot('foo'));
-		
+
 		$this->object->removeDot('bar.zoo');
 		$this->assertFalse($this->object->isDot('bar.zoo'));
     }
@@ -87,7 +88,7 @@ if(!class_exists('Cradle\Data\DotTraitStub')) {
 	class DotTraitStub
 	{
 		use DotTrait;
-		
+
 		protected $data = array();
 	}
 }

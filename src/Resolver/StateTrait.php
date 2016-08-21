@@ -33,18 +33,18 @@ trait StateTrait
     public function loadState($name)
     {
         $state = $this->resolve($name);
-        
+
         if (is_callable($state)) {
             if ($state instanceof Closure) {
-                $state = $value->bindTo($this, get_class($this));
+                $state = $state->bindTo($this, get_class($this));
             }
 
             $state = call_user_func($state, $this);
         }
-        
+
         return $state;
     }
-    
+
     /**
      * Sets instance state for later usage.
      *
@@ -58,7 +58,7 @@ trait StateTrait
         if (is_null($value)) {
             $value = $this;
         }
-        
+
         $this->addResolver($name, function () use ($value) {
             return $value;
         });

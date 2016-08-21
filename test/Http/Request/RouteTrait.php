@@ -41,8 +41,9 @@ class Cradle_Http_Request_RouteTrait_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertEquals('bar', $this->object->getRoute('foo'));
+        $this->assertEquals('bar', $this->object->getRoute()['foo']);
     }
 
     /**
@@ -54,8 +55,9 @@ class Cradle_Http_Request_RouteTrait_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'parameters' => array('foo' => 'bar')
         ));
-        
+
         $this->assertEquals('bar', $this->object->getParameters('foo'));
+        $this->assertEquals('bar', $this->object->getParameters()['foo']);
     }
 
     /**
@@ -67,8 +69,9 @@ class Cradle_Http_Request_RouteTrait_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'variables' => array('foo', 'bar')
         ));
-        
+
         $this->assertEquals('bar', $this->object->getVariables(1));
+        $this->assertEquals('bar', $this->object->getVariables()[1]);
     }
 
     /**
@@ -80,7 +83,7 @@ class Cradle_Http_Request_RouteTrait_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertInstanceOf('Cradle\Http\Request\RouteTraitStub', $instance);
     }
 }

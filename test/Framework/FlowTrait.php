@@ -38,12 +38,19 @@ class Cradle_Framework_FlowTrait_Test extends PHPUnit_Framework_TestCase
      */
     public function test__callFlow()
     {
-        $this->object->__callFlow('foo', array());
+        $this->object->__callFlow('bar', array())->__callFlow('foo', array());
         $callback = $this->object->__callFlow('bar', array());
-
         $this->assertInstanceOf('Closure', $callback);
-
         $this->assertEquals('bar', $callback(new Request, new Response));
+
+        $this->object->__callFlow('foo', array());
+        $actual = $this->object->__callFlow('foo', array());
+        $this->assertEquals('foo', $actual);
+
+        $this->object->__callFlow('foo', array());
+        $callback = $this->object->__callFlow('zoo', array());
+        $this->assertInstanceOf('Closure', $callback);
+        $this->assertNull($callback(new Request, new Response));
     }
 
     /**
@@ -62,9 +69,15 @@ class Cradle_Framework_FlowTrait_Test extends PHPUnit_Framework_TestCase
 if(!class_exists('Cradle\Framework\ActionStub')) {
     class ActionStub
     {
+        public $foo = 'foo';
         public function bar()
         {
             return 'bar';
+        }
+
+        public function zoo()
+        {
+            return $this;
         }
     }
 }

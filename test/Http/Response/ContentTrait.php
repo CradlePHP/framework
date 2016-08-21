@@ -57,7 +57,19 @@ class Cradle_Http_Response_ContentTrait_Test extends PHPUnit_Framework_TestCase
     public function testSetContent()
     {
         $instance = $this->object->setContent('foobar');
-        
+
+        $this->assertInstanceOf('Cradle\Http\Response\ContentTraitStub', $instance);
+
+        $instance = $this->object->setContent(array());
+
+        $this->assertInstanceOf('Cradle\Http\Response\ContentTraitStub', $instance);
+
+        $instance = $this->object->setContent(false);
+
+        $this->assertInstanceOf('Cradle\Http\Response\ContentTraitStub', $instance);
+
+        $instance = $this->object->setContent(null);
+
         $this->assertInstanceOf('Cradle\Http\Response\ContentTraitStub', $instance);
     }
 }
