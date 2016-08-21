@@ -81,6 +81,7 @@
       <file>test/Http/Request/RouteTrait.php</file>
       <file>test/Http/Request/ServerTrait.php</file>
       <file>test/Http/Request/SessionTrait.php</file>
+      <file>test/Http/Request/StageTrait.php</file>
       <file>test/Http/Response/ContentTrait.php</file>
       <file>test/Http/Response/HeaderTrait.php</file>
       <file>test/Http/Response/ResponseTrait.php</file>

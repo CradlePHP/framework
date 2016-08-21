@@ -88,10 +88,6 @@ class Cradle_Http_Request_StageTrait_Test extends PHPUnit_Framework_TestCase
         ));
 
         $this->assertInstanceOf('Cradle\Http\Request\StageTraitStub', $instance);
-
-		$instance = $this->object->setStage();
-        $this->assertInstanceOf('Cradle\Http\Request\StageTraitStub', $instance);
-
 		$instance = $this->object->setStage('zoo');
         $this->assertInstanceOf('Cradle\Http\Request\StageTraitStub', $instance);
 

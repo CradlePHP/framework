@@ -30,7 +30,7 @@ trait StageTrait
     {
         return $this->get('stage', ...$args);
     }
-    
+
     /**
      * Returns true if has $_REQUEST given name or if $_REQUEST is set
      *
@@ -42,7 +42,7 @@ trait StageTrait
     {
         return $this->exists('stage', ...$args);
     }
-    
+
     /**
      * Removes $_REQUEST given name or all $_REQUEST
      *
@@ -54,7 +54,7 @@ trait StageTrait
     {
         return $this->remove('stage', ...$args);
     }
-    
+
     /**
      * Clusters request data together softly
      *
@@ -69,10 +69,10 @@ trait StageTrait
             if ($this->exists('stage', $key)) {
                 continue;
             }
-            
+
             $this->set('stage', $key, $value);
         }
-        
+
         return $this;
     }
 
@@ -94,11 +94,11 @@ trait StageTrait
 
             return $this;
         }
-        
+
         if (count($args) === 0) {
             return $this;
         }
-        
+
         return $this->set('stage', $data, ...$args);
     }
 }
