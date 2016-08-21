@@ -48,6 +48,9 @@ class Cradle_Http_Request_ServerTrait_Test extends PHPUnit_Framework_TestCase
     {
         $this->object->setPath('/foo/bar');
         $this->assertEquals('/foo/bar', $this->object->getPath('string'));
+
+        $this->object->setPath('/foo/bar');
+        $this->assertEquals('/foo/bar', $this->object->getPath()['string']);
     }
 
     /**
@@ -68,8 +71,11 @@ class Cradle_Http_Request_ServerTrait_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertEquals('bar', $this->object->getServer('foo'));
+
+        $this->object->setPath('/foo/bar');
+        $this->assertEquals('bar', $this->object->getServer()['foo']);
     }
 
     /**
@@ -81,9 +87,10 @@ class Cradle_Http_Request_ServerTrait_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertTrue($this->object->hasServer('foo'));
         $this->assertFalse($this->object->hasServer('zoo'));
+        $this->assertTrue($this->object->hasServer());
     }
 
     /**
@@ -92,7 +99,7 @@ class Cradle_Http_Request_ServerTrait_Test extends PHPUnit_Framework_TestCase
     public function testIsMethod()
     {
         $this->assertFalse($this->object->isMethod('foobar'));
-        
+
         $this->object->setMethod('foobar');
         $this->assertTrue($this->object->isMethod('foobar'));
     }
@@ -103,7 +110,7 @@ class Cradle_Http_Request_ServerTrait_Test extends PHPUnit_Framework_TestCase
     public function testSetMethod()
     {
         $instance = $this->object->setMethod('foobar');
-        
+
         $this->assertInstanceOf('Cradle\Http\Request\ServerTraitStub', $instance);
     }
 
@@ -113,7 +120,11 @@ class Cradle_Http_Request_ServerTrait_Test extends PHPUnit_Framework_TestCase
     public function testSetPath()
     {
         $instance = $this->object->setPath('foobar');
-        
+
+        $this->assertInstanceOf('Cradle\Http\Request\ServerTraitStub', $instance);
+
+        $instance = $this->object->setPath(array('', 'foo', 'bar'));
+
         $this->assertInstanceOf('Cradle\Http\Request\ServerTraitStub', $instance);
     }
 
@@ -123,7 +134,7 @@ class Cradle_Http_Request_ServerTrait_Test extends PHPUnit_Framework_TestCase
     public function testSetQuery()
     {
         $instance = $this->object->setQuery('foobar');
-        
+
         $this->assertInstanceOf('Cradle\Http\Request\ServerTraitStub', $instance);
     }
 
@@ -134,9 +145,12 @@ class Cradle_Http_Request_ServerTrait_Test extends PHPUnit_Framework_TestCase
     {
         $instance = $this->object->setServer(array(
             'foo' => 'bar',
-            'bar' => 'foo'
+            'bar' => 'foo',
+            'REQUEST_URI' => '/foo/bar?foo=bar',
+            'REQUEST_METHOD' => 'GET',
+            'QUERY_STRING' => 'foo=bar'
         ));
-        
+
         $this->assertInstanceOf('Cradle\Http\Request\ServerTraitStub', $instance);
     }
 }

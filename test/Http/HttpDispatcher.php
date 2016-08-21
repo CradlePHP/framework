@@ -46,6 +46,17 @@ class Cradle_Http_HttpDispatcher_Test extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Cradle\Http\HttpDispatcher::__construct
+     */
+    public function test__construct()
+    {
+        $this->object->__construct(
+            function() {},
+            function() {}
+        );
+    }
+
+    /**
      * @covers Cradle\Http\HttpDispatcher::output
      */
     public function testOutput()
@@ -83,6 +94,21 @@ class Cradle_Http_HttpDispatcher_Test extends PHPUnit_Framework_TestCase
         }
 
         $this->assertTrue($trigger);
+
+        $this->response = new Response;
+
+        $this->response
+            ->load()
+            ->addHeader('Content-Type', false)
+            ->setError(true, 'Foobar');
+
+        $this->object->__construct(
+            function() {},
+            function() {}
+        );
+
+        $actual = $this->object->dispatch($this->response);
+        $this->assertInstanceOf('Cradle\Http\HttpDispatcher', $actual);
     }
 
     /**

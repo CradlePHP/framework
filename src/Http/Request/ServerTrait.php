@@ -28,7 +28,7 @@ trait ServerTrait
     {
         return strtoupper($this->get('method'));
     }
-    
+
     /**
      * Returns path data given name or all path data
      *
@@ -41,10 +41,10 @@ trait ServerTrait
         if (is_null($name)) {
             return $this->get('path');
         }
-        
+
         return $this->get('path', $name);
     }
-    
+
     /**
      * Returns string query if set
      *
@@ -54,7 +54,7 @@ trait ServerTrait
     {
         return $this->get('query');
     }
-    
+
     /**
      * Returns SERVER data given name or all SERVER data
      *
@@ -67,10 +67,10 @@ trait ServerTrait
         if (is_null($name)) {
             return $this->get('server');
         }
-        
+
         return $this->get('server', $name);
     }
-    
+
     /**
      * Returns SERVER data given name or all SERVER data
      *
@@ -83,10 +83,10 @@ trait ServerTrait
         if (is_null($name)) {
             return $this->exists('server');
         }
-        
+
         return $this->exists('server', $name);
     }
-    
+
     /**
      * Returns true if method is the one given
      *
@@ -110,7 +110,7 @@ trait ServerTrait
     {
         return $this->set('method', $method);
     }
-    
+
     /**
      * Sets path given in string or array form
      *
@@ -126,12 +126,12 @@ trait ServerTrait
             $array = $path;
             $path = implode('/', $path);
         }
-        
+
         return $this
             ->setDot('path.string', $path)
             ->setDot('path.array', $array);
     }
-    
+
     /**
      * Sets query string
      *
@@ -143,7 +143,7 @@ trait ServerTrait
     {
         return $this->set('query', $query);
     }
-    
+
     /**
      * Sets SERVER
      *
@@ -154,27 +154,27 @@ trait ServerTrait
     public function setServer(array $server)
     {
         $this->set('server', $server);
-        
+
         //if there is no path set
         if (!$this->exists('path') && isset($server['REQUEST_URI'])) {
-            $path = $_SERVER['REQUEST_URI'];
-        
+            $path = $server['REQUEST_URI'];
+
             //remove ? url queries
             if (strpos($path, '?') !== false) {
                 list($path, $tmp) = explode('?', $path, 2);
             }
-            
+
             $this->setPath($path);
         }
 
         if (!$this->exists('method') && isset($server['REQUEST_METHOD'])) {
-            $this->setMethod($_SERVER['REQUEST_METHOD']);
+            $this->setMethod($server['REQUEST_METHOD']);
         }
 
         if (!$this->exists('query') && isset($server['QUERY_STRING'])) {
-            $this->setQuery($_SERVER['QUERY_STRING']);
+            $this->setQuery($server['QUERY_STRING']);
         }
-        
+
         return $this;
     }
 }
