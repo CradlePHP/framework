@@ -71,6 +71,19 @@ class Cradle_Framework_App_Test extends PHPUnit_Framework_TestCase
         $this->object->app('/foo', $app)->process();
 
         $this->assertTrue($trigger->success);
+
+        $request->setPath('/');
+        $app = new App;
+        $trigger = new StdClass;
+        $trigger->success = false;
+        $app->get('/', function() use ($trigger) {
+            $trigger->success = true;
+        });
+
+        $this->object->setRequest($request);
+        $this->object->app('/', $app)->process();
+
+        $this->assertTrue($trigger->success);
     }
 
     /**
