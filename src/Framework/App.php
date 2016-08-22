@@ -108,7 +108,7 @@ class App
             $subPath = substr($path, strlen($root));
 
             //because substr('/', 1); --> false
-            if(!is_string($subPath) || !strlen($subPath)) {
+            if (!is_string($subPath) || !strlen($subPath)) {
                 $subPath = '/';
             }
 
