@@ -109,16 +109,16 @@ class Session
      *
      * @return Closure
      */
-    public function redirectTo($url)
+    public function redirectTo($url, $force = false)
     {
-        return function () use ($url) {
+        return function () use ($url, $force) {
             if (strpos($url, '://') === false
                 && strpos($url, '/') !== 0
             ) {
                 $url = '/' . $url;
             }
 
-            $this->getDispatcher()->redirect($url);
+            $this->getDispatcher()->redirect($url, $force);
         };
     }
 }
