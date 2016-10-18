@@ -13,6 +13,7 @@ use Cradle\Framework\Flow\Log;
 use Cradle\Framework\Flow\File;
 use Cradle\Framework\Flow\Session;
 use Cradle\Resolver\ResolverHandler;
+use Cradle\Resolver\ResolverException;
 
 /**
  * A Flow is a facade that delays actual
@@ -51,8 +52,12 @@ class Flow
      */
     public static function __callStatic($name, $args)
     {
-        //NOTE: Resolvers should provide a cache
-        return self::getResolver()->resolve($name, ...$args);
+        try {
+            //NOTE: Resolvers should provide a cache
+            return self::getResolver()->resolve($name, ...$args);
+        } catch (ResolverException $e) {
+            throw Exception::forFlowNotFound($name);
+        }
     }
 
     /**
