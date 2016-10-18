@@ -64,7 +64,7 @@ trait PackageTrait
      */
     public function package($vendor)
     {
-        if (!isset($this->packages[$vendor])) {
+        if (!array_key_exists($vendor, $this->packages)) {
             throw Exception::forPackageNotFound($vendor);
         }
 

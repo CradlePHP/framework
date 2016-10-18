@@ -103,6 +103,15 @@ class Cradle_Http_RouterTrait_Test extends PHPUnit_Framework_TestCase
         $instance = $this->object->setRouter(new Router);
         $this->assertInstanceOf('Cradle\Http\Router\RouterTraitStub', $instance);
     }
+
+    /**
+     * covers Cradle\Http\RouterTrait::triggerRoute
+     */
+    public function testTriggerRoute()
+    {
+        $instance = $this->object->triggerRoute('get', 'foobar');
+        $this->assertInstanceOf('Cradle\Http\Router\RouterTraitStub', $instance);
+    }
 }
 
 if(!class_exists('Cradle\Http\Router\RouterTraitStub')) {

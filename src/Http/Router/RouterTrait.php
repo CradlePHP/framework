@@ -26,7 +26,7 @@ trait RouterTrait
      * @var Router|null $router Response object to use
      */
     protected $router = null;
-    
+
     /**
      * Adds routing middleware for all methods
      *
@@ -39,7 +39,7 @@ trait RouterTrait
     {
         return $this->route('all', $path, $callback);
     }
-    
+
     /**
      * Adds routing middleware for delete method
      *
@@ -52,7 +52,7 @@ trait RouterTrait
     {
         return $this->route('delete', $path, $callback);
     }
-    
+
     /**
      * Adds routing middleware for get method
      *
@@ -65,7 +65,7 @@ trait RouterTrait
     {
         return $this->route('get', $path, $callback);
     }
-    
+
     /**
      * Returns a router object
      *
@@ -83,7 +83,7 @@ trait RouterTrait
 
         return $this->router;
     }
-    
+
     /**
      * Adds routing middleware for post method
      *
@@ -96,7 +96,7 @@ trait RouterTrait
     {
         return $this->route('post', $path, $callback);
     }
-    
+
     /**
      * Adds routing middleware for put method
      *
@@ -109,7 +109,7 @@ trait RouterTrait
     {
         return $this->route('put', $path, $callback);
     }
-    
+
     /**
      * Adds routing middleware
      *
@@ -122,10 +122,10 @@ trait RouterTrait
     public function route($method, $path, $callback)
     {
         $this->getRouter()->route($method, $path, $callback);
-        
+
         return $this;
     }
-    
+
     /**
      * Sets the router to use
      *
@@ -136,7 +136,27 @@ trait RouterTrait
     public function setRouter(RouterInterface $router)
     {
         $this->router = $router;
-        
+
+        return $this;
+    }
+
+    /**
+     * Manually trigger a route
+     *
+     * @param string $method
+     * @param string $path
+     *
+     * @return RouterTrait
+     */
+    public function triggerRoute($method, $path, ...$args)
+    {
+        $event = strtoupper($method).' '.$path;
+
+        $this
+            ->getRouter()
+            ->getEventHandler()
+            ->trigger($event, ...$args);
+
         return $this;
     }
 }
