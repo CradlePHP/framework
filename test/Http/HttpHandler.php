@@ -65,6 +65,25 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
         $this->object->getResponse()->setContent('foobar');
         $instance = $this->object->render(true);
         $this->assertInstanceOf('Cradle\Http\HttpHandler', $instance);
+
+        $this->object->route('ALL', '**', function() {
+            return false;
+        });
+
+        $instance = $this->object->render(true);
+        $this->assertInstanceOf('Cradle\Http\HttpHandler', $instance);
+
+        $this->object->preprocess(function() {
+            throw new \Exception('Foobar Exception');
+        });
+
+        $this->object->error(function($request, $response) {
+            $response->setContent('Foobar Message');
+            return false;
+        });
+
+        $instance = $this->object->render(true);
+        $this->assertInstanceOf('Cradle\Http\HttpHandler', $instance);
     }
 
     /**
@@ -298,16 +317,16 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
     {
         $trigger = new StdClass();
         $trigger->success = null;
-        
+
         $callback = function() use ($trigger) {
             $trigger->success = true;
         };
-        
+
         $instance = $this
             ->object
             ->on('foobar', $callback)
             ->trigger('foobar');
-        
+
         $this->assertInstanceOf('Cradle\Http\HttpHandler', $instance);
         $this->assertTrue($trigger->success);
     }
@@ -328,16 +347,16 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
     {
         $trigger = new StdClass();
         $trigger->success = null;
-        
+
         $callback = function() use ($trigger) {
             $trigger->success = true;
         };
-        
+
         $instance = $this
             ->object
             ->on('foobar', $callback)
             ->trigger('foobar');
-        
+
         $this->assertInstanceOf('Cradle\Http\HttpHandler', $instance);
         $this->assertTrue($trigger->success);
     }
@@ -350,14 +369,14 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
         $trigger = new StdClass;
         $trigger->success = null;
         $trigger->test = $this;
-        
+
         $callback = $this->object->bindCallback(function() use ($trigger) {
             $trigger->success = true;
             $trigger->test->assertInstanceOf('Cradle\Http\HttpHandler', $this);
         });
-        
+
         $callback();
-        
+
         $this->assertTrue($trigger->success);
     }
 
@@ -368,7 +387,7 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
     {
         $instance1 = HttpHandler::i();
         $this->assertInstanceOf('Cradle\Http\HttpHandler', $instance1);
-        
+
         $instance2 = HttpHandler::i();
         $this->assertTrue($instance1 !== $instance2);
     }
@@ -381,7 +400,7 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
         $self = $this;
         $this->object->loop(function($i) use ($self) {
             $self->assertInstanceOf('Cradle\Http\HttpHandler', $this);
-            
+
             if ($i == 2) {
                 return false;
             }
@@ -421,10 +440,10 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
         ob_start();
         $this->object->inspect('foobar');
         $contents = ob_get_contents();
-        ob_end_clean();  
-        
+        ob_end_clean();
+
         $this->assertEquals(
-            '<pre>INSPECTING Variable:</pre><pre>foobar</pre>', 
+            '<pre>INSPECTING Variable:</pre><pre>foobar</pre>',
             $contents
         );
     }
@@ -458,8 +477,8 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
             $trigger->success = true;
         })
         ->log($trigger);
-        
-        
+
+
         $this->assertTrue($trigger->success);
     }
 
@@ -470,10 +489,10 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
     {
         $state1 = new HttpHandler();
         $state2 = new HttpHandler();
-        
+
         $state1->saveState('state1');
         $state2->saveState('state2');
-        
+
         $this->assertTrue($state2 === $state1->loadState('state2'));
         $this->assertTrue($state1 === $state2->loadState('state1'));
     }
@@ -485,10 +504,10 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
     {
         $state1 = new HttpHandler();
         $state2 = new HttpHandler();
-        
+
         $state1->saveState('state1');
         $state2->saveState('state2');
-        
+
         $this->assertTrue($state2 === $state1->loadState('state2'));
         $this->assertTrue($state1 === $state2->loadState('state1'));
     }
@@ -535,14 +554,14 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
     public function testResolve()
     {
         $actual = $this->object->addResolver(
-            ResolverCallStub::class, 
+            ResolverCallStub::class,
             function() {
                 return new ResolverAddStub();
             }
         )
         ->resolve(ResolverCallStub::class)
         ->foo('bar');
-        
+
         $this->assertEquals('barfoo', $actual);
     }
 
@@ -556,14 +575,14 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
             ->resolveShared(ResolverSharedStub::class)
             ->reset()
             ->foo('bar');
-        
+
         $this->assertEquals('barfoo', $actual);
-        
+
         $actual = $this
             ->object
             ->resolveShared(ResolverSharedStub::class)
             ->foo('bar');
-        
+
         $this->assertEquals('barbar', $actual);
     }
 
@@ -575,11 +594,11 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
         $actual = $this
             ->object
             ->resolveStatic(
-                ResolverStaticStub::class, 
-                'foo', 
+                ResolverStaticStub::class,
+                'foo',
                 'bar'
             );
-        
+
         $this->assertEquals('barfoo', $actual);
     }
 
@@ -617,14 +636,14 @@ if(!class_exists('Cradle\Http\ResolverSharedStub')) {
     class ResolverSharedStub
     {
         public $name = 'foo';
-        
+
         public function foo($string)
         {
             $name = $this->name;
             $this->name = $string;
             return $string . $name;
         }
-        
+
         public function reset()
         {
             $this->name = 'foo';
