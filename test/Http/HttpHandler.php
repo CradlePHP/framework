@@ -74,7 +74,7 @@ class Cradle_Http_HttpHandler_Test extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Cradle\Http\HttpHandler', $instance);
 
         $this->object->preprocess(function() {
-            throw new Exception('Foobar Exception');
+            throw new \Exception('Foobar Exception');
         });
 
         $this->object->error(function($request, $response) {
