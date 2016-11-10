@@ -107,11 +107,15 @@ trait HttpTrait
      */
     public function render($emulate = false)
     {
-        if (!$this->prepare() || !$this->process()) {
+        $response = $this->getResponse();
+
+        if(!$this->prepare()) {
             return $this;
         }
 
-        $response = $this->getResponse();
+        if($response->getStatus() === 200 && !$this->process()) {
+            return $this;
+        }
 
         $continue = true;
 
