@@ -10,6 +10,7 @@
 namespace Cradle\Http;
 
 use Throwable;
+use Exception;
 
 use Cradle\Http\Router\RouterTrait;
 use Cradle\Http\Request\RequestTrait;
@@ -46,6 +47,7 @@ trait HttpTrait
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
+        $thrown = false;
 
         try {
             //dispatch an init
@@ -59,10 +61,20 @@ trait HttpTrait
             //there is a conflict between PHP5.6 and PHP7
             //and how it deals with Throwable
             // @codeCoverageIgnoreStart
+            $thrown = true;
             $response->setStatus(500, HttpHandler::STATUS_500);
             $continue = $this->getErrorProcessor()->process($request, $response, $e);
             // @codeCoverageIgnoreEnd
             //if there's an error in the errorware then let it be thrown
+        } catch (Exception $e) {
+            // @codeCoverageIgnoreStart
+            if(!$thrown) {
+                //same logic as above
+                $response->setStatus(500, HttpHandler::STATUS_500);
+                $continue = $this->getErrorProcessor()->process($request, $response, $e);
+                //if there's an error in the errorware then let it be thrown
+            }
+            // @codeCoverageIgnoreEnd
         }
 
         return $continue;
@@ -77,6 +89,7 @@ trait HttpTrait
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
+        $thrown = false;
 
         try {
             //dispatch an init
@@ -86,13 +99,24 @@ trait HttpTrait
             //you may not want to out
             //right throw it out
 
+            //we are going to ignore this because
             //there is a conflict between PHP5.6 and PHP7
             //and how it deals with Throwable
             // @codeCoverageIgnoreStart
+            $thrown = true;
             $response->setStatus(500, HttpHandler::STATUS_500);
             $continue = $this->getErrorProcessor()->process($request, $response, $e);
             // @codeCoverageIgnoreEnd
-            //if there's an error in the error processor then let it be thrown
+            //if there's an error in the errorware then let it be thrown
+        } catch (Exception $e) {
+            // @codeCoverageIgnoreStart
+            if(!$thrown) {
+                //same logic as above
+                $response->setStatus(500, HttpHandler::STATUS_500);
+                $continue = $this->getErrorProcessor()->process($request, $response, $e);
+                //if there's an error in the errorware then let it be thrown
+            }
+            // @codeCoverageIgnoreEnd
         }
 
         return $continue;
@@ -148,6 +172,7 @@ trait HttpTrait
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
+        $thrown = false;
 
         try {
             //dispatch an init
@@ -157,13 +182,24 @@ trait HttpTrait
             //you may not want to out
             //right throw it out
 
+            //we are going to ignore this because
             //there is a conflict between PHP5.6 and PHP7
             //and how it deals with Throwable
             // @codeCoverageIgnoreStart
-            $response->setStatus(500, '500 Server Error');
+            $thrown = true;
+            $response->setStatus(500, HttpHandler::STATUS_500);
             $continue = $this->getErrorProcessor()->process($request, $response, $e);
             // @codeCoverageIgnoreEnd
-            //if there's an error in the error processor then let it be thrown
+            //if there's an error in the errorware then let it be thrown
+        } catch (Exception $e) {
+            // @codeCoverageIgnoreStart
+            if(!$thrown) {
+                //same logic as above
+                $response->setStatus(500, HttpHandler::STATUS_500);
+                $continue = $this->getErrorProcessor()->process($request, $response, $e);
+                //if there's an error in the errorware then let it be thrown
+            }
+            // @codeCoverageIgnoreEnd
         }
 
         return $continue;
