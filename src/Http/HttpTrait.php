@@ -68,7 +68,7 @@ trait HttpTrait
             //if there's an error in the errorware then let it be thrown
         } catch (Exception $e) {
             // @codeCoverageIgnoreStart
-            if(!$thrown) {
+            if (!$thrown) {
                 //same logic as above
                 $response->setStatus(500, HttpHandler::STATUS_500);
                 $continue = $this->getErrorProcessor()->process($request, $response, $e);
@@ -110,7 +110,7 @@ trait HttpTrait
             //if there's an error in the errorware then let it be thrown
         } catch (Exception $e) {
             // @codeCoverageIgnoreStart
-            if(!$thrown) {
+            if (!$thrown) {
                 //same logic as above
                 $response->setStatus(500, HttpHandler::STATUS_500);
                 $continue = $this->getErrorProcessor()->process($request, $response, $e);
@@ -193,7 +193,7 @@ trait HttpTrait
             //if there's an error in the errorware then let it be thrown
         } catch (Exception $e) {
             // @codeCoverageIgnoreStart
-            if(!$thrown) {
+            if (!$thrown) {
                 //same logic as above
                 $response->setStatus(500, HttpHandler::STATUS_500);
                 $continue = $this->getErrorProcessor()->process($request, $response, $e);
