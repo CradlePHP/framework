@@ -109,11 +109,11 @@ trait HttpTrait
     {
         $response = $this->getResponse();
 
-        if(!$this->prepare()) {
+        if (!$this->prepare()) {
             return $this;
         }
 
-        if($response->getStatus() === 200 && !$this->process()) {
+        if ($response->getStatus() === 200 && !$this->process()) {
             return $this;
         }
 
