@@ -42,7 +42,7 @@ trait SessionTrait
     {
         $results = $this->remove('session', ...$args);
 
-        if (isset($_SESSION) && $data !== $_SESSION) {
+        if (isset($_SESSION)) {
             $_SESSION = $this->get('session');
         }
 
