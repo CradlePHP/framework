@@ -30,7 +30,7 @@ trait SessionTrait
     {
         return $this->get('session', ...$args);
     }
-    
+
     /**
      * Removes $_SESSION given name or all $_SESSION
      *
@@ -40,9 +40,15 @@ trait SessionTrait
      */
     public function removeSession(...$args)
     {
-        return $this->remove('session', ...$args);
+        $results = $this->remove('session', ...$args);
+
+        if (isset($_SESSION) && $data !== $_SESSION) {
+            $_SESSION = $this->get('session');
+        }
+
+        return $results;
     }
-    
+
     /**
      * Returns true if has $_SESSION given name or if $_SESSION is set
      *
@@ -72,13 +78,13 @@ trait SessionTrait
 
             return $this->set('session', $data);
         }
-        
+
         if (count($args) === 0) {
             return $this;
         }
-        
+
         $this->set('session', $data, ...$args);
-        
+
         if (isset($_SESSION) && $data !== $_SESSION) {
             $_SESSION = $this->get('session');
         }
