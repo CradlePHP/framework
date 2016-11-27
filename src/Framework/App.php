@@ -300,12 +300,14 @@ class App
      */
     public function route($method, $path, $callback, ...$args)
     {
-        //if no args
-        if (empty($args)) {
+        array_unshift($args, $callback);
+
+        foreach ($args as $callback) {
             //if it's a string
             if (is_string($callback)) {
                 //it's an event
                 $event = $callback;
+                //make into callback
                 $callback = function ($request, $response) use ($event) {
                     $this->trigger($event, $request, $response);
                 };
@@ -322,21 +324,7 @@ class App
                 //route it
                 $this->routeHttp($method, $path, $callback);
             }
-
-            return $this;
         }
-
-        //we are going to make a flow
-        $event = $method . ' ' . $path;
-
-        //which is now an event driven route
-        $this->flow($event, $callback, ...$args);
-
-        $callback = function ($request, $response) use ($event) {
-            $this->trigger($event, $request, $response);
-        };
-
-        $this->routeHttp($method, $path, $this->bindCallback($callback));
 
         return $this;
     }
