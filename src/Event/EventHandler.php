@@ -65,7 +65,7 @@ class EventHandler implements EventInterface
 
         //do the obvious match
         if (isset($this->observers[$event])) {
-            $matches[] = array(
+            $matches[$event] = array(
                 'event' => $event,
                 'pattern' => $event,
                 'variables' => array()
@@ -84,7 +84,7 @@ class EventHandler implements EventInterface
                     array_shift($variables);
                 }
 
-                $matches[] = array(
+                $matches[$pattern] = array(
                     'event' => $event,
                     'pattern' => $pattern,
                     'variables' => $variables
@@ -92,7 +92,7 @@ class EventHandler implements EventInterface
             }
         }
 
-        return $matches;
+        return array_values($matches);
     }
 
     /**
