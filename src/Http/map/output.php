@@ -54,7 +54,10 @@ return function ($code = null, array $headers = array(), $body = '') {
     //3 times a charm
     ob_end_flush();
     flush();
-    ob_end_clean();
+
+    if (ob_get_length()) {
+        ob_end_clean();
+    }
 
     //sorry no more sessions
     session_write_close();
