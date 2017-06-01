@@ -32,19 +32,19 @@ class Cradle_Framework_Exception_Test extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Cradle\Framework\Exception::forPackageNotFound
+     * @covers Cradle\Framework\Exception::forFlowNotFound
      */
-    public function testForPackageNotFound()
+    public function testForFlowNotFound()
     {
-		$message = null;
+        $message = null;
 
-		try {
-			throw Exception::forPackageNotFound('foobar');
-		} catch(Exception $e) {
-			$message = $e->getMessage();
-		}
+        try {
+            throw Exception::forFlowNotFound('foobar');
+        } catch(Exception $e) {
+            $message = $e->getMessage();
+        }
 
-		$this->assertEquals('Could not find package: foobar', $message);
+        $this->assertEquals('Flow::foobar() is not defined', $message);
     }
 
     /**
@@ -52,14 +52,30 @@ class Cradle_Framework_Exception_Test extends PHPUnit_Framework_TestCase
      */
     public function testForMethodNotFound()
     {
-		$message = null;
+        $message = null;
 
-		try {
-			throw Exception::forMethodNotFound('foobar');
-		} catch(Exception $e) {
-			$message = $e->getMessage();
-		}
+        try {
+            throw Exception::forMethodNotFound('foobar');
+        } catch(Exception $e) {
+            $message = $e->getMessage();
+        }
 
-		$this->assertEquals('No method named foobar was found', $message);
+        $this->assertEquals('No method named foobar was found', $message);
+    }
+
+    /**
+     * @covers Cradle\Framework\Exception::forPackageNotFound
+     */
+    public function testForPackageNotFound()
+    {
+        $message = null;
+
+        try {
+            throw Exception::forPackageNotFound('foobar');
+        } catch(Exception $e) {
+            $message = $e->getMessage();
+        }
+
+        $this->assertEquals('Could not find package: foobar', $message);
     }
 }
