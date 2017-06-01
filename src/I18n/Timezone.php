@@ -24,7 +24,7 @@ use Cradle\Resolver\ResolverTrait;
 class Timezone
 {
     use ResolverTrait, InstanceTrait;
-    
+
     /**
      * @const string GMT GMT timezone
      */
@@ -34,12 +34,12 @@ class Timezone
      * @const string UTC UTC timezone
      */
     const UTC = 'UTC';
-       
+
     /**
      * @var string|null $offset The offset from the given timezone
      */
     protected $offset = null;
-       
+
     /**
      * @var int|null $time The time to be manipulated
      */
@@ -51,7 +51,7 @@ class Timezone
      * @param *string         $zone The timezone to use
      * @param int|string|null $time The time to use
      */
-    public function __construct($zone, $time = null)
+    public function __construct(string $zone, $time = null)
     {
         if (is_null($time)) {
             $time = time();
@@ -69,7 +69,7 @@ class Timezone
      *
      * @return string|int
      */
-    public function convertTo($zone, $format = null)
+    public function convertTo(string $zone, string $format = null)
     {
         $time = $this->time + $this->calculateOffset($zone);
 
@@ -87,7 +87,7 @@ class Timezone
      *
      * @return string
      */
-    public function getGMT($prefix = self::GMT)
+    public function getGMT(string $prefix = self::GMT): string
     {
         list($hour, $minute, $sign) = $this->getUtcParts($this->offset);
         return $prefix.$sign.$hour.$minute;
@@ -102,8 +102,11 @@ class Timezone
      *
      * @return array
      */
-    public function getGMTDates($format, $interval = 30, $prefix = self::GMT)
-    {
+    public function getGMTDates(
+        string $format,
+        int $interval = 30,
+        string $prefix = self::GMT
+    ): array {
         $offsets    = $this->getOffsetDates($format, $interval);
         $dates      = [];
 
@@ -121,7 +124,7 @@ class Timezone
      *
      * @return int
      */
-    public function getOffset()
+    public function getOffset(): int
     {
         return $this->offset;
     }
@@ -134,7 +137,7 @@ class Timezone
      *
      * @return array
      */
-    public function getOffsetDates($format, $interval = 30)
+    public function getOffsetDates(string $format, int $interval = 30): array
     {
         $dates = [];
         $interval *= 60;
@@ -154,7 +157,7 @@ class Timezone
      *
      * @return string|int
      */
-    public function getTime($format = null)
+    public function getTime(string $format = null)
     {
         $time = $this->time + $this->offset;
 
@@ -172,7 +175,7 @@ class Timezone
      *
      * @return string
      */
-    public function getUTC($prefix = self::UTC)
+    public function getUTC(string $prefix = self::UTC): string
     {
         list($hour, $minute, $sign) = $this->getUtcParts($this->offset);
         return $prefix.$sign.$hour.':'.$minute;
@@ -187,8 +190,11 @@ class Timezone
      *
      * @return array
      */
-    public function getUTCDates($format, $interval = 30, $prefix = self::UTC)
-    {
+    public function getUTCDates(
+        string $format,
+        int $interval = 30,
+        string $prefix = self::UTC
+    ): array {
         $offsets    = $this->getOffsetDates($format, $interval);
         $dates      = [];
 
@@ -209,22 +215,25 @@ class Timezone
      * @param int        $level   The granular level
      * @param string     $default The default date format
      *
-     * @return Timezone
+     * @return string
      */
-    public function toRelative($time = null, $level = 7, $default = 'F d, Y')
-    {
+    public function toRelative(
+        $time = null,
+        int $level = 7,
+        string $default = 'F d, Y'
+    ) {
         //if no time
         if (is_null($time)) {
             //time get now
             $time = time();
         }
-        
+
         if (is_string($time)) {
             $time = strtotime($time);
         }
-        
+
         $passed =  $time - $this->time;
-        
+
         $gravity = [
             'second' => 1,
             'minute' => 60,
@@ -234,57 +243,57 @@ class Timezone
             'month' => 60 * 60 * 24 * 30,
             'year' => 60 * 60 * 24 * 30 * 12
         ];
-        
+
         $tokens = [];
-        
+
         $i = 0;
         foreach ($gravity as $magnitude => $distance) {
             if ($i >= $level) {
                 break;
             }
-            
+
             array_unshift($tokens, [$distance, $magnitude]);
             array_push($tokens, [$distance * -1, $magnitude]);
-            
+
             $i++;
         }
-        
+
         if ($passed > $tokens[0][0] || $passed < $tokens[count($tokens) - 1][0]) {
             return date($default, $this->time);
         }
-        
+
         for ($i = 0; $i < count($tokens); $i++) {
             $distance = $tokens[$i][0];
             $relative = $tokens[$i][1];
-            
+
             if ($passed < $distance) {
                 continue;
             }
-            
+
             if ($distance < 0) {
                 $distance = $tokens[$i-1][0];
                 $relative = $tokens[$i-1][1];
             }
-            
+
             $difference = (int) round($passed / $distance);
-            
+
             if ($relative === 'second' && -5 < $difference && $difference < 5) {
                 return 'Now';
             }
-            
+
             if ($relative === 'day' && $difference === 1) {
                 if ($tokens[$i][0] < 0) {
                     return 'Tomorrow';
                 }
-                
+
                 return 'Yesterday';
             }
-            
+
             $suffix = $distance > 0 ? ' ago': ' from now';
 
             return $difference . ' ' . $relative . ($difference === 1 ? '' : 's') . $suffix;
         }
-        
+
         return date($default, $this->time);
     }
 
@@ -295,7 +304,7 @@ class Timezone
      *
      * @return Timezone
      */
-    public function setTime($time)
+    public function setTime($time): Timezone
     {
         if (is_string($time)) {
             $time = strtotime($time);
@@ -312,7 +321,7 @@ class Timezone
      *
      * @return string|int
      */
-    protected function calculateOffset($zone)
+    protected function calculateOffset(string $zone)
     {
         if ($this->resolveStatic(TimezoneValidation::class, 'isLocation', $zone)) {
             return $this->getOffsetFromLocation($zone);
@@ -337,7 +346,7 @@ class Timezone
      *
      * @return string
      */
-    protected function getOffsetFromAbbr($zone)
+    protected function getOffsetFromAbbr(string $zone): string
     {
         $zone = timezone_name_from_abbr(strtolower($zone));
         return $this->getOffsetFromLocation($zone);
@@ -350,7 +359,7 @@ class Timezone
      *
      * @return string
      */
-    protected function getOffsetFromLocation($zone)
+    protected function getOffsetFromLocation(string $zone): string
     {
         $zone = new DateTimeZone($zone);
         $gmt = new DateTimeZone(self::GMT);
@@ -365,7 +374,7 @@ class Timezone
      *
      * @return string|int
      */
-    protected function getOffsetFromUtc($zone)
+    protected function getOffsetFromUtc(string $zone)
     {
         $zone   = str_replace(['GMT','UTC'], '', $zone);
         $zone   = str_replace(':', '', $zone);
@@ -397,7 +406,7 @@ class Timezone
      *
      * @return array
      */
-    private function getUtcParts($offset)
+    private function getUtcParts(string $offset): array
     {
         $minute = '0'.(floor(abs($offset/60)) % 60);
 

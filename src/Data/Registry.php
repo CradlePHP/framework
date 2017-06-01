@@ -53,7 +53,7 @@ class Registry implements ArrayAccess, Iterator, Countable, RegistryInterface
             DataTrait::__setData as __set;
             DataTrait::__toStringData as __toString;
         }
-    
+
     /**
      * Attempts to use __callData then __callResolver
      *
@@ -62,20 +62,20 @@ class Registry implements ArrayAccess, Iterator, Countable, RegistryInterface
      *
      * @return mixed
      */
-    public function __call($name, $args)
+    public function __call(string $name, array $args)
     {
         try {
             return $this->__callData($name, $args);
         } catch (DataException $e) {
         }
-        
+
         try {
             return $this->__callResolver($name, $args);
         } catch (ResolverException $e) {
             throw new RegistryException($e->getMessage());
         }
     }
-    
+
     /**
      * Presets the collection
      *
@@ -85,7 +85,7 @@ class Registry implements ArrayAccess, Iterator, Countable, RegistryInterface
     {
         $this->data = $data;
     }
-    
+
     /**
      * Returns true if the path keys
      * exist in the dataset
@@ -94,17 +94,17 @@ class Registry implements ArrayAccess, Iterator, Countable, RegistryInterface
      *
      * @return bool
      */
-    public function exists(...$args)
+    public function exists(...$args): bool
     {
         if (!count($args)) {
             //test to see if it's empty
             return !$this->isEmpty();
         }
-        
+
         $separator = '--'. md5(uniqid()) . '--';
         return $this->isDot(implode($separator, $args), $separator);
     }
-    
+
     /**
      * Returns the exact data given the path keys
      *
@@ -121,7 +121,7 @@ class Registry implements ArrayAccess, Iterator, Countable, RegistryInterface
         $separator = '--'. md5(uniqid()) . '--';
         return $this->getDot(implode($separator, $args), $separator);
     }
-    
+
     /**
      * Returns true if the path keys
      * does not exist in the dataset
@@ -131,31 +131,31 @@ class Registry implements ArrayAccess, Iterator, Countable, RegistryInterface
      *
      * @return bool
      */
-    public function isEmpty(...$args)
+    public function isEmpty(...$args): bool
     {
         if (!count($args)) {
             //test to see if it's empty
             return empty($this->data);
         }
-        
+
         $separator = '--'. md5(uniqid()) . '--';
-        
+
         $data = $this->getDot(implode($separator, $args), $separator);
-        
+
         //if it's bool
         if (is_bool($data)) {
             //it's something
             return false;
         }
-        
+
         //if it's scalar
         if (is_scalar($data)) {
             return !strlen($data);
         }
-        
+
         return empty($data);
     }
-    
+
     /**
      * Removes the data found in the path keys
      *
@@ -163,17 +163,17 @@ class Registry implements ArrayAccess, Iterator, Countable, RegistryInterface
      *
      * @return Registry
      */
-    public function remove(...$args)
+    public function remove(...$args): RegistryInterface
     {
         if (!count($args)) {
             //there's nothing to remove
             return $this;
         }
-        
+
         $separator = '--'. md5(uniqid()) . '--';
         return $this->removeDot(implode($separator, $args), $separator);
     }
-    
+
     /**
      * Sets the given data to given the path keys
      *
@@ -181,7 +181,7 @@ class Registry implements ArrayAccess, Iterator, Countable, RegistryInterface
      *
      * @return Registry
      */
-    public function set(...$args)
+    public function set(...$args): RegistryInterface
     {
         $separator = '--'. md5(uniqid()) . '--';
 

@@ -39,15 +39,6 @@ class Cradle_Profiler_LoggerTrait_Test extends PHPUnit_Framework_TestCase
     {
         $instance = $this->object->addLogger(function() {});
 		$this->assertInstanceOf('Cradle\Profiler\LoggerTraitStub', $instance);
-
-        $trigger = false;
-        try {
-            $this->object->addLogger('zoobarfoo');
-        } catch(LoggerException $e) {
-            $trigger = true;
-        }
-
-        $this->assertTrue($trigger);
     }
 
     /**

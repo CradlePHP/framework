@@ -9,6 +9,7 @@
 
 namespace Cradle\Framework\Flow;
 
+use Closure;
 use Cradle\Profiler\LoggerTrait;
 use Cradle\Helper\SingletonTrait;
 
@@ -31,7 +32,7 @@ class Log
      *
      * @return Closure
      */
-    public function report($message)
+    public function report(string $message): Closure
     {
         $logger = static::i();
         return function () use ($logger, $message) {
@@ -47,7 +48,7 @@ class Log
      *
      * @return Closure
      */
-    public function debug($message, $quit = false)
+    public function debug(string $message, bool $quit = false): Closure
     {
         return function () use ($message, $quit) {
             echo $message;
@@ -64,7 +65,7 @@ class Log
      *
      * @param *callable $logger
      */
-    public static function register($logger)
+    public static function register(callable $logger)
     {
         static::i()->addLogger($logger);
     }

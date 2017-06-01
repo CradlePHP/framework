@@ -43,7 +43,7 @@ trait HttpTrait
      *
      * @return bool Whether if the process should continue
      */
-    public function prepare()
+    public function prepare(): bool
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
@@ -82,7 +82,7 @@ trait HttpTrait
      *
      * @return bool Whether if the process should continue
      */
-    public function process()
+    public function process(): bool
     {
         $request = $this->getRequest();
         $response = $this->getResponse();
@@ -119,11 +119,11 @@ trait HttpTrait
     /**
      * Process and output
      *
-     * @param bool $emulate  If you really want it to echo (for testing)
+     * @param bool $emulate If you really want it to echo (for testing)
      *
-     * @return HttpHandler
+     * @return HttpTrait
      */
-    public function render($emulate = false)
+    public function render(bool $emulate = false)
     {
         $response = $this->getResponse();
 
@@ -162,7 +162,7 @@ trait HttpTrait
      *
      * @return bool Whether if the process should continue
      */
-    public function shutdown()
+    public function shutdown(): bool
     {
         $request = $this->getRequest();
         $response = $this->getResponse();

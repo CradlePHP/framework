@@ -29,17 +29,17 @@ trait DotTrait
      *
      * @return mixed
      */
-    public function getDot($notation, $separator = '.')
+    public function getDot(string $notation, string $separator = '.')
     {
         $args = explode($separator, $notation);
-        
+
         if (count($args) == 0) {
             return null;
         }
-        
+
         $last = array_pop($args);
         $pointer = &$this->data;
-        
+
         foreach ($args as $step) {
             if (!isset($pointer[$step])) {
                 return null;
@@ -47,14 +47,14 @@ trait DotTrait
 
             $pointer = &$pointer[$step];
         }
-        
+
         if (!isset($pointer[$last])) {
             return null;
         }
-        
+
         return $pointer[$last];
     }
-    
+
     /**
      * Checks to see if a key is set
      *
@@ -63,16 +63,16 @@ trait DotTrait
      *
      * @return bool
      */
-    public function isDot($notation, $separator = '.')
+    public function isDot(string $notation, string $separator = '.'): bool
     {
         $args = explode($separator, $notation);
-        
+
         if (count($args) == 0) {
             return false;
         }
-        
+
         $last = array_pop($args);
-        
+
         $pointer = &$this->data;
         foreach ($args as $i => $step) {
             if (!isset($pointer[$step])
@@ -83,14 +83,14 @@ trait DotTrait
 
             $pointer = &$pointer[$step];
         }
-        
+
         if (!isset($pointer[$last])) {
             return false;
         }
-        
+
         return true;
     }
-    
+
     /**
      * Removes name space given notation
      *
@@ -99,16 +99,16 @@ trait DotTrait
      *
      * @return DotTrait
      */
-    public function removeDot($notation, $separator = '.')
+    public function removeDot(string $notation, string $separator = '.')
     {
         $args = explode($separator, $notation);
-        
+
         if (count($args) === 0) {
             return $this;
         }
-        
+
         $last = array_pop($args);
-        
+
         $pointer = &$this->data;
         foreach ($args as $i => $step) {
             if (!isset($pointer[$step])
@@ -119,12 +119,12 @@ trait DotTrait
 
             $pointer = &$pointer[$step];
         }
-        
+
         unset($pointer[$last]);
 
         return $this;
     }
-    
+
     /**
      * Creates the name space given the space
      * and sets the value to that name space
@@ -135,16 +135,16 @@ trait DotTrait
      *
      * @return DotTrait
      */
-    public function setDot($notation, $value, $separator = '.')
+    public function setDot(string $notation, $value, string $separator = '.')
     {
         $args = explode($separator, $notation);
-        
+
         if (count($args) === 0) {
             return $this;
         }
-        
+
         $last = array_pop($args);
-        
+
         $pointer = &$this->data;
         foreach ($args as $i => $step) {
             if (!isset($pointer[$step])
@@ -155,9 +155,9 @@ trait DotTrait
 
             $pointer = &$pointer[$step];
         }
-        
+
         $pointer[$last] = $value;
-        
+
         return $this;
     }
 }

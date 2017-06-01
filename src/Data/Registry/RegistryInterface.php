@@ -30,7 +30,7 @@ interface RegistryInterface
      *
      * @return mixed
      */
-    public function __call($name, $args);
+    public function __call(string $name, array $args);
 
     /**
      * Allow object property magic to redirect to the data variable
@@ -38,7 +38,7 @@ interface RegistryInterface
      * @param *string $name  The name of the supposed property
      * @param *mixed  $value The value of the supposed property
      */
-    public function __get($name);
+    public function __get(string $name);
 
     /**
      * Allow object property magic to redirect to the data variable
@@ -46,32 +46,32 @@ interface RegistryInterface
      * @param *string $name  The name of the supposed property
      * @param *mixed  $value The value of the supposed property
      */
-    public function __set($name, $value);
-    
+    public function __set(string $name, $value);
+
     /**
      * If we output this to string we should see it as json
      *
      * @return string
      */
-    public function __toString();
-    
+    public function __toString(): string;
+
     /**
      * Returns the data size
      * For Countable interface
      */
-    public function count();
-    
+    public function count(): int;
+
     /**
      * Returns the current item
      * For Iterator interface
      */
     public function current();
-    
+
     /**
      * Loop generator
      */
     public function generator();
-    
+
     /**
      * Returns true if the path keys
      * exist in the dataset
@@ -80,7 +80,7 @@ interface RegistryInterface
      *
      * @return bool
      */
-    public function exists(...$args);
+    public function exists(...$args): bool;
 
     /**
      * Returns the exact data given the path keys
@@ -90,7 +90,7 @@ interface RegistryInterface
      * @return mixed
      */
     public function get(...$args);
-    
+
     /**
      * Returns true if the path keys
      * does not exist in the dataset
@@ -100,8 +100,8 @@ interface RegistryInterface
      *
      * @return bool
      */
-    public function isEmpty(...$args);
-    
+    public function isEmpty(...$args): bool;
+
     /**
      * Returns th current position
      * For Iterator interface
@@ -113,7 +113,7 @@ interface RegistryInterface
      * For Iterator interface
      */
     public function next();
-    
+
     /**
      * isset using the ArrayAccess interface
      *
@@ -121,7 +121,7 @@ interface RegistryInterface
      *
      * @return bool
      */
-    public function offsetExists($offset);
+    public function offsetExists($offset): bool;
 
     /**
      * returns data using the ArrayAccess interface
@@ -152,7 +152,7 @@ interface RegistryInterface
      * For Iterator interface
      */
     public function rewind();
-    
+
     /**
      * Removes the data found in the path keys
      *
@@ -160,8 +160,8 @@ interface RegistryInterface
      *
      * @return RegistryInterface
      */
-    public function remove(...$args);
-    
+    public function remove(...$args): RegistryInterface;
+
     /**
      * Sets the given data to given the path keys
      *
@@ -169,13 +169,13 @@ interface RegistryInterface
      *
      * @return RegistryInterface
      */
-    public function set(...$args);
-    
+    public function set(...$args): RegistryInterface;
+
     /**
      * Validates whether if the index is set
      * For Iterator interface
      *
      * @return bool
      */
-    public function valid();
+    public function valid(): bool;
 }

@@ -25,14 +25,14 @@ interface RequestInterface
      * @return array|null
      */
     public function getArgs();
-    
+
     /**
      * Returns final input stream
      *
      * @return string|null
      */
     public function getContent();
-    
+
     /**
      * Returns $_COOKIE given name or all $_COOKIE
      *
@@ -41,7 +41,7 @@ interface RequestInterface
      * @return mixed
      */
     public function getCookies(...$args);
-    
+
     /**
      * Returns $_FILES data given name or all $_FILES
      *
@@ -50,7 +50,7 @@ interface RequestInterface
      * @return mixed
      */
     public function getFiles(...$args);
-    
+
     /**
      * Returns $_GET data given name or all $_GET
      *
@@ -59,14 +59,14 @@ interface RequestInterface
      * @return mixed
      */
     public function getGet(...$args);
-    
+
     /**
      * Returns method if set
      *
      * @return string|null
      */
     public function getMethod();
-    
+
     /**
      * Returns path data given name or all path data
      *
@@ -74,8 +74,8 @@ interface RequestInterface
      *
      * @return string|array
      */
-    public function getPath($name = null);
-    
+    public function getPath(string $name = null);
+
     /**
      * Returns $_POST data given name or all $_POST data
      *
@@ -84,14 +84,14 @@ interface RequestInterface
      * @return mixed
      */
     public function getPost(...$args);
-    
+
     /**
      * Returns string query if set
      *
      * @return string|null
      */
     public function getQuery();
-    
+
     /**
      * Returns $_SERVER data given name or all $_SERVER data
      *
@@ -99,8 +99,8 @@ interface RequestInterface
      *
      * @return mixed
      */
-    public function getServer($name = null);
-    
+    public function getServer(string $name = null);
+
     /**
      * Returns $_SESSION data given name or all $_SESSION data
      *
@@ -109,14 +109,14 @@ interface RequestInterface
      * @return mixed
      */
     public function getSession(...$args);
-    
+
     /**
      * Returns true if has content
      *
      * @return bool
      */
-    public function hasContent();
-    
+    public function hasContent(): bool;
+
     /**
      * Returns true if has $_COOKIE given name or if $_COOKIE is set
      *
@@ -124,8 +124,8 @@ interface RequestInterface
      *
      * @return bool
      */
-    public function hasCookies(...$args);
-    
+    public function hasCookies(...$args): bool;
+
     /**
      * Returns true if has $_FILES given name or if $_FILES is set
      *
@@ -133,8 +133,8 @@ interface RequestInterface
      *
      * @return bool
      */
-    public function hasFiles(...$args);
-    
+    public function hasFiles(...$args): bool;
+
     /**
      * Returns true if has $_GET given name or if $_GET is set
      *
@@ -142,8 +142,8 @@ interface RequestInterface
      *
      * @return bool
      */
-    public function hasGet(...$args);
-    
+    public function hasGet(...$args): bool;
+
     /**
      * Returns true if has $_POST given name or if $_POST is set
      *
@@ -151,8 +151,8 @@ interface RequestInterface
      *
      * @return bool
      */
-    public function hasPost(...$args);
-    
+    public function hasPost(...$args): bool;
+
     /**
      * Returns true if has $_SERVER given name or if $_SERVER is set
      *
@@ -160,8 +160,8 @@ interface RequestInterface
      *
      * @return bool
      */
-    public function hasServer($name = null);
-    
+    public function hasServer(string $name = null): bool;
+
     /**
      * Returns true if has $_SESSION given name or if $_SESSION is set
      *
@@ -169,8 +169,8 @@ interface RequestInterface
      *
      * @return bool
      */
-    public function hasSession(...$args);
-    
+    public function hasSession(...$args): bool;
+
     /**
      * Returns true if method is the one given
      *
@@ -178,16 +178,16 @@ interface RequestInterface
      *
      * @return bool
      */
-    public function isMethod($method);
+    public function isMethod(string $method): bool;
 
     /**
      * Sets CLI args
      *
-     * @param *array|null
+     * @param array|null
      *
      * @return RequestInterface
      */
-    public function setArgs($argv = null);
+    public function setArgs(array $argv = null);
 
     /**
      * Sets content
@@ -201,30 +201,30 @@ interface RequestInterface
     /**
      * Sets $_COOKIE
      *
-     * @param *array $cookies
+     * @param *mixed $cookies
      *
      * @return RequestInterface
      */
     public function setCookies($data, ...$args);
-    
+
     /**
      * Sets $_FILES
      *
-     * @param *array $files
+     * @param *mixed $files
      *
      * @return RequestInterface
      */
     public function setFiles($data, ...$args);
-    
+
     /**
      * Sets $_GET
      *
-     * @param *array $get
+     * @param *mixed $get
      *
      * @return RequestInterface
      */
     public function setGet($data, ...$args);
-    
+
     /**
      * Sets request method
      *
@@ -232,8 +232,8 @@ interface RequestInterface
      *
      * @return RequestInterface
      */
-    public function setMethod($method);
-    
+    public function setMethod(string $method);
+
     /**
      * Sets path given in string or array form
      *
@@ -242,7 +242,7 @@ interface RequestInterface
      * @return RequestInterface
      */
     public function setPath($path);
-    
+
     /**
      * Sets $_POST
      *
@@ -251,7 +251,7 @@ interface RequestInterface
      * @return RequestInterface
      */
     public function setPost($data, ...$args);
-    
+
     /**
      * Sets query string
      *
@@ -260,16 +260,16 @@ interface RequestInterface
      * @return RequestInterface
      */
     public function setQuery($query);
-    
+
     /**
      * Sets a request route
      *
      * @param *mixed $results
      *
-     * @return Request
+     * @return RequestInterface
      */
     public function setRoute(array $route);
-    
+
     /**
      * Sets $_SERVER
      *
@@ -278,11 +278,11 @@ interface RequestInterface
      * @return RequestInterface
      */
     public function setServer(array $server);
-    
+
     /**
      * Sets $_SESSION
      *
-     * @param *array $session
+     * @param *mixed $session
      *
      * @return RequestInterface
      */

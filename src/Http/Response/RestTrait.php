@@ -27,7 +27,7 @@ trait RestTrait
      *
      * @return RestTrait
      */
-    public function addValidation($field, $message)
+    public function addValidation(string $field, string $message)
     {
         $args = func_get_args();
 
@@ -46,7 +46,7 @@ trait RestTrait
         if (!count($args)) {
             return $this->getDot('json.results');
         }
-        
+
         return $this->get('json', 'results', ...$args);
     }
 
@@ -65,21 +65,21 @@ trait RestTrait
      *
      * @return string
      */
-    public function getMessageType()
+    public function getMessageType(): string
     {
         $error = $this->get('json', 'error');
-        
+
         if ($error === true) {
             return 'error';
         }
-        
+
         if ($error === false) {
             return 'success';
         }
-        
+
         return 'info';
     }
-    
+
     /**
      * Returns JSON validations if still in array mode
      *
@@ -88,12 +88,12 @@ trait RestTrait
      *
      * @return mixed
      */
-    public function getValidation($name = null, ...$args)
+    public function getValidation(string $name = null, ...$args)
     {
         if (is_null($name)) {
             return $this->getDot('json.validation');
         }
-        
+
         return $this->get('json', 'validation', $name, ...$args);
     }
 
@@ -104,12 +104,12 @@ trait RestTrait
      *
      * @return bool
      */
-    public function hasJson(...$args)
+    public function hasJson(...$args): bool
     {
         if (!count($args)) {
             return $this->exists('json');
         }
-        
+
         return $this->exists('json', ...$args);
     }
 
@@ -118,7 +118,7 @@ trait RestTrait
      *
      * @return bool
      */
-    public function hasMessage()
+    public function hasMessage(): bool
     {
         return $this->hasJson('message');
     }
@@ -130,7 +130,7 @@ trait RestTrait
      *
      * @return bool
      */
-    public function hasResults(...$args)
+    public function hasResults(...$args): bool
     {
         return $this->hasJson('results', ...$args);
     }
@@ -142,7 +142,7 @@ trait RestTrait
      *
      * @return bool
      */
-    public function hasValidation(...$args)
+    public function hasValidation(...$args): bool
     {
         return $this->hasJson('validation', ...$args);
     }
@@ -152,7 +152,7 @@ trait RestTrait
      *
      * @return bool
      */
-    public function isError()
+    public function isError(): bool
     {
         return $this->get('json', 'error') === true;
     }
@@ -162,7 +162,7 @@ trait RestTrait
      *
      * @return bool
      */
-    public function isSuccess()
+    public function isSuccess(): bool
     {
         return $this->get('json', 'error') === false;
     }
@@ -170,11 +170,11 @@ trait RestTrait
     /**
      * Removes results given name or all of the results
      *
-     * @param string $name Name of the validation
+     * @param *string $name Name of the validation
      *
      * @return RestTrait
      */
-    public function removeResults($name)
+    public function removeResults(string $name)
     {
         $args = func_get_args();
         return $this->remove('json', 'results', ...$args);
@@ -183,35 +183,35 @@ trait RestTrait
     /**
      * Removes a validation given name or all the validations
      *
-     * @param string $name Name of the validation
+     * @param *string $name Name of the validation
      *
      * @return RestTrait
      */
-    public function removeValidation($name)
+    public function removeValidation(string $name)
     {
         $args = func_get_args();
         return $this->remove('json', 'validation', ...$args);
     }
-    
+
     /**
      * Sets a JSON error message
      *
-     * @param *bool  $status  True if there is an error
-     * @param string $message A message to describe this error
+     * @param *bool|null  $status  True if there is an error
+     * @param string|null $message A message to describe this error
      *
      * @return RestTrait
      */
-    public function setError($status, $message = null)
+    public function setError($status, string $message = null)
     {
         $this->setDot('json.error', $status);
-        
+
         if (!is_null($message)) {
             $this->setDot('json.message', $message);
         }
-        
+
         return $this;
     }
-    
+
     /**
      * Sets a JSON result
      *
@@ -225,7 +225,7 @@ trait RestTrait
         if (is_array($data)) {
             return $this->setDot('json.results', $data);
         }
-        
+
         return $this->set('json', 'results', $data, ...$args);
     }
 }

@@ -28,7 +28,7 @@ trait CliTrait
     {
         return $this->get('args');
     }
-    
+
     /**
      * Sets CLI args
      *
@@ -36,7 +36,7 @@ trait CliTrait
      *
      * @return CliTrait
      */
-    public function setArgs($argv = null)
+    public function setArgs(array $argv = null)
     {
         return $this->set('args', $argv);
     }

@@ -40,19 +40,19 @@ trait SingletonTrait
      *
      * @param mixed[,mixed..] $args Arguments to pass to the constructor
      *
-     * @return object
+     * @return SingletonTrait
      */
     public static function i()
     {
         $class = get_called_class();
-        
+
         //if it's not set
         if (!isset(self::$instances[$class])) {
             //set it
             $args = func_get_args();
             self::$instances[$class] = new $class(...$args);
         }
-        
+
         return self::$instances[$class];
     }
 }

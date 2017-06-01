@@ -25,32 +25,32 @@ class EventObserver
      * @var string $id Generated ID
      */
     protected $id = null;
-    
+
     /**
      * @var callable $callback The observer callback
      */
     protected $callback = null;
-    
+
     /**
      * We need a callback
      *
      * @param *callable $callback
      */
-    public function __construct($callback)
+    public function __construct(callable $callback)
     {
         $this->setCallback($callback);
     }
-    
+
     /**
      * You can add a different callback if you want
      *
      * @return callable
      */
-    public function getCallback()
+    public function getCallback(): callable
     {
         return $this->callback;
     }
-    
+
     /**
      * You can add a different callback if you want
      *
@@ -58,18 +58,14 @@ class EventObserver
      *
      * @return EventObserver
      */
-    public function setCallback($callback)
+    public function setCallback(callable $callback): EventObserver
     {
-        if (!is_callable($callback)) {
-            throw EventException::forInvalidCallback();
-        }
-        
         $this->callback = $callback;
         $this->id = $this->getId($callback);
-        
+
         return $this;
     }
-    
+
     /**
      * Checks to see if the callback passed is the one here
      *
@@ -77,12 +73,8 @@ class EventObserver
      *
      * @return bool
      */
-    public function assertEquals($callback)
+    public function assertEquals(callable $callback): bool
     {
-        if (!is_callable($callback)) {
-            throw EventException::forInvalidCallback();
-        }
-
         $id = $this->getId($callback);
 
         return $this->id === $id;
@@ -95,9 +87,9 @@ class EventObserver
      *
      * @param *callable $callback the callback function
      *
-     * @return string|false
+     * @return string
      */
-    protected function getId($callback)
+    protected function getId(callable $callback): string
     {
         if (is_array($callback)) {
             if (isset($callback[0]) && is_object($callback[0])) {
@@ -106,15 +98,15 @@ class EventObserver
 
             return $callback[0].'::'.$callable[1];
         }
-        
+
         if ($callback instanceof Closure) {
             return spl_object_hash($callback);
         }
-        
+
         if (is_string($callback)) {
             return $callback;
         }
-        
+
         //it would technically never get to this point but oh well
         return md5(var_export($callback, true));
     }

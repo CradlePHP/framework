@@ -22,11 +22,6 @@ use Exception;
 class ResolverException extends Exception
 {
     /**
-     * @const string ERROR_INVALID_CALLBACK Error template
-     */
-    const ERROR_INVALID_CALLBACK = 'Invalid callback passed.';
-
-    /**
      * @const string ERROR_CLASS_NOT_FOUND Error template
      */
     const ERROR_CLASS_NOT_FOUND = 'Could not find class %s.';
@@ -40,17 +35,7 @@ class ResolverException extends Exception
      * @const string ERROR_METHOD_NOT_FOUND Error template
      */
     const ERROR_INVALID_RESOLVER = 'Could not find resolver %s.';
-    
-    /**
-     * Create a new exception for invalid callback
-     *
-     * @return ResolverException
-     */
-    public static function forInvalidCallback()
-    {
-        return new static(static::ERROR_INVALID_CALLBACK);
-    }
-    
+
     /**
      * Create a new exception for missing class
      *
@@ -58,12 +43,12 @@ class ResolverException extends Exception
      *
      * @return ResolverException
      */
-    public static function forClassNotFound($class)
+    public static function forClassNotFound(string $class): ResolverException
     {
         $message = sprintf(static::ERROR_CLASS_NOT_FOUND, $class);
         return new static($message);
     }
-    
+
     /**
      * Create a new exception for missing method
      *
@@ -77,7 +62,7 @@ class ResolverException extends Exception
         $message = sprintf(static::ERROR_METHOD_NOT_FOUND, $class, $method);
         return new static($message);
     }
-    
+
     /**
      * Create a new exception for missing resolver
      *

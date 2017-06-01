@@ -33,7 +33,7 @@ trait LoggerTrait
      *
      * @return LoggerTrait
      */
-    public function addLogger($callback)
+    public function addLogger(callable $callback)
     {
         if (!is_callable($callback)) {
             throw LoggerException::forInvalidCallback();

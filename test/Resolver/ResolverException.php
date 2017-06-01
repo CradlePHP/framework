@@ -32,38 +32,20 @@ class Cradle_Resolver_ResolverException_Test extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Cradle\Resolver\ResolverException::forInvalidCallback
-     */
-    public function testForInvalidCallback()
-    {
-        $actual = null;
-		
-        try {
-			throw ResolverException::forInvalidCallback();
-		} catch(ResolverException $e) {
-			$actual = $e->getMessage();
-		}
-		
-		$expected = 'Invalid callback passed.';
-		
-		$this->assertEquals($expected, $actual);
-    }
-
-    /**
      * @covers Cradle\Resolver\ResolverException::forClassNotFound
      */
     public function testForClassNotFound()
     {
         $actual = null;
-		
+
         try {
 			throw ResolverException::forClassNotFound('foobar');
 		} catch(ResolverException $e) {
 			$actual = $e->getMessage();
 		}
-		
+
 		$expected = 'Could not find class foobar.';
-		
+
 		$this->assertEquals($expected, $actual);
     }
 
@@ -73,15 +55,15 @@ class Cradle_Resolver_ResolverException_Test extends PHPUnit_Framework_TestCase
     public function testForMethodNotFound()
     {
         $actual = null;
-		
+
         try {
 			throw ResolverException::forMethodNotFound('foo', 'bar');
 		} catch(ResolverException $e) {
 			$actual = $e->getMessage();
 		}
-		
+
 		$expected = 'Could not find method foo->bar().';
-		
+
 		$this->assertEquals($expected, $actual);
     }
 
@@ -91,13 +73,13 @@ class Cradle_Resolver_ResolverException_Test extends PHPUnit_Framework_TestCase
     public function testForResolverNotFound()
     {
         $actual = null;
-		
+
         try {
 			throw ResolverException::forResolverNotFound('foo');
 		} catch(ResolverException $e) {
 			$actual = $e->getMessage();
 		}
-		
+
 		$expected = 'Could not find resolver foo.';
 		$this->assertEquals($expected, $actual);
     }

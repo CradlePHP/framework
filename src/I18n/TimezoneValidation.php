@@ -10,7 +10,7 @@
 namespace Cradle\I18n;
 
 use DateTimeZone;
- 
+
 /**
  * Timezone Validation Class
  *
@@ -28,11 +28,11 @@ class TimezoneValidation
      *
      * @return bool
      */
-    public static function isAbbr($value)
+    public static function isAbbr($value): bool
     {
         return preg_match('/^[A-Z]{1,5}$/', $value);
     }
-    
+
     /**
      * Validates that value is a proper location
      *
@@ -40,11 +40,11 @@ class TimezoneValidation
      *
      * @return bool
      */
-    public static function isLocation($value)
+    public static function isLocation($value): bool
     {
         return in_array($value, DateTimeZone::listIdentifiers());
     }
-    
+
     /**
      * Validates that value is a proper UTC
      *
@@ -52,7 +52,7 @@ class TimezoneValidation
      *
      * @return bool
      */
-    public static function isUtc($value)
+    public static function isUtc($value): bool
     {
         return preg_match('/^(GMT|UTC){0,1}(\-|\+)[0-9]{1,2}(\:{0,1}[0-9]{2}){0,1}$/', $value);
     }

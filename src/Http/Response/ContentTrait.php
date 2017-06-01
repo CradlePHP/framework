@@ -28,31 +28,31 @@ trait ContentTrait
     {
         return $this->get('body');
     }
-    
+
     /**
      * Returns true if content is set
      *
      * @return bool
      */
-    public function hasContent()
+    public function hasContent(): bool
     {
         $body = $this->get('body');
         return !is_null($body) && strlen((string) $body);
     }
-    
+
     /**
      * Sets the content
      *
      * @param *mixed $content Can it be an array or string please?
      *
-     * @return Response
+     * @return ResponseInterface
      */
     public function setContent($content)
     {
         if (!is_scalar($content)) {
             $content = json_encode($content, JSON_PRETTY_PRINT);
         }
-        
+
         if (is_bool($content)) {
             $content = $content ? '1': '0';
         }
@@ -60,7 +60,7 @@ trait ContentTrait
         if (is_null($content)) {
             $content = '';
         }
-        
+
         return $this->set('body', $content);
     }
 }

@@ -9,6 +9,8 @@
 
 namespace Cradle\Framework\Flow;
 
+use Closure;
+
 /**
  * Factory for session related flows
  *
@@ -26,7 +28,7 @@ class Session
      *
      * @return Closure
      */
-    public function error($message)
+    public function error(string $message): Closure
     {
         return $this->flash($message, 'error');
     }
@@ -39,7 +41,7 @@ class Session
      *
      * @return Closure
      */
-    public function flash($message = null, $type = 'info')
+    public function flash(string $message = null, string $type = 'info'): Closure
     {
         return function ($request, $response) use ($message, $type) {
             $flash = array(
@@ -85,7 +87,7 @@ class Session
      *
      * @return Closure
      */
-    public function info($message)
+    public function info(string $message): Closure
     {
         return $this->flash($message, 'info');
     }
@@ -97,7 +99,7 @@ class Session
      *
      * @return Closure
      */
-    public function success($message)
+    public function success(string $message): Closure
     {
         return $this->flash($message, 'success');
     }
@@ -106,10 +108,11 @@ class Session
      * Calls a redirect given url
      *
      * @param *string $url
+     * @param bool    $force
      *
      * @return Closure
      */
-    public function redirectTo($url, $force = false)
+    public function redirectTo(string $url, bool $force = false): Closure
     {
         return function () use ($url, $force) {
             if (strpos($url, '://') === false

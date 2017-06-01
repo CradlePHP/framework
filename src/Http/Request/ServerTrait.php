@@ -36,7 +36,7 @@ trait ServerTrait
      *
      * @return string|array
      */
-    public function getPath($name = null)
+    public function getPath(string $name = null)
     {
         if (is_null($name)) {
             return $this->get('path');
@@ -62,7 +62,7 @@ trait ServerTrait
      *
      * @return mixed
      */
-    public function getServer($name = null)
+    public function getServer(string $name = null)
     {
         if (is_null($name)) {
             return $this->get('server');
@@ -78,7 +78,7 @@ trait ServerTrait
      *
      * @return bool
      */
-    public function hasServer($name = null)
+    public function hasServer(string $name = null): bool
     {
         if (is_null($name)) {
             return $this->exists('server');
@@ -94,7 +94,7 @@ trait ServerTrait
      *
      * @return bool
      */
-    public function isMethod($method)
+    public function isMethod(string $method): bool
     {
         return strtoupper($method) === strtoupper($this->get('method'));
     }
@@ -106,7 +106,7 @@ trait ServerTrait
      *
      * @return ServerTrait
      */
-    public function setMethod($method)
+    public function setMethod(string $method)
     {
         return $this->set('method', $method);
     }

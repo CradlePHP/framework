@@ -26,13 +26,13 @@ trait ResponseTrait
      * @var Response|null $response Response object to use
      */
     protected $response = null;
-    
+
     /**
      * Returns a response object
      *
      * @return ResponseInterface
      */
-    public function getResponse()
+    public function getResponse(): ResponseInterface
     {
         if (is_null($this->response)) {
             if (method_exists($this, 'resolve')) {
@@ -45,7 +45,7 @@ trait ResponseTrait
 
         return $this->response;
     }
-    
+
     /**
      * Sets the response object to use
      *
@@ -56,7 +56,7 @@ trait ResponseTrait
     public function setResponse(ResponseInterface $response)
     {
         $this->response = $response;
-        
+
         return $this;
     }
 }

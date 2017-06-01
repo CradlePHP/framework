@@ -125,14 +125,5 @@ class Cradle_Http_Router_Test extends PHPUnit_Framework_TestCase
 			->process($request, $response, $trigger, $this);
 
 		$this->assertTrue($trigger->success);
-
-        $trigger = false;
-        try {
-            $this->object->route('get', '/foo/bar/zoo', 'zoobarfoo');
-        } catch(HttpException $e) {
-            $trigger = true;
-        }
-
-        $this->assertTrue($trigger);
     }
 }

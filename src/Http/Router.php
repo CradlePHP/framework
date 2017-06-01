@@ -26,7 +26,7 @@ use Cradle\Http\Router\RouterInterface;
 class Router implements RouterInterface
 {
     use EventTrait, ResolverTrait;
-    
+
     /**
      * Allow to pass a custom EventHandler
      */
@@ -43,9 +43,12 @@ class Router implements RouterInterface
     /**
      * Process routes
      *
+     * @param *RequestInterface $request
+     * @param mixed             ...$args
+     *
      * @return bool
      */
-    public function process(RequestInterface $request, ...$args)
+    public function process(RequestInterface $request, ...$args): bool
     {
         $path = $request->getPath('string');
         $method = $request->getMethod();
@@ -56,23 +59,23 @@ class Router implements RouterInterface
             ->trigger($event, $request, ...$args)
             ->getMeta();
     }
-    
+
     /**
      * Adds routing middleware
      *
-     * @param string   $method   The request method
-     * @param string   $pattern  The route pattern
-     * @param function $callback The middleware handler
+     * @param *string   $method   The request method
+     * @param *string   $pattern  The route pattern
+     * @param *callable $callback The middleware handler
      *
-     * @return Router
+     * @return RouterInterface
      */
-    public function route($method, $pattern, $callback)
+    public function route(string $method, string $pattern, callable $callback): RouterInterface
     {
         //hard requirement
         if (!is_callable($callback)) {
             throw HttpException::forInvalidRouteCallback();
         }
-        
+
         if (strtoupper($method) === 'ALL') {
             $method = '[a-zA-Z0-9]+';
         }

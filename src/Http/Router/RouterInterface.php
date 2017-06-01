@@ -27,16 +27,16 @@ interface RouterInterface
      *
      * @return bool
      */
-    public function process(RequestInterface $request, ...$args);
-    
+    public function process(RequestInterface $request, ...$args): bool;
+
     /**
      * Adds routing middleware
      *
      * @param string   $method   The request method
      * @param string   $pattern  The route pattern
-     * @param function $callback The middleware handler
+     * @param callable $callback The middleware handler
      *
-     * @return Router
+     * @return RouterInterface
      */
-    public function route($method, $pattern, $callback);
+    public function route(string $method, string $pattern, callable $callback): RouterInterface;
 }

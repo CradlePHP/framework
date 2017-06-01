@@ -30,7 +30,7 @@ interface ModelInterface
      *
      * @return mixed
      */
-    public function __call($name, $args);
+    public function __call(string $name, array $args);
 
     /**
      * Allow object property magic to redirect to the data variable
@@ -38,7 +38,7 @@ interface ModelInterface
      * @param *string $name  The name of the supposed property
      * @param *mixed  $value The value of the supposed property
      */
-    public function __get($name);
+    public function __get(string $name);
 
     /**
      * Allow object property magic to redirect to the data variable
@@ -46,39 +46,39 @@ interface ModelInterface
      * @param *string $name  The name of the supposed property
      * @param *mixed  $value The value of the supposed property
      */
-    public function __set($name, $value);
-    
+    public function __set(string $name, $value);
+
     /**
      * If we output this to string we should see it as json
      *
      * @return string
      */
-    public function __toString();
-    
+    public function __toString(): string;
+
     /**
      * Returns the data size
      * For Countable interface
      */
-    public function count();
-    
+    public function count(): int;
+
     /**
      * Returns the current item
      * For Iterator interface
      */
     public function current();
-    
+
     /**
      * Loop generator
      */
     public function generator();
-    
+
     /**
      * Returns the entire data
      *
      * @return array
      */
     public function get();
-    
+
     /**
      * Returns th current position
      * For Iterator interface
@@ -90,7 +90,7 @@ interface ModelInterface
      * For Iterator interface
      */
     public function next();
-    
+
     /**
      * isset using the ArrayAccess interface
      *
@@ -129,7 +129,7 @@ interface ModelInterface
      * For Iterator interface
      */
     public function rewind();
-    
+
     /**
      * Sets the entire data
      *
@@ -137,13 +137,13 @@ interface ModelInterface
      *
      * @return ModelInterface
      */
-    public function set(array $data);
-    
+    public function set(array $data): ModelInterface;
+
     /**
      * Validates whether if the index is set
      * For Iterator interface
      *
      * @return bool
      */
-    public function valid();
+    public function valid(): bool;
 }

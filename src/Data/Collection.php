@@ -17,6 +17,8 @@ use Countable;
 use Cradle\Data\Collection\CollectionInterface;
 use Cradle\Data\Collection\CollectionException;
 
+use Cradle\Data\Model\ModelInterface;
+
 use Cradle\Event\EventTrait;
 
 use Cradle\Helper\BinderTrait;
@@ -55,22 +57,22 @@ class Collection implements ArrayAccess, Iterator, Countable, CollectionInterfac
         InspectorTrait,
         LoggerTrait,
         StateTrait;
-       
+
     /**
      * @const string FIRST Flag that designates the first in the collection
      */
     const FIRST = 'first';
-       
+
     /**
      * @const string LAST Flag that designates the last in the collection
      */
     const LAST = 'last';
-       
+
     /**
      * @var array $data The raw collection list
      */
     protected $data = [];
-    
+
     /**
      * The magic behind setN and getN
      *
@@ -79,7 +81,7 @@ class Collection implements ArrayAccess, Iterator, Countable, CollectionInterfac
      *
      * @return mixed
      */
-    public function __call($name, $args)
+    public function __call(string $name, array $args)
     {
         //if the method starts with get
         if (strpos($name, 'get') === 0) {
@@ -141,11 +143,11 @@ class Collection implements ArrayAccess, Iterator, Countable, CollectionInterfac
             throw new CollectionException($e->getMessage());
         }
     }
-    
+
     /**
      * Presets the collection
      *
-     * @param *mixed $data The initial data
+     * @param *array $data The initial data
      */
     public function __construct(array $data = [])
     {
@@ -153,15 +155,17 @@ class Collection implements ArrayAccess, Iterator, Countable, CollectionInterfac
     }
 
     /**
-     * Gets all the data with name
+     * Allow object property magic to redirect to the data variable
      *
      * @param *string $name  The name of the supposed property
+     *
+     * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         //set all rows with this column and value
         $data = [];
-        
+
         foreach ($this->data as $i => $row) {
             $data[$i] = $row[$name];
         }
@@ -175,14 +179,12 @@ class Collection implements ArrayAccess, Iterator, Countable, CollectionInterfac
      * @param *string $name  The name of the supposed property
      * @param *mixed  $value The value of the supposed property
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value)
     {
         //set all rows with this column and value
         foreach ($this->data as $i => $row) {
             $row[$name] = $value;
         }
-
-        return $this;
     }
 
     /**
@@ -190,7 +192,7 @@ class Collection implements ArrayAccess, Iterator, Countable, CollectionInterfac
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return json_encode($this->get(), JSON_PRETTY_PRINT);
     }
@@ -200,9 +202,9 @@ class Collection implements ArrayAccess, Iterator, Countable, CollectionInterfac
      *
      * @param array|object $row a row in the form of an array or accepted model
      *
-     * @return Collection
+     * @return CollectionInterface
      */
-    public function add($row = [])
+    public function add($row = []): CollectionInterface
     {
         //if it's an array
         if (is_array($row)) {
@@ -221,9 +223,9 @@ class Collection implements ArrayAccess, Iterator, Countable, CollectionInterfac
      *
      * @param string|int $index The position in the collection to cut out
      *
-     * @return Collection
+     * @return CollectionInterface
      */
-    public function cut($index = self::LAST)
+    public function cut($index = self::LAST): CollectionInterface
     {
         //if index is first
         if ($index == self::FIRST) {
@@ -252,57 +254,57 @@ class Collection implements ArrayAccess, Iterator, Countable, CollectionInterfac
      *
      * @param *function $callback The handler to call on each iteration
      *
-     * @return Collection
+     * @return CollectionInterface
      */
-    public function each($callback)
+    public function each(callable $callback): CollectionInterface
     {
         if ($callback instanceof Closure) {
             $callback = $this->bindCallback($callback);
         }
-        
+
         foreach ($this->generator() as $key => $value) {
             call_user_func($callback, $key, $value);
         }
 
         return $this;
     }
-    
+
     /**
      * Returns the entire data
      *
      * @return array
      */
-    public function get()
+    public function get(): array
     {
-        $data = array();
-        
+        $data = [];
+
         foreach ($this->data as $row) {
             $data[] = $row->get();
         }
-        
+
         return $data;
     }
-    
+
     /**
      * Returns the entire data
      *
      * @param array $row
      *
-     * @return Model
+     * @return ModelInterface
      */
-    public function getModel(array $row = [])
+    public function getModel(array $row = []): ModelInterface
     {
         return $this->resolve(Model::class, $row);
     }
-    
+
     /**
      * Sets the entire data
      *
      * @param *array $data
      *
-     * @return Collection
+     * @return CollectionInterface
      */
-    public function set(array $data)
+    public function set(array $data): CollectionInterface
     {
         foreach ($data as $row) {
             $this->add($row);

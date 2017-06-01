@@ -2,7 +2,7 @@
 
 use Cradle\Http\HttpDispatcher;
 
-return function ($code = null, array $headers = array(), $body = '') {
+return function ($code = null, array $headers = array(), string $body = '') {
     if (is_int($code)) {
         http_response_code($code);
     }

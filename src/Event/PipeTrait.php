@@ -31,12 +31,12 @@ trait PipeTrait
     /**
      * @var array $protocols Custom protocol callbacks
      */
-    protected $protocols = array();
+    protected $protocols = [];
 
     /**
      * @var array $flows are short lived and volatile
      */
-    protected static $flows = array();
+    protected static $flows = [];
 
     /**
      * Sets up a process flow
@@ -46,7 +46,7 @@ trait PipeTrait
      *
      * @return PipeTrait
      */
-    public function flow($event, ...$flow)
+    public function flow(string $event, ...$flow)
     {
         //listen for the main on global
         $this->on($event, function (...$args) use (&$flow) {
@@ -73,7 +73,7 @@ trait PipeTrait
      *
      * @return PipeTrait
      */
-    public function protocol($name, $callback)
+    public function protocol(string $name, callable $callback)
     {
         //create a space
         $this->protocols[$name] = $callback;
@@ -90,7 +90,7 @@ trait PipeTrait
      *
      * @return PipeTrait
      */
-    public function subflow($event, ...$args)
+    public function subflow(string $event, ...$args)
     {
         if (isset(self::$flows[$event])) {
             $this->triggerFlow(self::$flows[$event], ...$args);
@@ -155,7 +155,7 @@ trait PipeTrait
      *
      * @return PipeTrait
      */
-    public function triggerController($controller, ...$args)
+    public function triggerController(string $controller, ...$args)
     {
         //extract the class and method
         list($class, $method) = explode('@', $controller, 2);
@@ -210,7 +210,7 @@ trait PipeTrait
             //now trigger the event
             $this->trigger($step, ...$args);
 
-            self::$flows = array();
+            self::$flows = [];
 
             //analyze the meta
             $meta = $this->getEventHandler()->getMeta();
@@ -233,7 +233,7 @@ trait PipeTrait
      *
      * @return Base
      */
-    public function triggerProtocol($protocol, ...$args)
+    public function triggerProtocol(string $protocol, ...$args)
     {
         list($protocol, $name) = explode('://', $protocol, 2);
 

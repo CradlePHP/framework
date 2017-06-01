@@ -26,9 +26,9 @@ trait BinderTrait
      *
      * @param *Closure $conditional should evaluate to true
      *
-     * @return Condition
+     * @return Closure
      */
-    public function bindCallback(Closure $callback)
+    public function bindCallback(Closure $callback): Closure
     {
         return $callback->bindTo($this, get_class($this));
     }

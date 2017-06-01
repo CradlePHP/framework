@@ -30,19 +30,19 @@ trait GetTrait
     {
         return $this->get('get', ...$args);
     }
-    
+
     /**
      * Removes $_GET given name or all $_GET
      *
      * @param mixed ...$args
      *
-     * @return bool
+     * @return GetTrait
      */
     public function removeGet(...$args)
     {
         return $this->remove('get', ...$args);
     }
-    
+
     /**
      * Returns true if has $_GET given name or if $_GET is set
      *
@@ -50,7 +50,7 @@ trait GetTrait
      *
      * @return bool
      */
-    public function hasGet(...$args)
+    public function hasGet(...$args): bool
     {
         return $this->exists('get', ...$args);
     }
@@ -68,11 +68,11 @@ trait GetTrait
         if (is_array($data)) {
             return $this->set('get', $data);
         }
-        
+
         if (count($args) === 0) {
             return $this;
         }
-        
+
         return $this->set('get', $data, ...$args);
     }
 }

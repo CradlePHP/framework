@@ -27,7 +27,7 @@ trait PageTrait
      *
      * @return PageTrait
      */
-    public function addMeta($name, $content)
+    public function addMeta(string $name, string $content)
     {
         $args = func_get_args();
 
@@ -51,7 +51,7 @@ trait PageTrait
      *
      * @return string|array
      */
-    public function getMeta(...$args)
+    public function getMeta(string ...$args)
     {
         return $this->get('page', 'meta', ...$args);
     }
@@ -59,7 +59,7 @@ trait PageTrait
     /**
      * Returns page data given path or all page data
      *
-     * @param string ...$args
+     * @param mixed ...$args
      *
      * @return string|array
      */
@@ -75,7 +75,7 @@ trait PageTrait
      *
      * @return bool
      */
-    public function hasPage(...$args)
+    public function hasPage(...$args): bool
     {
         if (!count($args)) {
             return $this->exists('page');
@@ -104,7 +104,7 @@ trait PageTrait
      *
      * @return PageTrait
      */
-    public function setFlash($message, $type = 'info')
+    public function setFlash(string $message, string $type = 'info')
     {
         return $this
             ->set('page', 'flash', 'message', $message)
@@ -134,7 +134,7 @@ trait PageTrait
      *
      * @return PageTrait
      */
-    public function setTitle($title)
+    public function setTitle(string $title)
     {
         return $this->set('page', 'title', $title);
     }

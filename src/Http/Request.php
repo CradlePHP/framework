@@ -50,7 +50,7 @@ class Request extends Registry implements RequestInterface
      *
      * @return Request
      */
-    public function load()
+    public function load(): Request
     {
         global $argv;
 

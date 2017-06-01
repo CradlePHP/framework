@@ -60,14 +60,14 @@ class Cradle_I18n_Timezone_Test extends PHPUnit_Framework_TestCase
             ->setTime(1358756901)
             ->convertTo('America/Los_Angeles', 'F d, Y g:iA');
 
-        $this->assertEquals('January 20, 2013 4:28PM', $date);
+        $this->assertEquals('January 20, 2013 5:28PM', $date);
 
         $time = $this
             ->object
             ->setTime(1358756901)
             ->convertTo('America/Los_Angeles');
 
-        $this->assertEquals(1358699301, $time);
+        $this->assertEquals(1358702901, $time);
     }
 
     /**
@@ -185,7 +185,7 @@ class Cradle_I18n_Timezone_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals('Now', $class->toRelative(date('Y-m-d H:i:s', time() - $offset)));
 
         $class = new Timezone('America/Los_Angeles', time());
-        $this->assertEquals('8 hours from now', $class->toRelative(time() + 45, 4));
+        $this->assertEquals('7 hours from now', $class->toRelative(time() + 45, 4));
 
         $class = new Timezone('America/Los_Angeles', time());
         $this->assertEquals(date('F d, Y', time() - $offset), $class->toRelative(time() + 1, 1));

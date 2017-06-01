@@ -42,7 +42,7 @@ class InspectorHandler implements InspectorInterface
      *
      * @return mixed
      */
-    public function __call($name, $args)
+    public function __call(string $name, array $args)
     {
         //if the scope is null
         if (is_null($this->scope)) {
@@ -87,9 +87,9 @@ class InspectorHandler implements InspectorInterface
      * @param *object     $scope the class instance
      * @param string|null $name  the name of the property to inspect
      *
-     * @return InspectorHandler
+     * @return InspectorInterface
      */
-    public function next($scope, $name = null)
+    public function next($scope, string $name = null): InspectorInterface
     {
         $this->scope = $scope;
         $this->name = $name;
@@ -102,9 +102,9 @@ class InspectorHandler implements InspectorInterface
      *
      * @param *mixed $variable any data
      *
-     * @return InspectorHandler
+     * @return InspectorInterface
      */
-    public function output($variable)
+    public function output($variable): InspectorInterface
     {
         if ($variable === true) {
             $variable = '*TRUE*';
@@ -126,7 +126,7 @@ class InspectorHandler implements InspectorInterface
      *
      * @return mixed
      */
-    protected function getResults($name, $args)
+    protected function getResults(string $name, array $args)
     {
         if (method_exists($this->scope, $name)) {
             return call_user_func_array([$this->scope, $name], $args);

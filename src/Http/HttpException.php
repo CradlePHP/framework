@@ -27,27 +27,12 @@ class HttpException extends Exception
     const RESPONSE_NOT_FOUND = 'Not Found.';
 
     /**
-     * @const string INVALID_ROUTE_CALLBACK Error template
-     */
-    const INVALID_ROUTE_CALLBACK = 'Invalid callback passed when trying to route.';
-    
-    /**
      * Create a new exception for 404
      *
      * @return HttpException
      */
-    public static function forResponseNotFound()
+    public static function forResponseNotFound(): HttpException
     {
         return new static(static::RESPONSE_NOT_FOUND);
-    }
-    
-    /**
-     * Create a new exception for invalid route callback
-     *
-     * @return HttpException
-     */
-    public static function forInvalidRouteCallback()
-    {
-        return new static(static::INVALID_ROUTE_CALLBACK);
     }
 }

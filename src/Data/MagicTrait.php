@@ -30,7 +30,7 @@ trait MagicTrait
      *
      * @return mixed
      */
-    public function __callData($name, $args)
+    public function __callData(string $name, array $args)
     {
         //if the method starts with get
         if (strpos($name, 'get') === 0) {
@@ -61,7 +61,7 @@ trait MagicTrait
 
             return $this;
         }
-        
+
         throw DataException::forMethodNotFound(get_class($this), $name);
     }
 
@@ -71,12 +71,12 @@ trait MagicTrait
      * @param *string $name  The name of the supposed property
      * @param *mixed  $value The value of the supposed property
      */
-    public function __getData($name)
+    public function __getData(string $name)
     {
         if (isset($this->data[$name])) {
             return $this->data[$name];
         }
-        
+
         return null;
     }
 
@@ -86,17 +86,17 @@ trait MagicTrait
      * @param *string $name  The name of the supposed property
      * @param *mixed  $value The value of the supposed property
      */
-    public function __setData($name, $value)
+    public function __setData(string $name, $value)
     {
         $this->data[$name] = $value;
     }
-    
+
     /**
      * If we output this to string we should see it as json
      *
      * @return string
      */
-    public function __toStringData()
+    public function __toStringData(): string
     {
         return json_encode($this->data, JSON_PRETTY_PRINT);
     }

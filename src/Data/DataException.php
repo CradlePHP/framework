@@ -25,7 +25,7 @@ class DataException extends Exception
      * @const string ERROR_METHOD_NOT_FOUND Error template
      */
     const ERROR_METHOD_NOT_FOUND = 'Method %s->%s() not found';
-    
+
     /**
      * Create a new exception for invalid method
      *
@@ -34,7 +34,7 @@ class DataException extends Exception
      *
      * @return DataException
      */
-    public static function forMethodNotFound($class, $name)
+    public static function forMethodNotFound(string $class, string $name): DataException
     {
         return new static(sprintf(static::ERROR_METHOD_NOT_FOUND, $class, $name));
     }

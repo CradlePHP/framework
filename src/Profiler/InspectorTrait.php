@@ -30,12 +30,12 @@ trait InspectorTrait
      *
      * @return InspectorHandler
      */
-    public function getInspectorHandler()
+    public function getInspectorHandler(): InspectorHandler
     {
         if (is_null($this->inspectorHandler)) {
             $this->inspectorHandler = new InspectorHandler();
         }
-        
+
         return $this->inspectorHandler;
     }
 
@@ -47,11 +47,11 @@ trait InspectorTrait
      *
      * @return InspectTrait
      */
-    public function inspect($variable = null, $next = null)
+    public function inspect($variable = null, string $next = null)
     {
         //we are using tool in all cases
         $class = get_class($this);
-        
+
         $inspector = $this->getInspectorHandler();
 
         //if variable is null
@@ -98,9 +98,11 @@ trait InspectorTrait
 
         return $this;
     }
-    
+
     /**
      * Sets the inspector handler
+     *
+     * @param *InspectorInterface $inspector
      *
      * @return InspectorTrait
      */

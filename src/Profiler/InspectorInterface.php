@@ -27,8 +27,8 @@ interface InspectorInterface
      *
      * @return mixed
      */
-    public function __call($name, $args);
-    
+    public function __call(string $name, array $args);
+
     /**
      * Hijacks the class and reports the results of the next
      * method call
@@ -38,7 +38,7 @@ interface InspectorInterface
      *
      * @return InspectorInterface
      */
-    public function next($scope, $name = null);
+    public function next($scope, string $name = null): InspectorInterface;
 
     /**
      * Outputs anything
@@ -47,5 +47,5 @@ interface InspectorInterface
      *
      * @return InspectorInterface
      */
-    public function output($variable);
+    public function output($variable): InspectorInterface;
 }

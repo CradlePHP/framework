@@ -27,7 +27,7 @@ trait HeaderTrait
      *
      * @return HeaderTrait
      */
-    public function addHeader($name, $value = null)
+    public function addHeader(string $name, string $value = null)
     {
         if (!is_null($value)) {
             return $this->set('headers', $name, $value);
@@ -35,14 +35,16 @@ trait HeaderTrait
 
         return $this->set('headers', $name, null);
     }
-    
+
     /**
      * Returns either the header value given
      * the name or the all headers
      *
+     * @param *string $name  Name of the header
+     *
      * @return mixed
      */
-    public function getHeaders($name = null)
+    public function getHeaders(string $name = null)
     {
         if (is_null($name)) {
             return $this->get('headers');
@@ -54,11 +56,11 @@ trait HeaderTrait
     /**
      * Removes a header parameter
      *
-     * @param string $name Name of the header
+     * @param *string $name Name of the header
      *
      * @return HeaderTrait
      */
-    public function removeHeader($name)
+    public function removeHeader(string $name)
     {
         return $this->remove('headers', $name);
     }

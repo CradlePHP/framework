@@ -9,6 +9,7 @@
 
 namespace Cradle\Http\Dispatcher;
 
+use Cradle\Http\HttpHandler;
 use Cradle\Http\Response\ResponseInterface;
 
 /**
@@ -31,8 +32,8 @@ interface DispatcherInterface
      *
      * @return HttpHandler
      */
-    public function output(ResponseInterface $response, $emulate = false);
-    
+    public function output(ResponseInterface $response, bool $emulate = false);
+
     /**
      * Starts to process the request
      *
@@ -41,8 +42,8 @@ interface DispatcherInterface
      *
      * @return array with request and response inside
      */
-    public function dispatch(ResponseInterface $response, $emulate = false);
-    
+    public function dispatch(ResponseInterface $response, bool $emulate = false);
+
     /**
      * Browser redirect
      *
@@ -50,13 +51,13 @@ interface DispatcherInterface
      * @param bool    $force Whether if you want to exit immediately
      * @param bool    $emulate  If you really want it to redirect (for testing)
      */
-    public function redirect($path, $force = false, $emulate = false);
-    
+    public function redirect(string $path, bool $force = false, bool $emulate = false);
+
     /**
      * Returns if we were able to output
      * something
      *
      * @return bool
      */
-    public function isSuccessful();
+    public function isSuccessful(): bool;
 }

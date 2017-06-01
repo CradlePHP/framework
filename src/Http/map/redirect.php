@@ -2,7 +2,7 @@
 
 use Cradle\Http\HttpDispatcher;
 
-return function ($path, $force = false) {
+return function (string $path, bool $force = false) {
     if ($force) {
         header('Location: ' . $path);
         exit;

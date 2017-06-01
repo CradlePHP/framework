@@ -22,16 +22,16 @@ interface MiddlewareInterface
     /**
      * Adds global middleware
      *
-     * @param function $callback The middleware handler
+     * @param callable $callback The middleware handler
      *
      * @return MiddlewareInterface
      */
-    public function register($callback);
+    public function register(callable $callback): MiddlewareInterface;
 
     /**
      * Process middleware
      *
      * @return bool
      */
-    public function process(...$args);
+    public function process(...$args): bool;
 }

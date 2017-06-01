@@ -27,15 +27,15 @@ trait RouteTrait
      *
      * @return mixed
      */
-    public function getRoute($name = null, ...$args)
+    public function getRoute(string $name = null, ...$args)
     {
         if (is_null($name)) {
             return $this->get('route');
         }
-        
+
         return $this->get('route', $name, ...$args);
     }
-    
+
     /**
      * Returns route data given name or all route data
      *
@@ -43,15 +43,15 @@ trait RouteTrait
      *
      * @return mixed
      */
-    public function getParameters($name = null)
+    public function getParameters(string $name = null)
     {
         if (is_null($name)) {
             return $this->getRoute('parameters');
         }
-        
+
         return $this->getRoute('parameters', $name);
     }
-    
+
     /**
      * Returns route data given name or all route data
      *
@@ -59,15 +59,15 @@ trait RouteTrait
      *
      * @return mixed
      */
-    public function getVariables($index = null)
+    public function getVariables(int $index = null)
     {
         if (is_null($index)) {
             return $this->getRoute('variables');
         }
-        
+
         return $this->getRoute('variables', $index);
     }
-    
+
     /**
      * Sets a request route
      *

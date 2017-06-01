@@ -47,12 +47,12 @@ class HttpDispatcher implements DispatcherInterface
     /**
      * @var array $mapCache The global curl callback
      */
-    protected static $mapCache = array();
+    protected static $mapCache = [];
 
     /**
      * @var array $map The actual response callbacks
      */
-    protected $map = array();
+    protected $map = [];
 
     /**
      * Set response maps, which is usually good for testing
@@ -86,7 +86,7 @@ class HttpDispatcher implements DispatcherInterface
      *
      * @return array with request and response inside
      */
-    public function dispatch(ResponseInterface $response, $emulate = false)
+    public function dispatch(ResponseInterface $response, bool $emulate = false)
     {
         $redirect = $response->getHeaders('Location');
 
@@ -122,7 +122,7 @@ class HttpDispatcher implements DispatcherInterface
      *
      * @return HttpHandler
      */
-    public function output(ResponseInterface $response, $emulate = false)
+    public function output(ResponseInterface $response, bool $emulate = false)
     {
         $code = $response->getStatus();
         $headers = $response->getHeaders();
@@ -150,9 +150,14 @@ class HttpDispatcher implements DispatcherInterface
      * @param *string $path  Where to redirect to
      * @param bool    $force Whether if you want to exit immediately
      * @param bool    $emulate  If you really want it to redirect (for testing)
+     *
+     * @return HttpDispatcher
      */
-    public function redirect($path, $force = false, $emulate = false)
-    {
+    public function redirect(
+        string $path,
+        bool $force = false,
+        bool $emulate = false
+    ) {
         if ($emulate) {
             return $path;
         }
@@ -169,7 +174,7 @@ class HttpDispatcher implements DispatcherInterface
      *
      * @return bool
      */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return $this->successful;
     }

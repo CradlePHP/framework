@@ -26,13 +26,13 @@ trait ErrorProcessorTrait
      * @var Middleware|null $errorProcessor
      */
     protected $errorProcessor = null;
-    
+
     /**
      * Returns an error handler object
      *
      * @return MiddlewareInterface
      */
-    public function getErrorProcessor()
+    public function getErrorProcessor(): MiddlewareInterface
     {
         if (is_null($this->errorProcessor)) {
             if (method_exists($this, 'resolve')) {
@@ -44,15 +44,15 @@ trait ErrorProcessorTrait
 
         return $this->errorProcessor;
     }
-    
+
     /**
      * Adds middleware
      *
-     * @param function $callback The middleware handler
+     * @param *callable $callback The middleware handler
      *
      * @return ErrorProcessorTrait
      */
-    public function error($callback)
+    public function error(callable $callback)
     {
         if ($callback instanceof Closure) {
             $callback = $callback->bindTo($this, get_class($this));
@@ -61,18 +61,18 @@ trait ErrorProcessorTrait
         $this->getErrorProcessor()->register($callback);
         return $this;
     }
-    
+
     /**
      * Sets the middleware to use on error
      *
-     * @param MiddlewareInterface $middleare
+     * @param *MiddlewareInterface $middleare
      *
      * @return ErrorProcessorTrait
      */
     public function setErrorProcessor(MiddlewareInterface $middleware)
     {
         $this->errorProcessor = $middleware;
-        
+
         return $this;
     }
 }

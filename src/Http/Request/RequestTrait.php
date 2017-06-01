@@ -26,13 +26,13 @@ trait RequestTrait
      * @var Request|null $request Request object to use
      */
     protected $request = null;
-    
+
     /**
      * Returns a request object
      *
      * @return RequestInterface
      */
-    public function getRequest()
+    public function getRequest(): RequestInterface
     {
         if (is_null($this->request)) {
             if (method_exists($this, 'resolve')) {
@@ -45,7 +45,7 @@ trait RequestTrait
 
         return $this->request;
     }
-    
+
     /**
      * Sets the request object to use
      *
@@ -56,7 +56,7 @@ trait RequestTrait
     public function setRequest(RequestInterface $request)
     {
         $this->request = $request;
-        
+
         return $this;
     }
 }

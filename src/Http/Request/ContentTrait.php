@@ -28,17 +28,17 @@ trait ContentTrait
     {
         return $this->get('body');
     }
-    
+
     /**
      * Returns true if has content
      *
      * @return bool
      */
-    public function hasContent()
+    public function hasContent(): bool
     {
         return !$this->isEmpty('body');
     }
-    
+
     /**
      * Sets content
      *

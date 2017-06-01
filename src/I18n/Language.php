@@ -65,8 +65,8 @@ class Language implements ArrayAccess, Iterator
     /**
      * @var array $data The translation list
      */
-    protected $data = array();
-    
+    protected $data = [];
+
     /**
      * Attempts to use __callData then __callResolver
      *
@@ -75,20 +75,20 @@ class Language implements ArrayAccess, Iterator
      *
      * @return mixed
      */
-    public function __call($name, $args)
+    public function __call(string $name, array $args)
     {
         try {
             return $this->__callData($name, $args);
         } catch (DataException $e) {
         }
-        
+
         try {
             return $this->__callResolver($name, $args);
         } catch (ResolverException $e) {
             throw new LanguageException($e->getMessage());
         }
     }
-    
+
     /**
      * Loads the translation set
      *
@@ -100,46 +100,46 @@ class Language implements ArrayAccess, Iterator
             $this->file = $language;
             $language = include($language);
         }
-        
+
         $this->data = $language;
     }
-    
+
     /**
      * Returns the translated key.
      * if the key is not set it will set
      * the key to the value of the key
      *
-     * @param string
+     * @param *string
      *
      * @return string
      */
-    public function get($key)
+    public function get(string $key): string
     {
         if (!isset($this->data[$key])) {
             $this->data[$key] = $key;
         }
-        
+
         return $this->data[$key];
     }
-    
+
     /**
      * Return the language set
      *
      * @return array
      */
-    public function getLanguage()
+    public function getLanguage(): array
     {
         return $this->data;
     }
-    
+
     /**
      * Saves the language to a file
      *
      * @param string|null $file The file to save to
      *
-     * @return LanguageHandler
+     * @return Language
      */
-    public function save($file = null)
+    public function save($file = null): Language
     {
         if (is_null($file) && is_null($this->file)) {
             throw LanguageException::forFileNotSet();
@@ -148,25 +148,25 @@ class Language implements ArrayAccess, Iterator
         if (is_null($file)) {
             $file = $this->file;
         }
-        
+
         $contents = "<?php //-->\nreturn " . var_export($this->data, true) . ";";
         file_put_contents($file, $contents);
-        
+
         return $this;
     }
-    
+
     /**
      * Sets the translated value to the specified key
      *
      * @param *string $key   The translation key
      * @param *string $value The default value if we cannot find the translation
      *
-     * @return LanguageHandler
+     * @return Language
      */
-    public function translate($key, $value)
+    public function translate($key, $value): Language
     {
         $this->data[$key] = $value;
-        
+
         return $this;
     }
 }

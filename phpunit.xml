@@ -20,7 +20,6 @@
       <file>test/Helper/SingletonTrait.php</file>
     </testsuite>
     <testsuite name="CradlePHP Resolver Test Suite">
-      <file>test/Resolver/ResolverException.php</file>
  	  <file>test/Resolver/ResolverHandler.php</file>
 	  <file>test/Resolver/ResolverTrait.php</file>
 	  <file>test/Resolver/StateTrait.php</file>
@@ -33,7 +32,6 @@
 	  <file>test/Profiler/LoggerTrait.php</file>
     </testsuite>
   	<testsuite name="CradlePHP Event Test Suite">
-      <file>test/Event/EventException.php</file>
       <file>test/Event/EventHandler.php</file>
       <file>test/Event/EventObserver.php</file>
       <file>test/Event/EventPipe.php</file>

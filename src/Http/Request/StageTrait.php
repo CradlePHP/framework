@@ -38,7 +38,7 @@ trait StageTrait
      *
      * @return bool
      */
-    public function hasStage(...$args)
+    public function hasStage(...$args): bool
     {
         return $this->exists('stage', ...$args);
     }
@@ -48,7 +48,7 @@ trait StageTrait
      *
      * @param mixed ...$args
      *
-     * @return bool
+     * @return StageTrait
      */
     public function removeStage(...$args)
     {
@@ -58,7 +58,7 @@ trait StageTrait
     /**
      * Clusters request data together softly
      *
-     * @param array $data
+     * @param *array $data
      *
      * @return StageTrait
      */
@@ -79,10 +79,10 @@ trait StageTrait
     /**
      * Sets $_POST
      *
-     * @param *array $data
+     * @param *mixed $data
      * @param mixed  ...$args
      *
-     * @return PostTrait
+     * @return StageTrait
      */
     public function setStage($data, ...$args)
     {

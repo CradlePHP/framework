@@ -61,7 +61,7 @@ class App
      *
      * @return Package
      */
-    public function __invoke($package)
+    public function __invoke(string $package): Package
     {
         return $this->package($package);
     }
@@ -69,13 +69,13 @@ class App
     /**
      * Adds routing middleware for all methods
      *
-     * @param *string  $path     The route path
-     * @param *string  $callback The middleware handler
-     * @param string   ...$args  Arguments for flow
+     * @param *string          $path     The route path
+     * @param *callable|string $callback The middleware handler
+     * @param callable|string  ...$args  Arguments for flow
      *
      * @return App
      */
-    public function all($path, $callback, ...$args)
+    public function all(string $path, $callback, ...$args): App
     {
         return $this->route('all', $path, $callback, ...$args);
     }
@@ -94,35 +94,39 @@ class App
      *  - Child responses are set by Parent.
      *  - Events are still global.
      *
-     * @param string $root The root path to handle
-     * @param the child handler
+     * @param *string $root    The root path to handle
+     * @param *App    $handler the child handler
      *
      * @return App
      */
-    public function app($root, App $handler)
+    public function app(string $root, App $handler): App
     {
-        $this->route('all', $root . '**', function ($request, $response) use ($root, $handler) {
-            //we need the original path
-            $path = $request->getPath('string');
+        $this->route(
+            'all',
+            $root . '**',
+            function ($request, $response) use ($root, $handler) {
+                //we need the original path
+                $path = $request->getPath('string');
 
-            $subPath = substr($path, strlen($root));
+                $subPath = substr($path, strlen($root));
 
-            //because substr('/', 1); --> false
-            if (!is_string($subPath) || !strlen($subPath)) {
-                $subPath = '/';
+                //because substr('/', 1); --> false
+                if (!is_string($subPath) || !strlen($subPath)) {
+                    $subPath = '/';
+                }
+
+                $request->setPath($subPath);
+
+                $handler
+                    ->setParent($this)
+                    ->setRequest($request)
+                    ->setResponse($response)
+                    ->process();
+
+                //bring the path back
+                $request->setPath($path);
             }
-
-            $request->setPath($subPath);
-
-            $handler
-                ->setParent($this)
-                ->setRequest($request)
-                ->setResponse($response)
-                ->process();
-
-            //bring the path back
-            $request->setPath($path);
-        });
+        );
 
         return $this;
     }
@@ -130,13 +134,13 @@ class App
     /**
      * Adds routing middleware for DELETE method
      *
-     * @param *string  $path     The route path
-     * @param *string  $callback The middleware handler
-     * @param string   ...$args  Arguments for flow
+     * @param *string          $path     The route path
+     * @param *callable|string $callback The middleware handler
+     * @param callable|string  ...$args  Arguments for flow
      *
      * @return App
      */
-    public function delete($path, $callback, ...$args)
+    public function delete(string $path, $callback, ...$args): App
     {
         return $this->route('delete', $path, $callback, ...$args);
     }
@@ -144,13 +148,13 @@ class App
     /**
      * Adds routing middleware for GET method
      *
-     * @param *string  $path     The route path
-     * @param *string  $callback The middleware handler
-     * @param string   ...$args  Arguments for flow
+     * @param *string          $path     The route path
+     * @param *callable|string $callback The middleware handler
+     * @param callable|string  ...$args  Arguments for flow
      *
      * @return App
      */
-    public function get($path, $callback, ...$args)
+    public function get(string $path, $callback, ...$args): App
     {
         return $this->route('get', $path, $callback, ...$args);
     }
@@ -160,7 +164,7 @@ class App
      *
      * @return array
      */
-    public function getPackages()
+    public function getPackages(): array
     {
         return $this->packages;
     }
@@ -170,7 +174,7 @@ class App
      *
      * @return array
      */
-    public function getProtocols()
+    public function getProtocols(): array
     {
         return $this->protocols;
     }
@@ -183,7 +187,7 @@ class App
      *
      * @return Closure|array
      */
-    public function export($event, $map = false)
+    public function export(string $event, bool $map = false)
     {
         $handler = $this;
 
@@ -218,7 +222,7 @@ class App
         $request = $handler->getRequest();
         $response = $handler->getResponse();
 
-        return array($request, $response, $next);
+        return [$request, $response, $next];
     }
 
     /**
@@ -228,7 +232,7 @@ class App
      *
      * @return App
      */
-    public function import(array $flows)
+    public function import(array $flows): App
     {
         foreach ($flows as $flow) {
             //it's gotta be an array
@@ -245,13 +249,13 @@ class App
     /**
      * Adds routing middleware for POST method
      *
-     * @param *string  $path     The route path
-     * @param *string  $callback The middleware handler
-     * @param string   ...$args  Arguments for flow
+     * @param *string          $path     The route path
+     * @param *callable|string $callback The middleware handler
+     * @param callable|string  ...$args  Arguments for flow
      *
      * @return App
      */
-    public function post($path, $callback, ...$args)
+    public function post(string $path, $callback, ...$args): App
     {
         return $this->route('post', $path, $callback, ...$args);
     }
@@ -259,13 +263,13 @@ class App
     /**
      * Adds routing middleware for PUT method
      *
-     * @param *string  $path     The route path
-     * @param *string  $callback The middleware handler
-     * @param string   ...$args  Arguments for flow
+     * @param *string          $path     The route path
+     * @param *callable|string $callback The middleware handler
+     * @param callable|string  ...$args  Arguments for flow
      *
      * @return App
      */
-    public function put($path, $callback, ...$args)
+    public function put(string $path, $callback, ...$args): App
     {
         return $this->route('put', $path, $callback, ...$args);
     }
@@ -273,11 +277,11 @@ class App
     /**
      * Registers and initializes a package
      *
-     * @param *string $vendor The vendor/package name
+     * @param *string|callable $vendor The vendor/package name
      *
      * @return App
      */
-    public function register($vendor)
+    public function register($vendor): App
     {
         //if it's callable
         if (is_callable($vendor)) {
@@ -292,13 +296,14 @@ class App
     /**
      * Adds routing middleware
      *
-     * @param *string $method The request method
-     * @param *string $path   The route path
-     * @param *mixed ...$args The middleware handler
+     * @param *string          $method   The request method
+     * @param *string          $path     The route path
+     * @param *callable|string $callback The middleware handler
+     * @param callable|string  ...$args  Arguments for flow
      *
      * @return App
      */
-    public function route($method, $path, $callback, ...$args)
+    public function route(string $method, string $path, $callback, ...$args): App
     {
         array_unshift($args, $callback);
 
@@ -347,7 +352,7 @@ class App
      *
      * @return App
      */
-    public function setParent(App $parent)
+    public function setParent(App $parent): App
     {
         //use the parent error processor
         $this->errorProcessor = $parent->getErrorProcessor();

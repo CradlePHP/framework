@@ -47,16 +47,6 @@ class Cradle_Resolver_ResolverTrait_Test extends PHPUnit_Framework_TestCase
     {
         $actual = $this->object->addResolver(ResolverCallStub::class, function() {});
 		$this->assertInstanceOf('Cradle\Resolver\ResolverTraitStub', $actual);
-
-        $trigger = false;
-
-        try {
-            $this->object->addResolver('foobar', 'foobar');
-        } catch(ResolverException $e) {
-            $trigger = true;
-        }
-
-        $this->assertTrue($trigger);
     }
 
     /**

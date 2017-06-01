@@ -30,12 +30,12 @@ trait RouterTrait
     /**
      * Adds routing middleware for all methods
      *
-     * @param string   $path     The route path
-     * @param function $callback The middleware handler
+     * @param *string   $path     The route path
+     * @param *callable $callback The middleware handler
      *
      * @return RouterTrait
      */
-    public function all($path, $callback)
+    public function all(string $path, callable $callback)
     {
         return $this->route('all', $path, $callback);
     }
@@ -43,12 +43,12 @@ trait RouterTrait
     /**
      * Adds routing middleware for delete method
      *
-     * @param string   $path     The route path
-     * @param function $callback The middleware handler
+     * @param *string   $path     The route path
+     * @param *callable $callback The middleware handler
      *
      * @return RouterTrait
      */
-    public function delete($path, $callback)
+    public function delete(string $path, callable $callback)
     {
         return $this->route('delete', $path, $callback);
     }
@@ -56,12 +56,12 @@ trait RouterTrait
     /**
      * Adds routing middleware for get method
      *
-     * @param string   $path     The route path
-     * @param function $callback The middleware handler
+     * @param *string   $path     The route path
+     * @param *callable $callback The middleware handler
      *
      * @return RouterTrait
      */
-    public function get($path, $callback)
+    public function get(string $path, callable $callback)
     {
         return $this->route('get', $path, $callback);
     }
@@ -87,12 +87,12 @@ trait RouterTrait
     /**
      * Adds routing middleware for post method
      *
-     * @param string   $path     The route path
-     * @param function $callback The middleware handler
+     * @param *string   $path     The route path
+     * @param *callable $callback The middleware handler
      *
      * @return RouterTrait
      */
-    public function post($path, $callback)
+    public function post(string $path, callable $callback)
     {
         return $this->route('post', $path, $callback);
     }
@@ -100,12 +100,12 @@ trait RouterTrait
     /**
      * Adds routing middleware for put method
      *
-     * @param string   $path     The route path
-     * @param function $callback The middleware handler
+     * @param *string   $path     The route path
+     * @param *callable $callback The middleware handler
      *
      * @return RouterTrait
      */
-    public function put($path, $callback)
+    public function put(string $path, callable $callback)
     {
         return $this->route('put', $path, $callback);
     }
@@ -113,13 +113,13 @@ trait RouterTrait
     /**
      * Adds routing middleware
      *
-     * @param string   $method   The request method
-     * @param string   $path     The route path
-     * @param function $callback The middleware handler
+     * @param *string   $method   The request method
+     * @param *string   $path     The route path
+     * @param *callable $callback The middleware handler
      *
      * @return RouterTrait
      */
-    public function route($method, $path, $callback)
+    public function route(string $method, string $path, callable $callback)
     {
         $this->getRouter()->route($method, $path, $callback);
 
@@ -129,7 +129,7 @@ trait RouterTrait
     /**
      * Sets the router to use
      *
-     * @param RouterInterface $router
+     * @param *RouterInterface $router
      *
      * @return RouterTrait
      */
@@ -143,12 +143,13 @@ trait RouterTrait
     /**
      * Manually trigger a route
      *
-     * @param string $method
-     * @param string $path
+     * @param *string $method
+     * @param *string $path
+     * @param mixed   $args
      *
      * @return RouterTrait
      */
-    public function triggerRoute($method, $path, ...$args)
+    public function triggerRoute(string $method, string $path, ...$args)
     {
         $event = strtoupper($method).' '.$path;
 

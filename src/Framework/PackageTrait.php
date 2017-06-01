@@ -50,7 +50,7 @@ trait PackageTrait
      *
      * @return bool
      */
-    public function isPackage($vendor)
+    public function isPackage(string $vendor): bool
     {
         return isset($this->packages[$vendor]);
     }
@@ -62,7 +62,7 @@ trait PackageTrait
      *
      * @return PackageTrait
      */
-    public function package($vendor)
+    public function package(string $vendor)
     {
         if (!array_key_exists($vendor, $this->packages)) {
             throw Exception::forPackageNotFound($vendor);
@@ -79,7 +79,7 @@ trait PackageTrait
      *
      * @return PackageTrait
      */
-    public function register($vendor, ...$args)
+    public function register(string $vendor, ...$args)
     {
         //create a space
         if (method_exists($this, 'resolve')) {
@@ -122,7 +122,7 @@ trait PackageTrait
      *
      * @return PackageTrait
      */
-    public function setBootstrapFile($file)
+    public function setBootstrapFile(string $file)
     {
         $this->bootstrapFile = $file;
 

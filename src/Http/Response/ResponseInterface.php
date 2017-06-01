@@ -27,36 +27,38 @@ interface ResponseInterface
      *
      * @return ResponseInterface
      */
-    public function addHeader($name, $value = null);
-    
+    public function addHeader(string $name, string $value = null);
+
     /**
      * Returns the content body
      *
      * @return mixed
      */
     public function getContent();
-    
+
     /**
      * Returns either the header value given
      * the name or the all headers
      *
+     * @param string|null $name
+     *
      * @return mixed
      */
-    public function getHeaders($name = null);
-    
+    public function getHeaders(string $name = null);
+
     /**
      * Returns the status code
      *
-     * @return int
+     * @return int|nul;
      */
     public function getStatus();
-    
+
     /**
      * Returns true if content is set
      *
      * @return bool
      */
-    public function hasContent();
+    public function hasContent(): bool;
 
     /**
      * Removes a header parameter
@@ -65,8 +67,8 @@ interface ResponseInterface
      *
      * @return ResponseInterface
      */
-    public function removeHeader($name);
-    
+    public function removeHeader(string $name);
+
     /**
      * Sets the content
      *
@@ -75,7 +77,7 @@ interface ResponseInterface
      * @return ResponseInterface
      */
     public function setContent($content);
-    
+
     /**
      * Sets a status code
      *
@@ -84,5 +86,5 @@ interface ResponseInterface
      *
      * @return ResponseInterface
      */
-    public function setStatus($code, $status);
+    public function setStatus(int $code, string $status);
 }

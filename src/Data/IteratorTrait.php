@@ -28,7 +28,7 @@ trait IteratorTrait
     {
         return current($this->data);
     }
-    
+
     /**
      * Returns th current position
      * For Iterator interface
@@ -55,14 +55,14 @@ trait IteratorTrait
     {
         reset($this->data);
     }
-    
+
     /**
      * Validates whether if the index is set
      * For Iterator interface
      *
      * @return bool
      */
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->data[$this->key()]);
     }

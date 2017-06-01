@@ -42,22 +42,7 @@ class Cradle_Http_HttpException_Test extends PHPUnit_Framework_TestCase
         } catch(HttpException $e) {
             $message = $e->getMessage();
         }
-        
-        $this->assertEquals('Not Found.', $message);
-    }
 
-    /**
-     * @covers Cradle\Http\HttpException::forInvalidRouteCallback
-     */
-    public function testForInvalidRouteCallback()
-    {
-        $message = null;
-        try {
-            throw HttpException::forInvalidRouteCallback();
-        } catch(HttpException $e) {
-            $message = $e->getMessage();
-        }
-        
-        $this->assertEquals('Invalid callback passed when trying to route.', $message);
+        $this->assertEquals('Not Found.', $message);
     }
 }

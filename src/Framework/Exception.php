@@ -38,7 +38,7 @@ class Exception extends PHPException
      *
      * @return Exception
      */
-    public static function forPackageNotFound($vendor)
+    public static function forPackageNotFound(string $vendor): Exception
     {
         return new static(sprintf(static::ERROR_PACKAGE_NOT_FOUND, $vendor));
     }
@@ -50,7 +50,7 @@ class Exception extends PHPException
      *
      * @return Exception
      */
-    public static function forMethodNotFound($name)
+    public static function forMethodNotFound(string $name): Exception
     {
         return new static(sprintf(static::ERROR_METHOD_NOT_FOUND, $name));
     }

@@ -34,7 +34,7 @@ trait InstanceTrait
      *
      * @param mixed ...$args Arguments to pass to the constructor
      *
-     * @return object
+     * @return InstanceTrait
      */
     public static function i(...$args)
     {

@@ -47,16 +47,6 @@ class Cradle_Event_EventObserver_Test extends PHPUnit_Framework_TestCase
     {
         $actual = $this->object->setCallback(function() {})->getCallback();
         $this->assertInstanceOf('Closure', $actual);
-
-        $trigger = false;
-
-        try {
-            $this->object->setCallback('foobar');
-        } catch(EventException $e) {
-            $trigger = true;
-        }
-
-        $this->assertTrue($trigger);
     }
 
     /**
@@ -70,19 +60,5 @@ class Cradle_Event_EventObserver_Test extends PHPUnit_Framework_TestCase
         $this->object->setCallback($callback1);
         $this->assertTrue($this->object->assertEquals($callback1));
         $this->assertFalse($this->object->assertEquals($callback2));
-
-        $callback2 = 'foobar';
-
-        $this->object->setCallback($callback1);
-
-        $trigger = false;
-
-        try {
-            $this->object->assertEquals($callback2);
-        } catch(EventException $e) {
-            $trigger = true;
-        }
-
-        $this->assertTrue($trigger);
     }
 }

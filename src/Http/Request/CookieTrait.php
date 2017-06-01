@@ -30,19 +30,19 @@ trait CookieTrait
     {
         return $this->get('cookie', ...$args);
     }
-    
+
     /**
      * Removes $_COOKIE given name or all $_COOKIE
      *
      * @param mixed ...$args
      *
-     * @return bool
+     * @return CookieTrait
      */
     public function removeCookies(...$args)
     {
         return $this->remove('cookie', ...$args);
     }
-    
+
     /**
      * Returns true if has $_COOKIE given name or if $_COOKIE is set
      *
@@ -50,7 +50,7 @@ trait CookieTrait
      *
      * @return bool
      */
-    public function hasCookies(...$args)
+    public function hasCookies(...$args): bool
     {
         return $this->exists('cookie', ...$args);
     }
@@ -58,7 +58,7 @@ trait CookieTrait
     /**
      * Sets $_COOKIE
      *
-     * @param *array $data
+     * @param *mixed $data
      * @param mixed  ...$args
      *
      * @return CookieTrait
@@ -68,11 +68,11 @@ trait CookieTrait
         if (is_array($data)) {
             return $this->set('cookie', $data);
         }
-        
+
         if (count($args) === 0) {
             return $this;
         }
-        
+
         return $this->set('cookie', $data, ...$args);
     }
 }

@@ -26,13 +26,13 @@ trait PreProcessorTrait
      * @var Middleware|null $preProcessor
      */
     protected $preProcessor = null;
-    
+
     /**
      * Returns a middleware object
      *
      * @return MiddlewareInterface
      */
-    public function getPreprocessor()
+    public function getPreprocessor(): MiddlewareInterface
     {
         if (is_null($this->preProcessor)) {
             if (method_exists($this, 'resolve')) {
@@ -44,35 +44,35 @@ trait PreProcessorTrait
 
         return $this->preProcessor;
     }
-    
+
     /**
      * Adds middleware
      *
-     * @param function $callback The middleware handler
+     * @param *callable $callback The middleware handler
      *
      * @return PreProcessorTrait
      */
-    public function preprocess($callback)
+    public function preprocess(callable $callback)
     {
         if ($callback instanceof Closure) {
             $callback = $callback->bindTo($this, get_class($this));
         }
-        
+
         $this->getPreprocessor()->register($callback);
         return $this;
     }
-    
+
     /**
      * Sets the middleware to use
      *
-     * @param MiddlewareInterface $middleare
+     * @param *MiddlewareInterface $middleare
      *
      * @return PreProcessorTrait
      */
     public function setPreprocessor(MiddlewareInterface $middleware)
     {
         $this->preProcessor = $middleware;
-        
+
         return $this;
     }
 }

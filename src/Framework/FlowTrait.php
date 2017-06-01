@@ -42,9 +42,9 @@ trait FlowTrait
      * @param *string $name
      * @param *array  $args
      *
-     * @return string
+     * @return mixed
      */
-    public function __callFlow($name, $args)
+    public function __callFlow(string $name, array $args)
     {
         if (is_null($this->current)) {
             if (!isset($this->actions[$name])) {
@@ -84,7 +84,7 @@ trait FlowTrait
      *
      * @return string|callable
      */
-    public function __getFlow($name)
+    public function __getFlow(string $name)
     {
         return $this->__callFlow($name, array());
     }

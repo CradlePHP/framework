@@ -36,7 +36,7 @@ trait FileTrait
      *
      * @param mixed ...$args
      *
-     * @return bool
+     * @return FileTrait
      */
     public function removeFiles(...$args)
     {
@@ -50,7 +50,7 @@ trait FileTrait
      *
      * @return bool
      */
-    public function hasFiles(...$args)
+    public function hasFiles(...$args): bool
     {
         return $this->exists('files', ...$args);
     }
@@ -58,7 +58,7 @@ trait FileTrait
     /**
      * Sets $_FILES
      *
-     * @param *array $data
+     * @param *mixed $data
      * @param mixed  ...$args
      *
      * @return FileTrait

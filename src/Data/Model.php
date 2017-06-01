@@ -53,7 +53,7 @@ class Model implements ArrayAccess, Iterator, Countable, ModelInterface
             DataTrait::__setData as __set;
             DataTrait::__toStringData as __toString;
         }
-    
+
     /**
      * Attempts to use __callData then __callResolver
      *
@@ -62,48 +62,48 @@ class Model implements ArrayAccess, Iterator, Countable, ModelInterface
      *
      * @return mixed
      */
-    public function __call($name, $args)
+    public function __call(string $name, array $args)
     {
         try {
             return $this->__callData($name, $args);
         } catch (DataException $e) {
         }
-        
+
         try {
             return $this->__callResolver($name, $args);
         } catch (ResolverException $e) {
             throw new ModelException($e->getMessage());
         }
     }
-    
+
     /**
      * Presets the collection
      *
-     * @param *mixed $data The initial data
+     * @param *array $data The initial data
      */
     public function __construct(array $data = [])
     {
         $this->set($data);
     }
-    
+
     /**
      * Returns the entire data
      *
      * @return array
      */
-    public function get()
+    public function get(): array
     {
         return $this->data;
     }
-    
+
     /**
      * Sets the entire data
      *
      * @param *array $data
      *
-     * @return Model
+     * @return ModelInterface
      */
-    public function set(array $data)
+    public function set(array $data): ModelInterface
     {
         $this->data = $data;
         return $this;

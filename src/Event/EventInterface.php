@@ -30,19 +30,19 @@ interface EventInterface
      *
      * @return EventInterface
      */
-    public function off($event = null, $callback = null);
-     
+    public function off(string $event = null, callable $callback = null): EventInterface;
+
     /**
      * Attaches an instance to be notified
      * when an event has been triggered
      *
-     * @param *string   $event    The name of the event
-     * @param *callable $callback The event handler
-     * @param int       $priority Set the importance
+     * @param *string|array   $event    The name of the event
+     * @param *callable       $callback The event handler
+     * @param int             $priority Set the importance
      *
      * @return EventInterface
      */
-    public function on($event, $callback, $priority = 0);
+    public function on($event, callable $callback, int $priority = 0): EventInterface;
 
     /**
      * Notify all observers of that a specific
@@ -53,5 +53,5 @@ interface EventInterface
      *
      * @return EventInterface
      */
-    public function trigger($event, ...$args);
+    public function trigger(string $event, ...$args): EventInterface;
 }

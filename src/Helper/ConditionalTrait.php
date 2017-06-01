@@ -28,28 +28,28 @@ trait ConditionalTrait
      * @param *callable             $success     called when conditional is true
      * @param callable              $fail        called when conditional is false
      *
-     * @return Condition
+     * @return mixed
      */
-    public function when($conditional, $success, $fail = null)
+    public function when($conditional, callable $success, callable $fail = null)
     {
         //bind conditional if it's not bound
         if ($conditional instanceof Closure) {
             $conditional = $conditional->bindTo($this, get_class($this));
         }
-        
+
         //bind success if it's not bound
         if ($success instanceof Closure) {
             $success = $success->bindTo($this, get_class($this));
         }
-        
+
         //bind fail if it's not bound
         if ($fail instanceof Closure) {
             $fail = $fail->bindTo($this, get_class($this));
         }
-        
+
         //default results is null
         $results = null;
-        
+
         //if condition is true
         if ((is_callable($conditional) && call_user_func($conditional))
             || (!is_callable($conditional) && $conditional)
@@ -60,13 +60,13 @@ trait ConditionalTrait
             //call fail
             $results = call_user_func($fail);
         }
-        
+
         //do we have results ?
         if ($results !== null) {
             //then return it
             return $results;
         }
-        
+
         //otherwise return this
         return $this;
     }

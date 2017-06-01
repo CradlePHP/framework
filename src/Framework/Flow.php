@@ -9,6 +9,7 @@
 
 namespace Cradle\Framework;
 
+use Closure;
 use Cradle\Framework\Flow\Log;
 use Cradle\Framework\Flow\File;
 use Cradle\Framework\Flow\Session;
@@ -48,9 +49,9 @@ class Flow
      * @param *string $name
      * @param *array  $args
      *
-     * @return Flow
+     * @return mixed
      */
-    public static function __callStatic($name, $args)
+    public static function __callStatic(string $name, array $args)
     {
         try {
             //NOTE: Resolvers should provide a cache
@@ -83,7 +84,7 @@ class Flow
      *
      * @return ResolverHandler
      */
-    public static function getResolver()
+    public static function getResolver(): ResolverHandler
     {
         if (is_null(self::$resolver)) {
             self::setResolver(new ResolverHandler());
@@ -98,7 +99,7 @@ class Flow
      * @param *string $name
      * @param *callable $callback
      */
-    public static function register($name, $callback)
+    public static function register(string $name, callable $callback)
     {
         self::getResolver()->register($name, $callback);
     }
@@ -141,7 +142,7 @@ class Flow
      *
      * @return Closure
      */
-    private function forward()
+    private function forward(): Closure
     {
         return function ($request, $response) {
             $stage = $request->getStage();
@@ -161,7 +162,7 @@ class Flow
      *
      * @return Closure
      */
-    private function reset()
+    private function reset(): Closure
     {
         return function ($request, $response) {
             $results = $response->getResults();

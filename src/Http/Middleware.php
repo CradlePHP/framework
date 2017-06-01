@@ -25,20 +25,20 @@ class Middleware implements MiddlewareInterface
      * @const string UNEXPECTED_GLOBAL Error template
      */
     const UNEXPECTED_GLOBAL = 'Unexpected end before routing. Please check global middlewares.';
-    
+
     /**
      * @var array $registry A list of middleware callbacks
      */
     protected $registry = [];
-    
+
     /**
      * Adds global middleware
      *
-     * @param function $callback The middleware handler
+     * @param callable $callback The middleware handler
      *
-     * @return Middleware
+     * @return MiddlewareInterface
      */
-    public function register($callback)
+    public function register(callable $callback): MiddlewareInterface
     {
         $this->registry[] = $callback;
         return $this;
@@ -47,16 +47,18 @@ class Middleware implements MiddlewareInterface
     /**
      * Process middleware
      *
+     * @param mixed ...$args
+     *
      * @return bool
      */
-    public function process(...$args)
+    public function process(...$args): bool
     {
         foreach ($this->registry as $callback) {
             if (call_user_func_array($callback, $args) === false) {
                 return false;
             }
         }
-        
+
         return true;
     }
 }

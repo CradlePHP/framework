@@ -26,13 +26,13 @@ trait DispatcherTrait
      * @var HttpDispatcher|null $dispatcher Response object to use
      */
     protected $dispatcher = null;
-    
+
     /**
      * Returns a response object
      *
-     * @return HttpDispatcher
+     * @return DispatcherInterface
      */
-    public function getDispatcher()
+    public function getDispatcher(): DispatcherInterface
     {
         if (is_null($this->dispatcher)) {
             $this->setDispatcher($this->resolve(HttpDispatcher::class));
@@ -40,7 +40,7 @@ trait DispatcherTrait
 
         return $this->dispatcher;
     }
-    
+
     /**
      * Sets the dispatcher to use
      *
@@ -51,7 +51,7 @@ trait DispatcherTrait
     public function setDispatcher(DispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;
-        
+
         return $this;
     }
 }

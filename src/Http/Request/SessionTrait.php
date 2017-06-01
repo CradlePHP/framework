@@ -36,7 +36,7 @@ trait SessionTrait
      *
      * @param mixed ...$args
      *
-     * @return bool
+     * @return SessionTrait
      */
     public function removeSession(...$args)
     {
@@ -56,7 +56,7 @@ trait SessionTrait
      *
      * @return bool
      */
-    public function hasSession(...$args)
+    public function hasSession(...$args): bool
     {
         return $this->exists('session', ...$args);
     }
@@ -64,7 +64,7 @@ trait SessionTrait
     /**
      * Sets $_SESSION
      *
-     * @param *array $data
+     * @param *mixed $data
      * @param mixed  ...$args
      *
      * @return SessionTrait

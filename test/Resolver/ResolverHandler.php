@@ -88,16 +88,6 @@ class Cradle_Resolver_ResolverHandler_Test extends PHPUnit_Framework_TestCase
             ->resolve('foobar');
 
         $this->assertEquals(1, $actual);
-
-        $trigger = false;
-
-        try {
-            $this->object->register('foobar', 'foobar');
-        } catch(ResolverException $e) {
-            $trigger = true;
-        }
-
-        $this->assertTrue($trigger);
     }
 
     /**

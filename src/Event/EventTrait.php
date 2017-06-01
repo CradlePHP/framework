@@ -32,25 +32,25 @@ trait EventTrait
      * @var EventHandler|null $eventHandler
      */
     private $eventHandler = null;
-    
+
     /**
      * Returns an EventHandler object
      * if none was set, it will auto create one
      *
      * @return EventHandler
      */
-    public function getEventHandler()
+    public function getEventHandler(): EventInterface
     {
         if (is_null(self::$globalEventHandler)) {
             //no need for a resolver because
             //there is a way to set this
             self::$globalEventHandler = new EventHandler();
         }
-        
+
         if (is_null($this->eventHandler)) {
             $this->eventHandler = self::$globalEventHandler;
         }
-        
+
         return $this->eventHandler;
     }
 
@@ -64,7 +64,7 @@ trait EventTrait
      *
      * @return EventTrait
      */
-    public function on($event, $callback, $priority = 0)
+    public function on(string $event, callable $callback, int $priority = 0)
     {
         $dispatcher = $this->getEventHandler();
 
@@ -73,30 +73,31 @@ trait EventTrait
             //so there's no scope
             $callback = $this->bindCallback($callback);
         }
-        
+
         $dispatcher->on($event, $callback, $priority);
 
         return $this;
     }
-    
+
     /**
      * Allow for a custom dispatcher to be used
      *
      * @param *EventInterface $handler
+     * @param bool            $static
      *
      * @return EventTrait
      */
-    public function setEventHandler(EventInterface $handler, $static = false)
+    public function setEventHandler(EventInterface $handler, bool $static = false)
     {
         if ($static) {
             self::$globalEventHandler = $handler;
         }
-        
+
         $this->eventHandler = $handler;
-        
+
         return $this;
     }
-    
+
     /**
      * Notify all observers of that a specific
      * event has happened
@@ -106,7 +107,7 @@ trait EventTrait
      *
      * @return EventTrait
      */
-    public function trigger($event, ...$args)
+    public function trigger(string $event, ...$args)
     {
         $this->getEventHandler()->trigger($event, ...$args);
         return $this;

@@ -27,7 +27,7 @@ interface ResolverInterface
      *
      * @return bool
      */
-    public function canResolve($name);
+    public function canResolve(string $name): bool;
 
     /**
      * Returns true if name is registered
@@ -36,8 +36,8 @@ interface ResolverInterface
      *
      * @return bool
      */
-    public function isRegistered($name);
-    
+    public function isRegistered(string $name): bool;
+
     /**
      * Returns true if name is shared
      *
@@ -45,7 +45,7 @@ interface ResolverInterface
      *
      * @return bool
      */
-    public function isShared($name);
+    public function isShared(string $name): bool;
 
     /**
      * Registers a resolver callback
@@ -55,7 +55,7 @@ interface ResolverInterface
      *
      * @return ResolverInterface
      */
-    public function register($name, $callback);
+    public function register(string $name, callable $callback): ResolverInterface;
 
     /**
      * Does the resolving
@@ -65,7 +65,7 @@ interface ResolverInterface
      *
      * @return mixed
      */
-    public function resolve($name, ...$args);
+    public function resolve(string $name, ...$args);
 
     /**
      * Does the resolving but considers shared
@@ -75,5 +75,5 @@ interface ResolverInterface
      *
      * @return mixed
      */
-    public function shared($name, ...$args);
+    public function shared(string $name, ...$args);
 }

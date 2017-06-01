@@ -40,7 +40,7 @@ class Package
      *
      * @return mixed
      */
-    public function __call($name, $args)
+    public function __call(string $name, array $args)
     {
         if (isset($this->methods[$name])) {
             return call_user_func_array($this->methods[$name], $args);
@@ -57,7 +57,7 @@ class Package
      *
      * @return Package
      */
-    public function addMethod($name, Closure $callback)
+    public function addMethod(string $name, Closure $callback): Package
     {
         $this->methods[$name] = $callback->bindTo($this, get_class($this));
 

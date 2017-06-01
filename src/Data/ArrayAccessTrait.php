@@ -26,7 +26,7 @@ trait ArrayAccessTrait
      *
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->data[$offset]);
     }

@@ -30,19 +30,19 @@ trait PostTrait
     {
         return $this->get('post', ...$args);
     }
-    
+
     /**
      * Removes $_POST given name or all $_POST
      *
      * @param mixed ...$args
      *
-     * @return bool
+     * @return PostTrait
      */
     public function removePost(...$args)
     {
         return $this->remove('post', ...$args);
     }
-    
+
     /**
      * Returns true if has $_POST given name or if $_POST is set
      *
@@ -50,7 +50,7 @@ trait PostTrait
      *
      * @return bool
      */
-    public function hasPost(...$args)
+    public function hasPost(...$args): bool
     {
         return $this->exists('post', ...$args);
     }
@@ -58,7 +58,7 @@ trait PostTrait
     /**
      * Sets $_POST
      *
-     * @param *array $data
+     * @param *mixed $data
      * @param mixed  ...$args
      *
      * @return PostTrait
@@ -68,11 +68,11 @@ trait PostTrait
         if (is_array($data)) {
             return $this->set('post', $data);
         }
-        
+
         if (count($args) === 0) {
             return $this;
         }
-        
+
         return $this->set('post', $data, ...$args);
     }
 }

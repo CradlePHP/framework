@@ -30,7 +30,7 @@ class ResolverHandler implements ResolverInterface
      * @var array $share A list of shared resolutions
      */
     protected static $share = [];
-    
+
     /**
      * Returns true if name can be resolved
      *
@@ -38,11 +38,11 @@ class ResolverHandler implements ResolverInterface
      *
      * @return bool
      */
-    public function canResolve($name)
+    public function canResolve(string $name): bool
     {
         return $this->isRegistered($name) || class_exists($name) || is_callable($name);
     }
-    
+
     /**
      * Returns true if name is registered
      *
@@ -50,11 +50,11 @@ class ResolverHandler implements ResolverInterface
      *
      * @return bool
      */
-    public function isRegistered($name)
+    public function isRegistered(string $name): bool
     {
         return isset($this->registry[$name]);
     }
-    
+
     /**
      * Returns true if name is shared
      *
@@ -62,7 +62,7 @@ class ResolverHandler implements ResolverInterface
      *
      * @return bool
      */
-    public function isShared($name)
+    public function isShared(string $name): bool
     {
         return isset(self::$share[$name]);
     }
@@ -73,15 +73,15 @@ class ResolverHandler implements ResolverInterface
      * @param *string   $name     Name of Resolver
      * @param *callable $callback What to execute when we need resolving
      *
-     * @return ResolverHandler
+     * @return ResolverInterface
      */
-    public function register($name, $callback)
+    public function register(string $name, callable $callback): ResolverInterface
     {
         //if it's not callable
         if (!is_callable($callback)) {
             throw ResolverException::forInvalidCallback();
         }
-        
+
         $this->registry[$name] = $callback;
         return $this;
     }
@@ -94,19 +94,19 @@ class ResolverHandler implements ResolverInterface
      *
      * @return mixed
      */
-    public function resolve($name, ...$args)
+    public function resolve(string $name, ...$args)
     {
         //if we can't resolve it
         if (!$this->canResolve($name)) {
             throw ResolverException::forResolverNotFound($name);
         }
-        
+
         //is it registered ?
         if ($this->isRegistered($name)) {
             $callback = $this->registry[$name];
             return call_user_func_array($callback, $args);
         }
-        
+
         //if class exist
         if (class_exists($name)) {
             //it is a class, let's register this
@@ -116,19 +116,19 @@ class ResolverHandler implements ResolverInterface
                     //instantiate it
                     return forward_static_call_array([$name, 'i'], $args);
                 }
-                
+
                 return new $name(...$args);
             });
-            
+
             //then resolve this
             return $this->resolve($name, ...$args);
         }
-        
+
         //its callable, let's register this
         $this->register($name, function (...$args) use ($name) {
             return call_user_func_array($name, $args);
         });
-        
+
         //then resolve this
         return $this->resolve($name, ...$args);
     }
@@ -142,7 +142,7 @@ class ResolverHandler implements ResolverInterface
      *
      * @return mixed
      */
-    public function resolveStatic($name, $method, ...$args)
+    public function resolveStatic(string $name, string $method, ...$args)
     {
         return $this->resolve($name . '::' . $method, ...$args);
     }
@@ -155,12 +155,12 @@ class ResolverHandler implements ResolverInterface
      *
      * @return mixed
      */
-    public function shared($name, ...$args)
+    public function shared(string $name, ...$args)
     {
         if (!isset(self::$share[$name])) {
             self::$share[$name] = $this->resolve($name, ...$args);
         }
-        
+
         return self::$share[$name];
     }
 }

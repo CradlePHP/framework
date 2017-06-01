@@ -45,7 +45,7 @@ class EventHandler implements EventInterface
     /**
      * Returns the current matched handler
      *
-     * @return array
+     * @return array|true
      */
     public function getMeta()
     {
@@ -59,7 +59,7 @@ class EventHandler implements EventInterface
      *
      * @return array
      */
-    public function match($event)
+    public function match(string $event): array
     {
         $matches = [];
 
@@ -101,16 +101,10 @@ class EventHandler implements EventInterface
      * @param string|null   $event    name of the event
      * @param callable|null $callback callback handler
      *
-     * @return EventHandler
+     * @return EventInterface
      */
-    public function off($event = null, $callback = null)
+    public function off(string $event = null, callable $callback = null): EventInterface
     {
-        //if it's not callable
-        if (!is_callable($callback)) {
-            //set it to null
-            $callback = null;
-        }
-
         //if there is no event and not callable
         if (is_null($event) && is_null($callback)) {
             //it means that they want to remove everything
@@ -151,9 +145,9 @@ class EventHandler implements EventInterface
      * @param *callable     $callback The event handler
      * @param int           $priority Set the importance
      *
-     * @return EventHandler
+     * @return EventInterface
      */
-    public function on($event, $callback, $priority = 0)
+    public function on($event, callable $callback, int $priority = 0): EventInterface
     {
         //deal with multiple events
         if (is_array($event)) {
@@ -195,9 +189,9 @@ class EventHandler implements EventInterface
      * @param *string $event The event to trigger
      * @param mixed   ...$args The arguments to pass to the handler
      *
-     * @return EventHandler
+     * @return EventInterface
      */
-    public function trigger($event, ...$args)
+    public function trigger(string $event, ...$args): EventInterface
     {
         $matches = $this->match($event);
 
@@ -242,9 +236,9 @@ class EventHandler implements EventInterface
      *
      * @param *callable $callback
      *
-     * @return EventHandler
+     * @return EventInterface
      */
-    protected function removeObserversByCallback($callback)
+    protected function removeObserversByCallback(callable $callback): EventInterface
     {
         //find the callback
         foreach ($this->observers as $event => $priorities) {
@@ -260,9 +254,9 @@ class EventHandler implements EventInterface
      * @param *string   $event
      * @param *callable $callback
      *
-     * @return EventHandler
+     * @return EventInterface
      */
-    protected function removeObserversByEvent($event, $callback)
+    protected function removeObserversByEvent(string $event, callable $callback): EventInterface
     {
         //if event isn't set
         if (!isset($this->observers[$event])) {

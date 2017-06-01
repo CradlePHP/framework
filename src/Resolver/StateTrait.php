@@ -30,7 +30,7 @@ trait StateTrait
      *
      * @return mixed
      */
-    public function loadState($name)
+    public function loadState(string $name)
     {
         $state = $this->resolve($name);
 
@@ -53,7 +53,7 @@ trait StateTrait
      *
      * @return StateTrait
      */
-    public function saveState($name, $value = null)
+    public function saveState(string $name, $value = null)
     {
         if (is_null($value)) {
             $value = $this;

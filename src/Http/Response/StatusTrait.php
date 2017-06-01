@@ -22,13 +22,13 @@ trait StatusTrait
     /**
      * Returns the status code
      *
-     * @return int
+     * @return int|null
      */
     public function getStatus()
     {
         return $this->get('code');
     }
-    
+
     /**
      * Sets a status code
      *
@@ -37,7 +37,7 @@ trait StatusTrait
      *
      * @return StatusTrait
      */
-    public function setStatus($code, $status)
+    public function setStatus(int $code, string $status)
     {
         return $this
             ->set('code', $code)

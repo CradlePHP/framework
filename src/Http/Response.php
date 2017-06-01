@@ -40,7 +40,7 @@ class Response extends Registry implements ResponseInterface
      *
      * @return Response
      */
-    public function load()
+    public function load(): Response
     {
         $this
             ->addHeader('Content-Type', 'text/html; charset=utf-8')

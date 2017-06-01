@@ -26,13 +26,13 @@ trait PostProcessorTrait
      * @var Middleware|null $preProcessor
      */
     protected $postProcessor = null;
-    
+
     /**
      * Returns a middleware object
      *
      * @return MiddlewareInterface
      */
-    public function getPostprocessor()
+    public function getPostprocessor(): MiddlewareInterface
     {
         if (is_null($this->postProcessor)) {
             if (method_exists($this, 'resolve')) {
@@ -44,15 +44,15 @@ trait PostProcessorTrait
 
         return $this->postProcessor;
     }
-    
+
     /**
      * Adds middleware
      *
-     * @param function $callback The middleware handler
+     * @param *callable $callback The middleware handler
      *
-     * @return PreProcessorTrait
+     * @return PostProcessorTrait
      */
-    public function postprocess($callback)
+    public function postprocess(callable $callback)
     {
         if ($callback instanceof Closure) {
             $callback = $callback->bindTo($this, get_class($this));
@@ -61,18 +61,18 @@ trait PostProcessorTrait
         $this->getPostprocessor()->register($callback);
         return $this;
     }
-    
+
     /**
      * Sets the middleware to use
      *
-     * @param MiddlewareInterface $middleare
+     * @param *MiddlewareInterface $middleare
      *
-     * @return PreProcessorTrait
+     * @return PostProcessorTrait
      */
     public function setPostprocessor(MiddlewareInterface $middleware)
     {
         $this->postProcessor = $middleware;
-        
+
         return $this;
     }
 }
