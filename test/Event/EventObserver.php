@@ -57,8 +57,19 @@ class Cradle_Event_EventObserver_Test extends PHPUnit_Framework_TestCase
         $callback1 = function() {};
         $callback2 = function() {};
 
+        $stub = new EventAssertStub;
+
         $this->object->setCallback($callback1);
         $this->assertTrue($this->object->assertEquals($callback1));
         $this->assertFalse($this->object->assertEquals($callback2));
+        $this->assertFalse($this->object->assertEquals('count'));
+        $this->assertFalse($this->object->assertEquals([$stub, 'foo']));
+    }
+}
+
+class EventAssertStub
+{
+    public function foo()
+    {
     }
 }

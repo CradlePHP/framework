@@ -20,6 +20,7 @@
       <file>test/Helper/SingletonTrait.php</file>
     </testsuite>
     <testsuite name="CradlePHP Resolver Test Suite">
+ 	  <file>test/Resolver/ResolverException.php</file>
  	  <file>test/Resolver/ResolverHandler.php</file>
 	  <file>test/Resolver/ResolverTrait.php</file>
 	  <file>test/Resolver/StateTrait.php</file>

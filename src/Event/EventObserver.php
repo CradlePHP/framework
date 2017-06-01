@@ -96,18 +96,13 @@ class EventObserver
                 $callback[0] = spl_object_hash($callback[0]);
             }
 
-            return $callback[0].'::'.$callable[1];
+            return $callback[0].'::'.$callback[1];
         }
 
         if ($callback instanceof Closure) {
             return spl_object_hash($callback);
         }
 
-        if (is_string($callback)) {
-            return $callback;
-        }
-
-        //it would technically never get to this point but oh well
-        return md5(var_export($callback, true));
+        return $callback;
     }
 }

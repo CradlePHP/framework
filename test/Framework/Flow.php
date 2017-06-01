@@ -45,7 +45,16 @@ class Cradle_Framework_Flow_Test extends PHPUnit_Framework_TestCase
      */
     public function test__callStatic()
     {
-        $this->assertEquals('foobar', Flow::__callStatic('foo', array('bar')));
+        $this->assertEquals('foobar', Flow::__callStatic('foo', ['bar']));
+
+        $thrown = false;
+        try {
+            Flow::__callStatic('bar', ['foo']);
+        } catch (Exception $e) {
+            $thrown = true;
+        }
+
+        $this->assertTrue($thrown);
     }
 
     /**

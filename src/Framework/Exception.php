@@ -22,9 +22,9 @@ use Exception as PHPException;
 class Exception extends PHPException
 {
     /**
-     * @const string ERROR_PACKAGE_NOT_FOUND Error template
+     * @const ERROR_FLOW_NOT_FOUND Error template
      */
-    const ERROR_PACKAGE_NOT_FOUND = 'Could not find package: %s';
+    const ERROR_FLOW_NOT_FOUND = 'Flow::%s() is not defined';
 
     /**
      * @const ERROR_METHOD_NOT_FOUND Error template
@@ -32,15 +32,20 @@ class Exception extends PHPException
     const ERROR_METHOD_NOT_FOUND = 'No method named %s was found';
 
     /**
-     * Create a new exception for invalid package
+     * @const string ERROR_PACKAGE_NOT_FOUND Error template
+     */
+    const ERROR_PACKAGE_NOT_FOUND = 'Could not find package: %s';
+
+    /**
+     * Create a new exception for invalid method
      *
-     * @param *string $vendor
+     * @param *string $name
      *
      * @return Exception
      */
-    public static function forPackageNotFound(string $vendor): Exception
+    public static function forFlowNotFound(string $name): Exception
     {
-        return new static(sprintf(static::ERROR_PACKAGE_NOT_FOUND, $vendor));
+        return new static(sprintf(static::ERROR_FLOW_NOT_FOUND, $name));
     }
 
     /**
@@ -53,5 +58,17 @@ class Exception extends PHPException
     public static function forMethodNotFound(string $name): Exception
     {
         return new static(sprintf(static::ERROR_METHOD_NOT_FOUND, $name));
+    }
+
+    /**
+     * Create a new exception for invalid package
+     *
+     * @param *string $vendor
+     *
+     * @return Exception
+     */
+    public static function forPackageNotFound(string $vendor): Exception
+    {
+        return new static(sprintf(static::ERROR_PACKAGE_NOT_FOUND, $vendor));
     }
 }
