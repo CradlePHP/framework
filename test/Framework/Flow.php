@@ -42,6 +42,7 @@ class Cradle_Framework_Flow_Test extends PHPUnit_Framework_TestCase
     /**
      * @covers Cradle\Framework\Flow::__callStatic
      * @covers Cradle\Framework\Flow::__construct
+     * @covers Cradle\Framework\Flow::getResolver
      */
     public function test__callStatic()
     {
@@ -99,6 +100,12 @@ class Cradle_Framework_Flow_Test extends PHPUnit_Framework_TestCase
     public function testSetResolver()
     {
         Flow::setResolver(new ResolverHandler);
+
+        $this->assertInstanceOf(Flow\Session::class, Flow::session());
+        $this->assertInstanceOf(Flow\Log::class, Flow::log());
+
+        $this->assertInstanceOf(Flow\Session::class, Flow::session());
+        $this->assertInstanceOf(Flow\Log::class, Flow::log());
     }
 
     /**
@@ -140,6 +147,7 @@ class Cradle_Framework_Flow_Test extends PHPUnit_Framework_TestCase
 
         $request->setStage('foo', 'bar');
         $response->setResults('foo', 'bar');
+        $response->setResults('1', 'bar');
 
         $actual = $callback($request, $response);
         $this->assertNull($actual);

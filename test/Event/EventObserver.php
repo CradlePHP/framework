@@ -51,6 +51,7 @@ class Cradle_Event_EventObserver_Test extends PHPUnit_Framework_TestCase
 
     /**
      * @covers Cradle\Event\EventObserver::assertEquals
+     * @covers Cradle\Event\EventObserver::getId
      */
     public function testAssertEquals()
     {
