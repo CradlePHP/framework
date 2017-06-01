@@ -17,8 +17,8 @@
         }
     ],
     "require-dev": {
-        "phpunit/phpunit": "~5.4",
-        "squizlabs/php_codesniffer": "~2.6",
+        "phpunit/phpunit": "5.7.9",
+        "squizlabs/php_codesniffer": "2.7.1",
         "satooshi/php-coveralls": "^1.0"
     },
     "require": {
