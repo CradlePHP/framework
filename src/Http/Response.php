@@ -11,6 +11,15 @@ namespace Cradle\Http;
 
 use Cradle\Data\Registry;
 
+use Cradle\Helper\InstanceTrait;
+use Cradle\Helper\LoopTrait;
+use Cradle\Helper\ConditionalTrait;
+
+use Cradle\Profiler\InspectorTrait;
+use Cradle\Profiler\LoggerTrait;
+
+use Cradle\Resolver\StateTrait;
+
 use Cradle\Http\Response\ResponseInterface;
 
 use Cradle\Http\Response\ContentTrait;
@@ -33,7 +42,13 @@ class Response extends Registry implements ResponseInterface
         HeaderTrait,
         PageTrait,
         RestTrait,
-        StatusTrait;
+        StatusTrait,
+        InstanceTrait,
+        LoopTrait,
+        ConditionalTrait,
+        InspectorTrait,
+        LoggerTrait,
+        StateTrait;
 
     /**
      * Loads default data
