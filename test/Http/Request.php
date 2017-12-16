@@ -21,37 +21,37 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new Request;
-        
+
         $this->object->set('cookie', array(
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->object->set('files', array(
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->object->set('get', array(
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->object->set('post', array(
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->object->set('session', array(
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->object->set('server', array(
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-		
+
         $this->object->set('stage', array(
             'foo' => 'bar',
             'bar' => 'foo'
@@ -80,7 +80,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
      */
     public function testGetArgs()
     {
-        $this->object->set('args', array(1, 2, 3));    
+        $this->object->set('args', array(1, 2, 3));
         $actual = $this->object->getArgs();
         $this->assertEquals(2, $actual[1]);
     }
@@ -90,7 +90,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
      */
     public function testSetArgs()
     {
-        $this->object->setArgs(array(1, 2, 3));    
+        $this->object->setArgs(array(1, 2, 3));
         $actual = $this->object->getArgs();
         $this->assertEquals(2, $actual[1]);
     }
@@ -100,7 +100,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
      */
     public function testGetContent()
     {
-        $this->object->set('body', 'foobar');    
+        $this->object->set('body', 'foobar');
         $actual = $this->object->getContent();
         $this->assertEquals('foobar', $actual);
     }
@@ -159,7 +159,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertInstanceOf('Cradle\Http\Request', $instance);
     }
 
@@ -198,7 +198,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertInstanceOf('Cradle\Http\Request', $instance);
     }
 
@@ -237,7 +237,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertInstanceOf('Cradle\Http\Request', $instance);
     }
 
@@ -276,7 +276,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertInstanceOf('Cradle\Http\Request', $instance);
     }
 
@@ -289,7 +289,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertEquals('bar', $this->object->getRoute('foo'));
     }
 
@@ -302,7 +302,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'parameters' => array('foo' => 'bar')
         ));
-        
+
         $this->assertEquals('bar', $this->object->getParameters('foo'));
     }
 
@@ -315,7 +315,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'variables' => array('foo', 'bar')
         ));
-        
+
         $this->assertEquals('bar', $this->object->getVariables(1));
     }
 
@@ -328,7 +328,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertInstanceOf('Cradle\Http\Request', $instance);
     }
 
@@ -371,7 +371,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
      * @covers Cradle\Http\Request::hasServer
      */
     public function testHasServer()
-    {    
+    {
         $this->assertTrue($this->object->hasServer('foo'));
         $this->assertFalse($this->object->hasServer('zoo'));
     }
@@ -382,7 +382,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
     public function testIsMethod()
     {
         $this->assertFalse($this->object->isMethod('foobar'));
-        
+
         $this->object->setMethod('foobar');
         $this->assertTrue($this->object->isMethod('foobar'));
     }
@@ -393,7 +393,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
     public function testSetMethod()
     {
         $instance = $this->object->setMethod('foobar');
-        
+
         $this->assertInstanceOf('Cradle\Http\Request', $instance);
     }
 
@@ -403,7 +403,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
     public function testSetPath()
     {
         $instance = $this->object->setPath('foobar');
-        
+
         $this->assertInstanceOf('Cradle\Http\Request', $instance);
     }
 
@@ -413,7 +413,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
     public function testSetQuery()
     {
         $instance = $this->object->setQuery('foobar');
-        
+
         $this->assertInstanceOf('Cradle\Http\Request', $instance);
     }
 
@@ -426,7 +426,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertInstanceOf('Cradle\Http\Request', $instance);
     }
 
@@ -467,15 +467,15 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
         );
 
         $instance = $this->object->setSession($session);
-        
+
         $this->assertInstanceOf('Cradle\Http\Request', $instance);
     }
-	
+
 	/**
      * covers Cradle\Http\Request\StageTrait::getStage
      */
     public function testGetStage()
-    {    
+    {
         $this->assertEquals('bar', $this->object->getStage('foo'));
     }
 
@@ -483,7 +483,7 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
      * covers Cradle\Http\Request\StageTrait::hasStage
      */
     public function testHasStage()
-    {    
+    {
         $this->assertTrue($this->object->hasStage('foo'));
         $this->assertFalse($this->object->hasStage('zoo'));
     }
@@ -506,7 +506,32 @@ class Cradle_Http_Request_Test extends PHPUnit_Framework_TestCase
             'foo' => 'bar',
             'bar' => 'foo'
         ));
-        
+
         $this->assertInstanceOf('Cradle\Http\Request', $instance);
+    }
+
+    /**
+     * Tests state loading
+     */
+    public function testStates()
+    {
+        //case study to solve for using the request variable
+        $request = $this->object->saveState('test1');
+        $this->assertEquals('bar', $request->getStage('foo'));
+
+        $request = Request::i()->setStage('foo', 'zoo');
+        $this->assertEquals('zoo', $request->getStage('foo'));
+
+        $this->assertEquals('bar', $request->loadState('test1')->getStage('foo'));
+
+        $request
+            ->saveState('main_request')
+            ->setStage('foo', 'zap')
+            ->saveState('sub_request', new Request)
+            ->loadState('sub_request')
+            ->setStage('foo', 'baz');
+
+        $this->assertEquals('baz', $request->loadState('sub_request')->getStage('foo'));
+        $this->assertEquals('zap', $request->loadState('main_request')->getStage('foo'));
     }
 }

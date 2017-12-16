@@ -11,6 +11,15 @@ namespace Cradle\Http;
 
 use Cradle\Data\Registry;
 
+use Cradle\Helper\InstanceTrait;
+use Cradle\Helper\LoopTrait;
+use Cradle\Helper\ConditionalTrait;
+
+use Cradle\Profiler\InspectorTrait;
+use Cradle\Profiler\LoggerTrait;
+
+use Cradle\Resolver\StateTrait;
+
 use Cradle\Http\Request\RequestInterface;
 
 use Cradle\Http\Request\CliTrait;
@@ -43,7 +52,13 @@ class Request extends Registry implements RequestInterface
         RouteTrait,
         ServerTrait,
         SessionTrait,
-        StageTrait;
+        StageTrait,
+        InstanceTrait,
+        LoopTrait,
+        ConditionalTrait,
+        InspectorTrait,
+        LoggerTrait,
+        StateTrait;
 
     /**
      * Loads default data given by PHP
