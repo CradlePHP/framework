@@ -93,7 +93,7 @@ trait PageTrait
      */
     public function removePage(...$args)
     {
-        return $this->set('page', ...$args);
+        return $this->remove('page', ...$args);
     }
 
     /**
