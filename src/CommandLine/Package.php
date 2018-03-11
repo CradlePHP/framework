@@ -79,7 +79,7 @@ class Package
         // @codeCoverageIgnoreEnd
 
         //parse the data
-        $data = CommandLine::parseArgs(array_slice($args, 2));
+        $data = CommandLine::parseArgs(array_slice($args, 3));
 
         $bootstrap = $this->cwd . '/bootstrap.php';
 
@@ -101,7 +101,7 @@ class Package
             }
 
             if (strpos($bootstrap, '/') !== 0) {
-                $bootstrap = $this->cwd . $bootstrap;
+                $bootstrap = $this->cwd . '/' . $bootstrap;
             }
 
             // @codeCoverageIgnoreStart
@@ -127,7 +127,29 @@ class Package
         });
 
         //prepare data
-        $data = CommandLine::parseArgs(array_slice($args, 3));
+        if (isset($data['__json'])) {
+            $json = $data['__json'];
+            unset($data['__json']);
+
+            $data = array_merge(json_decode($json, true), $data);
+        }
+
+        if (isset($data['__json64'])) {
+            $base64 = $data['__json64'];
+            unset($data['__json64']);
+
+            $json = base64_decode($base64);
+            $data = array_merge(json_decode($json, true), $data);
+        }
+
+        if (isset($data['__query'])) {
+            $query = $data['__query'];
+            unset($data['__query']);
+
+            parse_str($query, $query);
+
+            $data = array_merge($query, $data);
+        }
 
         //case for root packages
         if (strpos($args[1], '/') === 0) {

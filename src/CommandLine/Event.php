@@ -103,7 +103,7 @@ class Event
             }
 
             if (strpos($bootstrap, '/') !== 0) {
-                $bootstrap = $this->cwd . $bootstrap;
+                $bootstrap = $this->cwd . '/' . $bootstrap;
             }
 
             // @codeCoverageIgnoreStart
@@ -123,8 +123,6 @@ class Event
 
         //prepare data
         $event = $args[1];
-
-        $data = CommandLine::parseArgs(array_slice($args, 2));
 
         if (isset($data['__json'])) {
             $json = $data['__json'];

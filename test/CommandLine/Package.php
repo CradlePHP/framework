@@ -39,7 +39,7 @@ class Cradle_Framework_CommandLine_Package_Test extends TestCase
      */
     public function testRun()
     {
-        $this->object = new Package(__DIR__.'/..');
+        $this->object = new Package(__DIR__);
 
         $test = new StdClass();
         $test->triggered = false;
@@ -47,15 +47,27 @@ class Cradle_Framework_CommandLine_Package_Test extends TestCase
             $test->triggered = true;
         });
 
-        $this->object->run(['package', 'foo/bar', 'run', 'bootstrap=assets/bootstrap.php']);
+        $this->object->run(['package', 'foo/bar', 'run', 'bootstrap=../assets/bootstrap.php']);
         $this->assertTrue($test->triggered);
 
         $test->triggered = false;
-        $this->object->run(['package', 'foo/bar', 'run', 'bootstrap=./assets/bootstrap.php']);
+        $this->object->run(['package', 'foo/bar', 'run', 'bootstrap=./../assets/bootstrap.php']);
         $this->assertTrue($test->triggered);
 
         $test->triggered = false;
         $this->object->run(['package', 'foo/bar', 'run', 'bootstrap='.__DIR__.'/../assets/bootstrap.php']);
+        $this->assertTrue($test->triggered);
+
+        $test->triggered = false;
+        $this->object->run(['package', 'foo/bar', 'run', 'bootstrap=../assets/bootstrap.php', '__query="foo=bar"']);
+        $this->assertTrue($test->triggered);
+
+        $test->triggered = false;
+        $this->object->run(['package', 'foo/bar', 'run', 'bootstrap=../assets/bootstrap.php', '__json={"foo":"bar"}']);
+        $this->assertTrue($test->triggered);
+
+        $test->triggered = false;
+        $this->object->run(['package', 'foo/bar', 'run', 'bootstrap=../assets/bootstrap.php', '__json64="'.base64_encode('{"foo":"bar"}').'"']);
         $this->assertTrue($test->triggered);
     }
 }
