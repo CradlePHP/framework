@@ -117,9 +117,11 @@ class Event
         require_once($bootstrap);
 
         //Setup a default error handler
+        // @codeCoverageIgnoreStart
         $cradle->error(function ($request, $response, $error) {
             CommandLine::error($error->getMessage() . PHP_EOL . $error->getTraceAsString());
         });
+        // @codeCoverageIgnoreEnd
 
         //prepare data
         $event = $args[1];

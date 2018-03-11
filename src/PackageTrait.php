@@ -24,7 +24,7 @@ trait PackageTrait
     /**
      * @var array $packages A safe place to store package junk
      */
-    protected $packages = array();
+    protected $packages = [];
 
     /**
      * @var string $bootstrapFile A file to call on when a package is registered

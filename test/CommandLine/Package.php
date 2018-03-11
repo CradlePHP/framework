@@ -59,6 +59,10 @@ class Cradle_Framework_CommandLine_Package_Test extends TestCase
         $this->assertTrue($test->triggered);
 
         $test->triggered = false;
+        $this->object->run(['package', '/foo/bar', 'run', 'bootstrap=../assets/bootstrap.php']);
+        $this->assertTrue($test->triggered);
+
+        $test->triggered = false;
         $this->object->run(['package', 'foo/bar', 'run', 'bootstrap=../assets/bootstrap.php', '__query="foo=bar"']);
         $this->assertTrue($test->triggered);
 

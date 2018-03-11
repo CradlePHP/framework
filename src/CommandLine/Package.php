@@ -122,9 +122,11 @@ class Package
         }
 
         //Setup a default error handler
+        // @codeCoverageIgnoreStart
         $cradle->error(function ($request, $response, $error) {
             CommandLine::error($error->getMessage() . PHP_EOL . $error->getTraceAsString());
         });
+        // @codeCoverageIgnoreEnd
 
         //prepare data
         if (isset($data['__json'])) {
