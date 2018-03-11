@@ -12,68 +12,26 @@
          bootstrap="test/bootstrap.php"
 >
   <testsuites>
-  	<testsuite name="CradlePHP I18n Test Suite">
-      <file>test/I18n/Language.php</file>
-  	  <file>test/I18n/LanguageException.php</file>
-	  <file>test/I18n/Timezone.php</file>
-	  <file>test/I18n/TimezoneValidation.php</file>
-    </testsuite>
-    <testsuite name="CradlePHP Http Test Suite">
-      <file>test/Http/HttpDispatcher.php</file>
-      <file>test/Http/HttpException.php</file>
-      <file>test/Http/HttpHandler.php</file>
-      <file>test/Http/Middleware.php</file>
-      <file>test/Http/Request.php</file>
-      <file>test/Http/Response.php</file>
-      <file>test/Http/Router.php</file>
-      <file>test/Http/Dispatcher/DispatcherTrait.php</file>
-      <file>test/Http/Middleware/ErrorProcessorTrait.php</file>
-      <file>test/Http/Middleware/PostProcessorTrait.php</file>
-      <file>test/Http/Middleware/PreProcessorTrait.php</file>
-      <file>test/Http/Request/CliTrait.php</file>
-      <file>test/Http/Request/ContentTrait.php</file>
-      <file>test/Http/Request/CookieTrait.php</file>
-      <file>test/Http/Request/FileTrait.php</file>
-      <file>test/Http/Request/GetTrait.php</file>
-      <file>test/Http/Request/PostTrait.php</file>
-      <file>test/Http/Request/RequestTrait.php</file>
-      <file>test/Http/Request/RouteTrait.php</file>
-      <file>test/Http/Request/ServerTrait.php</file>
-      <file>test/Http/Request/SessionTrait.php</file>
-      <file>test/Http/Request/StageTrait.php</file>
-      <file>test/Http/Response/ContentTrait.php</file>
-      <file>test/Http/Response/HeaderTrait.php</file>
-      <file>test/Http/Response/ResponseTrait.php</file>
-      <file>test/Http/Response/RestTrait.php</file>
-      <file>test/Http/Response/StatusTrait.php</file>
-      <file>test/Http/Router/RouterTrait.php</file>
-    </testsuite>
-    <testsuite name="CradlePHP Meta Framework Test Suite">
-      <file>test/Framework/Exception.php</file>
-      <file>test/Framework/PackageTrait.php</file>
-      <file>test/Framework/Package.php</file>
-      <file>test/Framework/App.php</file>
-      <file>test/Framework/Flow.php</file>
-      <file>test/Framework/FlowTrait.php</file>
-      <file>test/Framework/Decorator.php</file>
-      <file>test/Framework/Flow/Log.php</file>
-      <file>test/Framework/Flow/Session.php</file>
+  	<testsuite name="CradlePHP Meta Framework Test Suite">
+      <file>test/Exception.php</file>
+      <file>test/PackageTrait.php</file>
+      <file>test/Package.php</file>
+      <file>test/FrameworkHandler.php</file>
+      <file>test/Decorator.php</file>
+      <file>test/CommandLine.php</file>
+      <file>test/CommandLine/Event.php</file>
+      <file>test/CommandLine/Package.php</file>
+      <file>test/CommandLine/Help.php</file>
     </testsuite>
   </testsuites>
 
   <filter>
     <whitelist>
       <directory suffix=".php">./src</directory>
-	  <exclude>
+      <exclude>
         <directory>./vendor</directory>
         <directory>./test</directory>
-		<file>src/Http/Dispatcher/DispatcherInterface.php</file>
-		<file>src/Http/Middleware/MiddlewareInterface.php</file>
-		<file>src/Http/Request/RequestInterface.php</file>
-		<file>src/Http/Response/ResponseInterface.php</file>
-		<file>src/Http/Router/RouterInterface.php</file>
-		<file>src/Http/map/output.php</file>
-		<file>src/Http/map/redirect.php</file>
+        <file>src/CommandLine/map.php</file>
       </exclude>
     </whitelist>
   </filter>
