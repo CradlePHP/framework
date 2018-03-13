@@ -75,6 +75,18 @@ class CommandLine
             array_splice($args, 1, 0, array($command));
         }
 
+        //if command is package
+        if ($command === 'package'
+            && (//and no package was defined
+                !isset($args[2])
+                || strpos($args[2], '/') === false
+            )
+        )
+        {
+            $command = 'event';
+            array_splice($args, 1, 0, ['event']);
+        }
+
         $class = sprintf(self::COMMAND_CLASS, ucwords($command));
 
         if (!class_exists($class)) {
