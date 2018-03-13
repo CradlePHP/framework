@@ -36,11 +36,8 @@ trait PackageTrait
      */
     public function __constructPackage()
     {
-        if (method_exists($this, 'resolve')) {
-            $this->packages['global'] = $this->resolve(Package::class);
-        } else {
-            $this->packages['global'] = new Package;
-        }
+        //by default register a pseudo global package
+        $this->register('global');
     }
 
     /**
@@ -68,7 +65,7 @@ trait PackageTrait
             throw Exception::forPackageNotFound($vendor);
         }
 
-        return $this->packages[$vendor];
+        return $this->packages[$vendor]['package'];
     }
 
     /**
@@ -81,36 +78,74 @@ trait PackageTrait
      */
     public function register(string $vendor, ...$args)
     {
-        //create a space
+        //this is the package struct
+        $package = [];
+
+        //determine class
         if (method_exists($this, 'resolve')) {
-            $this->packages[$vendor] = $this->resolve(Package::class);
-        } else {
-            $this->packages[$vendor] = new Package;
-        }
-
-        //luckily we know where we are in vendor folder :)
-        //is there a better recommended way?
-        $root = __DIR__ . '/../../..';
-
-        if (strpos($vendor, '/') === 0) {
-            $root .= '/..';
-            $vendor = substr($vendor, 1);
-        }
-
-        $cradle = $this;
-
-        //we should check for events
-        $file = $root . '/' . $vendor . '/' . $this->bootstrapFile;
+            $package['package'] = $this->resolve(Package::class);
         // @codeCoverageIgnoreStart
-        if (file_exists($file)) {
-            //so you can access cradle
-            //within the included file
-            include_once($file);
-        } else if (file_exists($file . '.php')) {
-            //so the IDE can have color
-            include_once($file . '.php');
+        } else {
+            $package['package'] = new Package;
         }
         // @codeCoverageIgnoreEnd
+
+        //determine type
+        //by default it's a pseudo package
+        $package['type'] = 'pseudo';
+        //if theres a slash like foo/bar or /foo/bar
+        if (strpos($vendor, '/') !== false) {
+            //it can be a vendor package
+            $package['type'] = 'vendor';
+            //if it starts with / like /foo/bar
+            if (strpos($vendor, '/') === 0) {
+                //it's a root package
+                $package['type'] = 'root';
+            }
+        }
+
+        //if the type is not pseudo (vendor or module)
+        if ($package['type'] !== 'pseudo') {
+            //determine where it is located
+            //luckily we know where we are in vendor folder :)
+            //is there a better recommended way?
+            $package['root'] = __DIR__ . '/../../..';
+
+            //the vendor name also represents the path
+            $path = $vendor;
+
+            //if it's a root package
+            if ($package['type'] === 'root') {
+                $package['root'] .= '/..';
+                $path = substr($vendor, 1);
+            }
+
+            //either way set the root and path
+            $package['root'] = realpath($package['root']);
+            $package['path'] =  $package['root'] . '/' . $path;
+        }
+
+        //create a space
+        $this->packages[$vendor] = $package;
+
+        //if the type is not pseudo (vendor or module)
+        if ($package['type'] !== 'pseudo') {
+            //let's try to call the bootstrap
+            $cradle = $this;
+
+            //we should check for events
+            $file = $package['path'] . '/' . $this->bootstrapFile;
+            // @codeCoverageIgnoreStart
+            if (file_exists($file)) {
+                //so you can access cradle
+                //within the included file
+                include_once($file);
+            } else if (file_exists($file . '.php')) {
+                //so the IDE can have color
+                include_once($file . '.php');
+            }
+            // @codeCoverageIgnoreEnd
+        }
 
         return $this;
     }

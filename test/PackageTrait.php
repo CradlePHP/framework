@@ -62,13 +62,20 @@ class Cradle_Frame_PackageTrait_Test extends TestCase
 
     /**
      * covers Cradle\Framework\PackageTrait::register
+     * covers Cradle\Framework\PackageTrait::package
      */
     public function testRegister()
     {
+        //pseudo
         $instance = $this->object->register('foobar')->package('foobar');
         $this->assertInstanceOf('Cradle\Framework\Package', $instance);
 
+        //root
         $instance = $this->object->register('/foo/bar')->package('/foo/bar');
+        $this->assertInstanceOf('Cradle\Framework\Package', $instance);
+
+        //vendor
+        $instance = $this->object->register('foo/bar')->package('foo/bar');
         $this->assertInstanceOf('Cradle\Framework\Package', $instance);
     }
 
