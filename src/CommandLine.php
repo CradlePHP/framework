@@ -81,8 +81,7 @@ class CommandLine
                 !isset($args[2])
                 || strpos($args[2], '/') === false
             )
-        )
-        {
+        ) {
             $command = 'event';
             array_splice($args, 1, 0, ['event']);
         }

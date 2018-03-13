@@ -111,10 +111,16 @@ class FrameworkHandler
     /**
      * Returns all the packages
      *
+     * @param string|null $name Name of package
+     *
      * @return array
      */
-    public function getPackages(): array
+    public function getPackages($name = null): array
     {
+        if (isset($this->packages[$name])) {
+            return $this->packages[$name];
+        }
+
         return $this->packages;
     }
 
