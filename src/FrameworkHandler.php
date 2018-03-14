@@ -115,7 +115,7 @@ class FrameworkHandler
      *
      * @return array
      */
-    public function getPackages($name = null): array
+    public function getPackages(string $name = null): array
     {
         if (isset($this->packages[$name])) {
             return $this->packages[$name];
