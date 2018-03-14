@@ -36,11 +36,8 @@ trait PackageTrait
      */
     public function __constructPackage()
     {
-        if (method_exists($this, 'resolve')) {
-            $this->packages['global'] = $this->resolve(Package::class);
-        } else {
-            $this->packages['global'] = new Package;
-        }
+        //by default register a pseudo global package
+        $this->register('global');
     }
 
     /**
@@ -81,36 +78,34 @@ trait PackageTrait
      */
     public function register(string $vendor, ...$args)
     {
-        //create a space
+        //determine class
         if (method_exists($this, 'resolve')) {
-            $this->packages[$vendor] = $this->resolve(Package::class);
-        } else {
-            $this->packages[$vendor] = new Package;
-        }
-
-        //luckily we know where we are in vendor folder :)
-        //is there a better recommended way?
-        $root = __DIR__ . '/../../..';
-
-        if (strpos($vendor, '/') === 0) {
-            $root .= '/..';
-            $vendor = substr($vendor, 1);
-        }
-
-        $cradle = $this;
-
-        //we should check for events
-        $file = $root . '/' . $vendor . '/' . $this->bootstrapFile;
+            $this->packages[$vendor] = $this->resolve(Package::class, $vendor);
         // @codeCoverageIgnoreStart
-        if (file_exists($file)) {
-            //so you can access cradle
-            //within the included file
-            include_once($file);
-        } else if (file_exists($file . '.php')) {
-            //so the IDE can have color
-            include_once($file . '.php');
+        } else {
+            $this->packages[$vendor] = new Package($vendor);
         }
         // @codeCoverageIgnoreEnd
+
+        //if the type is not pseudo (vendor or root)
+        if ($this->packages[$vendor]->getPackageType() !== Package::TYPE_PSEUDO) {
+            //let's try to call the bootstrap
+            $cradle = $this;
+
+            //we should check for events
+            $file = $this->packages[$vendor]->getPackagePath() . '/' . $this->bootstrapFile;
+
+            // @codeCoverageIgnoreStart
+            if (file_exists($file)) {
+                //so you can access cradle
+                //within the included file
+                include_once($file);
+            } else if (file_exists($file . '.php')) {
+                //so the IDE can have color
+                include_once($file . '.php');
+            }
+            // @codeCoverageIgnoreEnd
+        }
 
         return $this;
     }
