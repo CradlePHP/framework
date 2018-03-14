@@ -74,7 +74,7 @@ class Cradle_Framework_Package_Test extends TestCase
     {
         //foo/bar
         $actual = $this->object->getPackagePath();
-        $this->assertContains('/vendor/foo/bar', $actual);
+        $this->assertContains('/foo/bar', $actual);
 
         $this->object->__construct('/foo/bar');
         $actual = $this->object->getPackagePath();
@@ -93,7 +93,7 @@ class Cradle_Framework_Package_Test extends TestCase
     {
         //foo/bar
         $actual = $this->object->getPackageRoot();
-        $this->assertContains('/vendor', $actual);
+        $this->assertTrue($actual !== false);
 
         $this->object->__construct('/foo/bar');
         $actual = $this->object->getPackageRoot();
