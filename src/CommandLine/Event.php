@@ -159,8 +159,12 @@ class Event
         //see HttpTrait->render() for similar implementation
         //if prepared returned false
         if (!$cradle->prepare()) {
+            //can't test this without invoking an exception in the test somehow
+            //that implies writing more code just to cover a test...
+            // @codeCoverageIgnoreStart
             //dont do anything else
             return $this;
+            // @codeCoverageIgnoreEnd
         }
 
         if ($response->getStatus() == 200) {
@@ -170,7 +174,10 @@ class Event
                 ->getMeta();
 
             if (!$continue) {
+                //same rationale as above
+                // @codeCoverageIgnoreStart
                 return $this;
+                // @codeCoverageIgnoreEnd
             }
         }
 

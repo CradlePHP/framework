@@ -183,13 +183,14 @@ class Package
             return '0.0.0';
         }
 
+        //sorry there's no way I can test this without it being a real package.
+        // @codeCoverageIgnoreStart
         $path .= '/install';
 
         if (!is_dir($path)) {
             return '0.0.0';
         }
 
-        // @codeCoverageIgnoreStart
         //collect and organize all the versions
         $versions = [];
         $files = scandir($path, 0);
