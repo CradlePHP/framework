@@ -65,7 +65,7 @@ trait PackageTrait
             throw Exception::forPackageNotFound($vendor);
         }
 
-        return $this->packages[$vendor]['package'];
+        return $this->packages[$vendor];
     }
 
     /**
@@ -78,63 +78,23 @@ trait PackageTrait
      */
     public function register(string $vendor, ...$args)
     {
-        //this is the package struct
-        $package = [];
-
         //determine class
         if (method_exists($this, 'resolve')) {
-            $package['package'] = $this->resolve(Package::class);
+            $this->packages[$vendor] = $this->resolve(Package::class, $vendor);
         // @codeCoverageIgnoreStart
         } else {
-            $package['package'] = new Package;
+            $this->packages[$vendor] = new Package($vendor);
         }
         // @codeCoverageIgnoreEnd
 
-        //determine type
-        //by default it's a pseudo package
-        $package['type'] = 'pseudo';
-        //if theres a slash like foo/bar or /foo/bar
-        if (strpos($vendor, '/') !== false) {
-            //it can be a vendor package
-            $package['type'] = 'vendor';
-            //if it starts with / like /foo/bar
-            if (strpos($vendor, '/') === 0) {
-                //it's a root package
-                $package['type'] = 'root';
-            }
-        }
-
-        //if the type is not pseudo (vendor or module)
-        if ($package['type'] !== 'pseudo') {
-            //determine where it is located
-            //luckily we know where we are in vendor folder :)
-            //is there a better recommended way?
-            $package['root'] = __DIR__ . '/../../..';
-
-            //the vendor name also represents the path
-            $path = $vendor;
-
-            //if it's a root package
-            if ($package['type'] === 'root') {
-                $package['root'] .= '/..';
-                $path = substr($vendor, 1);
-            }
-
-            //either way set the root and path
-            $package['root'] = realpath($package['root']);
-            $package['path'] =  $package['root'] . '/' . $path;
-        }
-
-        //create a space
-        $this->packages[$vendor] = $package;
-
-        //if the type is not pseudo (vendor or module)
-        if ($package['type'] !== 'pseudo') {
+        //if the type is not pseudo (vendor or root)
+        if ($this->packages[$vendor]->getPackageType() !== Package::TYPE_PSEUDO) {
             //let's try to call the bootstrap
             $cradle = $this;
 
             //we should check for events
-            $file = $package['path'] . '/' . $this->bootstrapFile;
+            $file = $this->packages[$vendor]->getPackagePath() . '/' . $this->bootstrapFile;
+
             // @codeCoverageIgnoreStart
             if (file_exists($file)) {
                 //so you can access cradle

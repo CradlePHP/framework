@@ -20,7 +20,7 @@ class Cradle_Framework_Package_Test extends TestCase
      */
     protected function setUp()
     {
-        $this->object = new Package;
+        $this->object = new Package('foo/bar');
     }
 
     /**
@@ -64,5 +64,71 @@ class Cradle_Framework_Package_Test extends TestCase
 
         $actual = $this->object->__call('foo', array());
         $this->assertEquals('bar', $actual);
+    }
+
+    /**
+     * @covers Cradle\Framework\Package::__construct
+     * @covers Cradle\Framework\Package::getPackagePath
+     */
+    public function testGetPackagePath()
+    {
+        //foo/bar
+        $actual = $this->object->getPackagePath();
+        $this->assertContains('/vendor/foo/bar', $actual);
+
+        $this->object->__construct('/foo/bar');
+        $actual = $this->object->getPackagePath();
+        $this->assertContains('/foo/bar', $actual);
+        $this->assertFalse(strpos($actual, '/vendor/foo/bar'));
+
+        $this->object->__construct('foo');
+        $actual = $this->object->getPackagePath();
+        $this->assertFalse($actual);
+    }
+
+    /**
+     * @covers Cradle\Framework\Package::getPackageRoot
+     */
+    public function testGetPackageRoot()
+    {
+        //foo/bar
+        $actual = $this->object->getPackageRoot();
+        $this->assertContains('/vendor', $actual);
+
+        $this->object->__construct('/foo/bar');
+        $actual = $this->object->getPackageRoot();
+        $this->assertFalse(strpos($actual, '/vendor'));
+
+        $this->object->__construct('foo');
+        $actual = $this->object->getPackageRoot();
+        $this->assertFalse($actual);
+    }
+
+    /**
+     * @covers Cradle\Framework\Package::getPackageType
+     */
+    public function testGetPackageType()
+    {
+        //foo/bar
+        $actual = $this->object->getPackageType();
+        $this->assertEquals('vendor', $actual);
+
+        $this->object->__construct('/foo/bar');
+        $actual = $this->object->getPackageType();
+        $this->assertEquals('root', $actual);
+
+        $this->object->__construct('foo');
+        $actual = $this->object->getPackageType();
+        $this->assertEquals('pseudo', $actual);
+    }
+
+    /**
+     * @covers Cradle\Framework\Package::getPackageVersion
+     */
+    public function testGetPackageVersion()
+    {
+        $this->object->__construct('foo');
+        $actual = $this->object->getPackageVersion();
+        $this->assertEquals('0.0.0', $actual);
     }
 }
