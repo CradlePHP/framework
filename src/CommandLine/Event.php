@@ -13,6 +13,8 @@ use Cradle\Framework\CommandLine;
 use Cradle\Framework\Exception;
 use Cradle\Framework\Decorator;
 
+use Cradle\Event\EventHandler;
+
 use Cradle\Http\Request;
 use Cradle\Http\Response;
 
@@ -167,18 +169,29 @@ class Event
             // @codeCoverageIgnoreEnd
         }
 
-        if ($response->getStatus() == 200) {
-            $continue = $cradle
-                ->trigger($event, $request, $response)
-                ->getEventHandler()
-                ->getMeta();
+        if ($response->getStatus() !== EventHandler::STATUS_OK) {
+            CommandLine::error(sprintf('Aborting %s because of a preprocessor call aborted.', $event));
+        }
 
-            if (!$continue) {
-                //same rationale as above
-                // @codeCoverageIgnoreStart
-                return $this;
-                // @codeCoverageIgnoreEnd
-            }
+        $continue = $cradle
+            ->trigger($event, $request, $response)
+            ->getEventHandler()
+            ->getMeta();
+
+        //if incomplete
+        if ($continue === EventHandler::STATUS_INCOMPLETE) {
+            //same rationale as above
+            // @codeCoverageIgnoreStart
+            CommandLine::error(sprintf('Aborting %s because of an event call aborted.', $event));
+            // @codeCoverageIgnoreEnd
+        }
+
+        //if incomplete
+        if ($continue === EventHandler::STATUS_NOT_FOUND) {
+            //same rationale as above
+            // @codeCoverageIgnoreStart
+            CommandLine::error(sprintf('No event %s was triggered.', $event));
+            // @codeCoverageIgnoreEnd
         }
 
         if (!$response->hasContent() && $response->hasJson()) {

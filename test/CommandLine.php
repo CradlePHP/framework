@@ -51,6 +51,7 @@ class Cradle_Framework_CommandLine_Test extends TestCase
         $this->assertTrue($test->triggered);
 
         $test->triggered = false;
+        cradle()->on('foobar', function() {});
         $this->object->run(['cradle', 'foobar', 'bootstrap=assets/bootstrap.php']);
         $this->assertTrue($test->triggered);
 

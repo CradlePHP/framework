@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf2003f3edf2f177e20cd04f543435c9",
+    "content-hash": "dbf618293e022f371950ee2d2e6c362f",
     "packages": [
         {
             "name": "cradlephp/components",
-            "version": "2.0.0",
+            "version": "2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CradlePHP/components.git",
-                "reference": "2e7004ff58f744960102e04fe404cce9d05a4c5e"
+                "reference": "1b8ddd28c533799d28b8418836f48583ed84557d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CradlePHP/components/zipball/2e7004ff58f744960102e04fe404cce9d05a4c5e",
-                "reference": "2e7004ff58f744960102e04fe404cce9d05a4c5e",
+                "url": "https://api.github.com/repos/CradlePHP/components/zipball/1b8ddd28c533799d28b8418836f48583ed84557d",
+                "reference": "1b8ddd28c533799d28b8418836f48583ed84557d",
                 "shasum": ""
             },
             "require": {
@@ -53,7 +53,7 @@
                 "php70",
                 "php71"
             ],
-            "time": "2018-03-11T10:55:10+00:00"
+            "time": "2018-03-15T12:45:01+00:00"
         }
     ],
     "packages-dev": [

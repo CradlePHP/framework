@@ -10,9 +10,10 @@
 namespace Cradle\Framework\CommandLine;
 
 use Cradle\Framework\CommandLine;
-
 use Cradle\Framework\Exception;
 use Cradle\Framework\Decorator;
+
+use Cradle\Event\EventHandler;
 
 //enable the function
 Decorator::DECORATE;
@@ -175,7 +176,7 @@ class Package
             return $this;
         }
 
-        if ($response->getStatus() == 200) {
+        if ($response->getStatus() == EventHandler::STATUS_OK) {
             $continue = $cradle
                 ->trigger($event, $request, $response)
                 ->getEventHandler()
