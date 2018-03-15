@@ -21,6 +21,7 @@ use Cradle\Resolver\StateTrait;
 use Cradle\Resolver\ResolverException;
 
 use Cradle\Http\HttpTrait;
+use Cradle\Event\EventHandler;
 use Cradle\Event\PipeTrait;
 
 /**
@@ -161,7 +162,7 @@ class FrameworkHandler
 
             //no map ? let's try our best
             //if we have meta
-            if ($meta) {
+            if ($meta === EventHandler::STATUS_OK) {
                 //return the response
                 return $response->getContent(true);
             }
