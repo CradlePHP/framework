@@ -56,6 +56,11 @@ class FrameworkHandler
     }
 
     /**
+     * @param array $handlers
+     */
+    protected $handlers = [];
+
+    /**
      * Custom Invoker for package calling
      *
      * @param *string $package name of package
@@ -292,53 +297,73 @@ class FrameworkHandler
 
     /**
      * Sets up a sub handler given the path.
-     * Notes when setting this:
-     *  - Routes are unique per Handler.
-     *  - Middleware are unique per Handler.
-     *  - Child pre processors aren't triggered.
-     *  - Child post processors aren't triggered.
-     *  - Child error processors are set by Parent.
-     *  - Child protocols are set by Parent.
-     *  - Child packages are set by Parent.
-     *  - Child requests are set by Parent.
-     *  - Child responses are set by Parent.
-     *  - Events are still global.
      *
-     * @param *string $root    The root path to handle
-     * @param *FrameworkHandler    $handler the child handler
+     * @param *string               $root The root path to handle
+     * @param FrameworkHandler|null $handler the child handler
      *
      * @return FrameworkHandler
      */
-    public function setHandler(FrameworkHandler $handler, string $root): FrameworkHandler
+    public function handler(string $root, FrameworkHandler $handler = null): FrameworkHandler
     {
-        $this->route(
-            'all',
-            $root . '**',
-            function ($request, $response) use ($root, $handler) {
-                //we need the original path
-                $path = $request->getPath('string');
-
-                $subPath = substr($path, strlen($root));
-
-                //because substr('/', 1); --> false
-                if (!is_string($subPath) || !strlen($subPath)) {
-                    $subPath = '/';
-                }
-
-                $request->setPath($subPath);
-
-                $handler
-                    ->setParent($this)
-                    ->setRequest($request)
-                    ->setResponse($response)
-                    ->process();
-
-                //bring the path back
-                $request->setPath($path);
+        //if we have this handler in memory
+        if (isset($this->handlers[$root])) {
+            //if a handler was provided
+            if ($handler instanceof FrameworkHandler) {
+                //we mean to change up the handler
+                $this->handlers[$root] = $handler;
             }
-        );
 
-        return $this;
+            //either way return the handler
+            return $this->handlers[$root];
+        }
+
+        //otherwise the handler is not in memory
+        if (!($handler instanceof FrameworkHandler)) {
+            // By default
+            //  - Routes are unique per Handler.
+            //  - Middleware are unique per Handler.
+            //  - Child pre processors aren't triggered.
+            //  - Child post processors aren't triggered.
+            //  - Child error processors are set by Parent.
+            //  - Child protocols are set by Parent.
+            //  - Child packages are set by Parent.
+            //  - Child requests are set by Parent.
+            //  - Child responses are set by Parent.
+            //  - Events are still global.
+            $handler = FrameworkHandler::i()->setParent($this);
+        }
+
+        //remember the handler
+        $this->handlers[$root] = $handler;
+
+        //since this is out first time with this,
+        //lets have the parent listen to the root and all possible
+        $this->all($root . '**', function ($request, $response) use ($root) {
+            //we need the original path
+            $path = $request->getPath('string');
+            //determine the sub route
+            $route = substr($path, strlen($root));
+
+            //because substr('/', 1); --> false
+            if (!is_string($route) || !strlen($route)) {
+                $route = '/';
+            }
+
+            //set up the sub rout in request
+            $request->setPath($route);
+
+            //we want to lazy load this in because it is
+            //possible that the hander could have changed
+            $this->handler($root)
+                ->setRequest($request)
+                ->setResponse($response)
+                ->process();
+
+            //bring the path back
+            $request->setPath($path);
+        });
+
+        return $this->handlers[$root];
     }
 
     /**
@@ -361,12 +386,14 @@ class FrameworkHandler
      */
     public function setParent(FrameworkHandler $parent): FrameworkHandler
     {
-        //use the parent error processor
-        $this->errorProcessor = $parent->getErrorProcessor();
         //use the parent protocols
         $this->protocols = $parent->getProtocols();
         //use the parent packages
         $this->packages = $parent->getPackages();
+        //use the parent event handler
+        $this->setEventHandler($parent->getEventHandler());
+        //use the parent error processor
+        $this->setErrorProcessor($parent->getErrorProcessor());
 
         return $this;
     }

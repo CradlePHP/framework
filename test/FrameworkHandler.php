@@ -54,12 +54,17 @@ class Cradle_Framework_FrameworkHandler_Test extends TestCase
     }
 
     /**
-     * @covers Cradle\Framework\FrameworkHandler::setHandler
+     * @covers Cradle\Framework\FrameworkHandler::handler
      */
-    public function testSetHandler()
+    public function testHandler()
     {
+        //set up the test
         $request = new Request();
-        $request->setPath('/foo/bar')->setMethod('GET');
+        $request->setMethod('GET');
+        $this->object->setRequest($request);
+
+        //test 1
+        $request->setPath('/foo/bar');
         $handler = new FrameworkHandler;
         $trigger = new StdClass;
         $trigger->success = false;
@@ -67,11 +72,12 @@ class Cradle_Framework_FrameworkHandler_Test extends TestCase
             $trigger->success = true;
         });
 
-        $this->object->setRequest($request);
-        $this->object->setHandler($handler, '/foo')->process();
+        $this->object->handler('/foo', $handler);
+        $this->object->process();
 
         $this->assertTrue($trigger->success);
 
+        //test  2
         $request->setPath('/');
         $handler = new FrameworkHandler;
         $trigger = new StdClass;
@@ -81,9 +87,49 @@ class Cradle_Framework_FrameworkHandler_Test extends TestCase
         });
 
         $this->object->setRequest($request);
-        $this->object->setHandler($handler, '/')->process();
+        $this->object->handler('/', $handler);
+        $this->object->process();
 
         $this->assertTrue($trigger->success);
+
+        //test 3
+        $handler3 = $this->object->handler('/admin');
+        $this->assertInstanceOf('\Cradle\Framework\FrameworkHandler', $handler3);
+        $this->assertFalse($handler3 === $this->object);
+
+        //test 4
+        $handler4 = $this->object->handler('/admin');
+        $this->assertInstanceOf('\Cradle\Framework\FrameworkHandler', $handler4);
+        $this->assertTrue($handler3 === $handler4);
+
+        //test 5
+        $handler5 = $this->object->handler('/admin', $handler3);
+        $this->assertInstanceOf('\Cradle\Framework\FrameworkHandler', $handler5);
+        $this->assertTrue($handler5 === $handler4);
+
+        //test 6
+        $request->setPath('/admin');
+        $trigger = new StdClass;
+        $trigger->count = 0;
+        $handler5->get('/', function() use ($trigger) {
+            $trigger->count ++;
+        });
+
+        $this->object->setRequest($request);
+        $this->object->process();
+        $this->assertEquals(1, $trigger->count);
+
+        //test 7
+        $request->setPath('/admin/foo');
+        $trigger = new StdClass;
+        $trigger->count = 0;
+        $handler5->get('/foo', function() use ($trigger) {
+            $trigger->count ++;
+        });
+
+        $this->object->setRequest($request);
+        $this->object->process();
+        $this->assertEquals(1, $trigger->count);
     }
 
     /**
