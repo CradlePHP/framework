@@ -121,14 +121,4 @@ class Cradle_Framework_Package_Test extends TestCase
         $actual = $this->object->getPackageType();
         $this->assertEquals('pseudo', $actual);
     }
-
-    /**
-     * @covers Cradle\Framework\Package::getPackageVersion
-     */
-    public function testGetPackageVersion()
-    {
-        $this->object->__construct('foo');
-        $actual = $this->object->getPackageVersion();
-        $this->assertEquals('0.0.0', $actual);
-    }
 }
