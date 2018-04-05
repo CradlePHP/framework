@@ -21,7 +21,7 @@
         "satooshi/php-coveralls": "2.0.0"
     },
     "require": {
-        "cradlephp/components": "~2.1.4"
+        "cradlephp/components": "2.1.*"
     },
     "autoload": {
         "psr-4": {
