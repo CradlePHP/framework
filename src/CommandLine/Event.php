@@ -39,7 +39,7 @@ class Event
     /**
      * @const string ERROR_BOOTSTRAP_FLAG
      */
-    const ERROR_BOOTSTRAP_FLAG = 'Could not determine bootstrap file. Try --bootrap=path/to/bootstrap.php';
+    const ERROR_BOOTSTRAP_FLAG = 'Could not determine bootstrap file. Try --bootrap=path/to/.cradle.php';
 
     /**
      * @const string ERROR_BOOTSTRAP_404
@@ -85,7 +85,7 @@ class Event
         //parse the data
         $data = CommandLine::parseArgs(array_slice($args, 2));
 
-        $bootstrap = $this->cwd . '/bootstrap.php';
+        $bootstrap = $this->cwd . '/.cradle.php';
 
         //if no bootstrap
         if (!file_exists($bootstrap)) {
