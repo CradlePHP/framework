@@ -21,6 +21,9 @@ use Cradle\Resolver\StateTrait;
 use Cradle\Resolver\ResolverException;
 
 use Cradle\Http\HttpTrait;
+use Cradle\Http\Request;
+use Cradle\Http\Response;
+
 use Cradle\Event\EventHandler;
 use Cradle\Event\PipeTrait;
 
@@ -205,6 +208,51 @@ class FrameworkHandler
         }
 
         return $this;
+    }
+
+    /**
+     * Creates a new Request and Response
+     *
+     * @param bool $load whether to load the RnRs
+     *
+     * @return array
+     */
+    public function makePayload($load = true)
+    {
+        $request = Request::i();
+        $response = Response::i();
+
+        if($load) {
+            $request->load();
+            $response->load();
+        }
+
+        return [
+            'request' => $request,
+            'response' => $response
+        ];
+    }
+
+    /**
+     * Runs an event like a method
+     *
+     * @param bool $load whether to load the RnRs
+     *
+     * @return array
+     */
+    public function method($event, Request $request, Response $response = null)
+    {
+        if (is_null($response)) {
+            $response = Response::i()->load();
+        }
+
+        $this->trigger($event, $request, $response);
+
+        if ($response->isError()) {
+            return false;
+        }
+
+        return $response->getResults();
     }
 
     /**
