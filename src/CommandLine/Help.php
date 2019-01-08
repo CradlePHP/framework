@@ -36,5 +36,11 @@ class Help
         CommandLine::info('Usage: `cradle <vendor/package> <command>`          - Runs a package event');
         CommandLine::info('Usage: `cradle event <event name> <json|query>`     - Runs an event');
         CommandLine::info('Usage: `cradle <event name> <json|query>`           - Runs an event');
+
+        //also call the event
+        $class = sprintf(CommandLine::COMMAND_CLASS, 'Event');
+        array_splice($args, 1, 0, array('help'));
+        $runner = new $class($this->cwd);
+        return $runner->run($args);
     }
 }

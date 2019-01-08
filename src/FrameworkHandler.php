@@ -222,7 +222,7 @@ class FrameworkHandler
         $request = Request::i();
         $response = Response::i();
 
-        if($load) {
+        if ($load) {
             $request->load();
             $response->load();
         }
