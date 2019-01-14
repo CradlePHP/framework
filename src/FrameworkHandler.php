@@ -316,7 +316,12 @@ class FrameworkHandler
     {
         array_unshift($args, $callback);
 
-        foreach ($args as $callback) {
+        foreach ($args as $i => $callback) {
+            $priority = 0;
+            if (isset($args[$i + 1]) && is_numeric($args[$i + 1])) {
+                $priority = $args[$i + 1];
+            }
+
             //if it's a string
             if (is_string($callback)) {
                 //it's an event
@@ -336,7 +341,7 @@ class FrameworkHandler
             //if it's callable
             if (is_callable($callback)) {
                 //route it
-                $this->routeHttp($method, $path, $callback);
+                $this->routeHttp($method, $path, $callback, $priority);
             }
         }
 
