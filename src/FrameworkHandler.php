@@ -225,6 +225,12 @@ class FrameworkHandler
         if ($load) {
             $request->load();
             $response->load();
+
+            $stage = $this->getRequest()->getStage();
+
+            if (is_array($stage)) {
+                $request->setSoftStage($stage);
+            }
         }
 
         return [
