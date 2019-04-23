@@ -290,6 +290,57 @@ class Cradle_Framework_FrameworkHandler_Test extends TestCase
     }
 
     /**
+     * @covers Cradle\Framework\FrameworkHandler::makePayload
+     */
+    public function testMakePayload()
+    {
+        $this->object->getRequest()->setStage('foobar', 'barfoo');
+        $payload = $this->object->makePayload(true);
+        $this->assertEquals('barfoo', $payload['request']->getStage('foobar'));
+    }
+
+    /**
+     * @covers Cradle\Framework\FrameworkHandler::method
+     */
+    public function testMethod()
+    {
+        $trigger = new StdClass();
+        $trigger->success = false;
+        $trigger->stage = [];
+        $this->object->on('method-test', function($req, $res) use ($trigger) {
+            $trigger->success = true;
+            $trigger->stage = $req->getStage();
+
+            if ($req->hasStage('fail')) {
+                return $res->setError(true, 'Failed');
+            }
+
+            $res->setResults('works');
+        });
+
+        $results = $this->object->method('method-test');
+
+        $this->assertTrue($trigger->success);
+        $this->assertTrue(empty($trigger->stage));
+        $this->assertEquals('works', $results);
+
+        $trigger->success = false;
+        $trigger->stage = [];
+        $results = $this->object->method('method-test', ['foo' => 'bar']);
+
+        $this->assertTrue($trigger->success);
+        $this->assertEquals('bar', $trigger->stage['foo']);
+        $this->assertEquals('works', $results);
+
+        $trigger->success = false;
+        $trigger->stage = [];
+        $results = $this->object->method('method-test', ['fail' => true]);
+
+        $this->assertTrue($trigger->success);
+        $this->assertFalse($results);
+    }
+
+    /**
      * @covers Cradle\Framework\FrameworkHandler::post
      */
     public function testPost()
