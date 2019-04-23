@@ -225,6 +225,12 @@ class FrameworkHandler
         if ($load) {
             $request->load();
             $response->load();
+
+            $stage = $this->getRequest()->getStage();
+
+            if (is_array($stage)) {
+                $request->setSoftStage($stage);
+            }
         }
 
         return [
@@ -240,8 +246,16 @@ class FrameworkHandler
      *
      * @return array
      */
-    public function method($event, Request $request, Response $response = null)
+    public function method($event, $request = [], Response $response = null)
     {
+        if (is_array($request)) {
+            $request = Request::i()->load()->setStage($request);
+        }
+
+        if (!($request instanceof Request)) {
+            $request = Request::i()->load();
+        }
+
         if (is_null($response)) {
             $response = Response::i()->load();
         }

@@ -10,6 +10,7 @@
 namespace Cradle\Framework;
 
 use Closure;
+use Composer\Spdx\SpdxLicenses;
 
 /**
  * Package space for package methods
@@ -50,6 +51,11 @@ class Package
      * @var array $methods A list of virtual methods
      */
     protected $methods = array();
+
+    /**
+     * @var string|null $packageRoot
+     */
+    protected $packageRoot = null;
 
     /**
      * Store the name so we can profile later
@@ -131,17 +137,32 @@ class Package
             return false;
         }
 
+        if (is_string($this->packageRoot)) {
+            return $this->packageRoot;
+        }
+
         //determine where it is located
         //luckily we know where we are in vendor folder :)
         //is there a better recommended way?
         $root = __DIR__ . '/../../..';
+
+        //HAX using the composer package to get the root of the vendor folder
+        //is there a better recommended way?
+        if (class_exists(SpdxLicenses::class)
+            && method_exists(SpdxLicenses::class, 'getResourcesDir')
+            && realpath(SpdxLicenses::getResourcesDir() . '/../../..')
+        ) {
+            $root = realpath(SpdxLicenses::getResourcesDir() . '/../../..');
+        }
 
         //if it's a root package
         if ($type === self::TYPE_ROOT) {
             $root .= '/..';
         }
 
-        return realpath($root);
+        $this->packageRoot = realpath($root);
+
+        return $this->packageRoot;
     }
 
     /**

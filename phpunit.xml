@@ -21,7 +21,6 @@
       <file>test/CommandLine.php</file>
       <file>test/CommandLine/Event.php</file>
       <file>test/CommandLine/Package.php</file>
-      <file>test/CommandLine/Help.php</file>
     </testsuite>
   </testsuites>
 
