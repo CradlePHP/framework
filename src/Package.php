@@ -158,11 +158,10 @@ class Package
         //if it's a root package
         if ($type === self::TYPE_ROOT) {
             $root .= '/..';
-        }
-
-        //if we are in cli mode
-        if (php_sapi_name() === 'cli') {
-            $root = getcwd();
+            //if we are in cli mode
+            if (php_sapi_name() === 'cli') {
+                $root = getcwd();
+            }
         }
 
         $this->packageRoot = realpath($root);
