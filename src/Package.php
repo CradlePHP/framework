@@ -160,6 +160,11 @@ class Package
             $root .= '/..';
         }
 
+        //if we are in cli mode
+        if (php_sapi_name() === 'cli') {
+            $root = getcwd();
+        }
+
         $this->packageRoot = realpath($root);
 
         return $this->packageRoot;
