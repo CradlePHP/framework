@@ -162,6 +162,11 @@ class Package
             if (php_sapi_name() === 'cli') {
                 $root = getcwd();
             }
+
+            //if there is a CWD defined
+            if (defined('CRADLE_CWD')) {
+                $root = CRADLE_CWD;
+            }
         }
 
         $this->packageRoot = realpath($root);
