@@ -249,7 +249,7 @@ class FrameworkHandler
     public function method($event, $request = [], Response $response = null)
     {
         if (is_array($request)) {
-            $request = Request::i()->load()->setStage($request);
+            $request = Request::i()->load()->set('stage', [])->setStage($request);
         }
 
         if (!($request instanceof Request)) {
