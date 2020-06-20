@@ -25,7 +25,7 @@ use Cradle\Http\Request;
 use Cradle\Http\Response;
 
 use Cradle\Event\EventHandler;
-use Cradle\Event\PipeTrait;
+use Cradle\Event\EventTrait;
 
 /**
  * Handler for micro framework calls. Combines both
