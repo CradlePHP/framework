@@ -45,7 +45,7 @@ class FrameworkHandler
         InspectorTrait,
         LoggerTrait,
         StateTrait,
-        PipeTrait,
+        EventTrait,
         PackageTrait
         {
             HttpTrait::route as routeHttp;
@@ -141,73 +141,6 @@ class FrameworkHandler
     public function getProtocols(): array
     {
         return $this->protocols;
-    }
-
-    /**
-     * Exports a flow to another external interface
-     *
-     * @param *string $event
-     * @param bool    $map
-     *
-     * @return Closure|array
-     */
-    public function export(string $event, bool $map = false)
-    {
-        $handler = $this;
-
-        $next = function (...$args) use ($handler, $event, $map) {
-            $request = $handler->getRequest();
-            $response = $handler->getResponse();
-
-            $meta = $handler
-                //do this directly from the handler
-                ->getEventHandler()
-                //trigger
-                ->trigger($event, $request, $response, ...$args)
-                //if our events returns false
-                //lets tell the interface the same
-                ->getMeta();
-
-            //no map ? let's try our best
-            //if we have meta
-            if ($meta === EventHandler::STATUS_OK) {
-                //return the response
-                return $response->getContent(true);
-            }
-
-            //otherwise return false
-            return false;
-        };
-
-        if (!$map) {
-            return $next;
-        }
-
-        $request = $handler->getRequest();
-        $response = $handler->getResponse();
-
-        return [$request, $response, $next];
-    }
-
-    /**
-     * Imports a set of flows
-     *
-     * @param *array $flows
-     *
-     * @return FrameworkHandler
-     */
-    public function import(array $flows): FrameworkHandler
-    {
-        foreach ($flows as $flow) {
-            //it's gotta be an array
-            if (!is_array($flow)) {
-                continue;
-            }
-
-            $this->flow(...$flow);
-        }
-
-        return $this;
     }
 
     /**

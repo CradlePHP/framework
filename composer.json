@@ -21,7 +21,7 @@
         "php-coveralls/php-coveralls": "~2.1.0"
     },
     "require": {
-        "cradlephp/components": "~2.2.2"
+        "cradlephp/components": "~2.3.0"
     },
     "autoload": {
         "psr-4": {
