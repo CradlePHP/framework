@@ -1,6 +1,6 @@
 <?php
 
-namespace Cradle\Framework\Event;
+namespace Cradle\Framework\Package\Event;
 
 use StdClass;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +36,7 @@ class Cradle_Framework_Event_EventPackage_Test extends TestCase
   }
 
   /**
-   * @covers Cradle\Framework\Event\EventPackage::method
+   * @covers Cradle\Framework\Package\Event\EventPackage::method
    */
   public function testMethod()
   {

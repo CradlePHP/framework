@@ -1,6 +1,6 @@
 <?php //-->
 
-use Cradle\Framework\Http\HttpPackage;
+use Cradle\Framework\Package\Http\HttpPackage;
 
 $this('http')
   //map the package with the http package class methods

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cradle\Framework\Terminal;
+namespace Cradle\Framework\Package\Terminal;
 
 use StdClass;
 use PHPUnit\Framework\TestCase;

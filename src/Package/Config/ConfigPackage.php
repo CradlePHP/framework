@@ -7,7 +7,7 @@
  * distributed with this package.
  */
 
-namespace Cradle\Framework\Config;
+namespace Cradle\Framework\Package\Config;
 
 use Cradle\Data\Registry;
 

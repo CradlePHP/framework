@@ -7,7 +7,7 @@
  * distributed with this package.
  */
 
-namespace Cradle\Framework\Event;
+namespace Cradle\Framework\Package\Event;
 
 use Cradle\Event\EventTrait;
 
@@ -22,7 +22,7 @@ use Cradle\Resolver\StateTrait;
 use Cradle\IO\Request;
 use Cradle\IO\Response;
 
-use Cradle\Package\PackageHandler;
+use Cradle\Framework\FrameworkHandler;
 
 /**
  * Event Package
@@ -54,7 +54,7 @@ class EventPackage
    *
    * @param *PackageHandler $handler
    */
-  public function __construct(PackageHandler $handler)
+  public function __construct(FrameworkHandler $handler)
   {
     $this->handler = $handler;
   }

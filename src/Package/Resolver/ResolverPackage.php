@@ -7,18 +7,19 @@
  * distributed with this package.
  */
 
-namespace Cradle\Framework\Terminal;
+namespace Cradle\Framework\Package\Resolver;
 
-use Cradle\Terminal\TerminalHandler;
+use Cradle\Resolver\ResolverTrait;
 
 /**
- * Terminal Package
+ * Resolver Package
  *
  * @vendor   Cradle
  * @package  Package
  * @author   Christian Blanquera <cblanquera@openovate.com>
  * @standard PSR-2
  */
-class TerminalPackage extends TerminalHandler
+class ResolverPackage
 {
+  use ResolverTrait;
 }

@@ -7,7 +7,7 @@
  * distributed with this package.
  */
 
-namespace Cradle\Framework\Http;
+namespace Cradle\Framework\Package\Http;
 
 use Closure;
 
@@ -23,7 +23,7 @@ use Cradle\Profiler\LoggerTrait;
 
 use Cradle\Resolver\StateTrait;
 
-use Cradle\Package\PackageHandler;
+use Cradle\Framework\FrameworkHandler;
 
 /**
  * Http Package
@@ -61,7 +61,7 @@ class HttpPackage
    *
    * @param *PackageHandler $handler
    */
-  public function __construct(PackageHandler $handler)
+  public function __construct(FrameworkHandler $handler)
   {
     $this->handler = $handler;
   }

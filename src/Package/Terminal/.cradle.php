@@ -1,6 +1,6 @@
 <?php //-->
 
-use Cradle\Framework\Terminal\TerminalPackage;
+use Cradle\Framework\Package\Terminal\TerminalPackage;
 
 $this('terminal')
   //map the package with the terminal package class methods

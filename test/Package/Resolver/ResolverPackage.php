@@ -1,6 +1,6 @@
 <?php
 
-namespace Cradle\Framework\Resolver;
+namespace Cradle\Framework\Package\Resolver;
 
 use StdClass;
 use PHPUnit\Framework\TestCase;

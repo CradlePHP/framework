@@ -1,6 +1,6 @@
 <?php
 
-namespace Cradle\Framework\Http;
+namespace Cradle\Framework\Package\Http;
 
 use StdClass;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +36,7 @@ class Cradle_Framework_Http_HttpPackage_Test extends TestCase
   }
 
   /**
-   * @covers Cradle\Framework\Http\HttpPackage::all
+   * @covers Cradle\Framework\Package\Http\HttpPackage::all
    */
   public function testAll()
   {
@@ -45,7 +45,7 @@ class Cradle_Framework_Http_HttpPackage_Test extends TestCase
   }
 
   /**
-   * @covers Cradle\Framework\Http\HttpPackage::delete
+   * @covers Cradle\Framework\Package\Http\HttpPackage::delete
    */
   public function testDelete()
   {
@@ -54,7 +54,7 @@ class Cradle_Framework_Http_HttpPackage_Test extends TestCase
   }
 
   /**
-   * @covers Cradle\Framework\Http\HttpPackage::get
+   * @covers Cradle\Framework\Package\Http\HttpPackage::get
    */
   public function testGet()
   {
@@ -63,7 +63,7 @@ class Cradle_Framework_Http_HttpPackage_Test extends TestCase
   }
 
   /**
-   * @covers Cradle\Framework\Http\HttpPackage::post
+   * @covers Cradle\Framework\Package\Http\HttpPackage::post
    */
   public function testPost()
   {
@@ -72,7 +72,7 @@ class Cradle_Framework_Http_HttpPackage_Test extends TestCase
   }
 
   /**
-   * @covers Cradle\Framework\Http\HttpPackage::put
+   * @covers Cradle\Framework\Package\Http\HttpPackage::put
    */
   public function testPut()
   {
@@ -81,7 +81,7 @@ class Cradle_Framework_Http_HttpPackage_Test extends TestCase
   }
 
   /**
-   * @covers Cradle\Framework\Http\HttpPackage::route
+   * @covers Cradle\Framework\Package\Http\HttpPackage::route
    */
   public function testRoute()
   {

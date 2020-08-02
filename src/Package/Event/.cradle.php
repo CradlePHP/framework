@@ -1,6 +1,6 @@
 <?php //-->
 
-use Cradle\Framework\Event\EventPackage;
+use Cradle\Framework\Package\Event\EventPackage;
 
 $this('event')
   //map the package with the event package class methods

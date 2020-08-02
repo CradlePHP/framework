@@ -1,6 +1,6 @@
 <?php
 
-namespace Cradle\Framework\Config;
+namespace Cradle\Framework\Package\Config;
 
 use StdClass;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +22,7 @@ class Cradle_Framework_Config_ConfigPackage_Test extends TestCase
   protected function setUp()
   {
     $this->object = new ConfigPackage;
-    $this->object->setFolder(dirname(__DIR__) . '/assets/config');
+    $this->object->setFolder(dirname(dirname(__DIR__)) . '/assets/config');
   }
 
   /**
@@ -34,9 +34,9 @@ class Cradle_Framework_Config_ConfigPackage_Test extends TestCase
   }
 
   /**
-   * @covers Cradle\Framework\Config\ConfigPackage::set
-   * @covers Cradle\Framework\Config\ConfigPackage::get
-   * @covers Cradle\Framework\Config\ConfigPackage::exists
+   * @covers Cradle\Framework\Package\Config\ConfigPackage::set
+   * @covers Cradle\Framework\Package\Config\ConfigPackage::get
+   * @covers Cradle\Framework\Package\Config\ConfigPackage::exists
    */
   public function testSet()
   {
@@ -47,7 +47,7 @@ class Cradle_Framework_Config_ConfigPackage_Test extends TestCase
       ]
     ]);
 
-    $this->assertTrue(file_exists(dirname(__DIR__) . '/assets/config/foo/bar/zoo.php'));
+    $this->assertTrue(file_exists(dirname(dirname(__DIR__)) . '/assets/config/foo/bar/zoo.php'));
     $this->assertEquals('zoo', $this->object->get('foo/bar/zoo')['foo']['bar']);
     $this->assertEquals('zoo', $this->object->get('foo/bar/zoo', 'foo', 'bar'));
 

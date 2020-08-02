@@ -15,9 +15,10 @@
     <testsuite name="CradlePHP Meta Framework Test Suite">
     <file>test/FrameworkHandler.php</file>
     <file>test/Decorator.php</file>
-    <file>test/Config/ConfigPackage.php</file>
-    <file>test/Event/EventPackage.php</file>
-    <file>test/Http/HttpPackage.php</file>
+    <file>test/Package/Config/ConfigPackage.php</file>
+    <file>test/Package/Event/EventPackage.php</file>
+    <file>test/Package/Http/HttpPackage.php</file>
+    <file>test/Package/PDO/PDOPackage.php</file>
   </testsuite>
   </testsuites>
 
@@ -27,11 +28,12 @@
       <exclude>
         <directory>./vendor</directory>
         <directory>./test</directory>
-        <file>src/Event/.cradle.php</file>
-        <file>src/Http/.cradle.php</file>
-        <file>src/Resolver/.cradle.php</file>
-        <file>src/Terminal/.cradle.php</file>
-        <file>src/Config/.cradle.php</file>
+        <file>src/Package/Event/.cradle.php</file>
+        <file>src/Package/Http/.cradle.php</file>
+        <file>src/Package/Resolver/.cradle.php</file>
+        <file>src/Package/Terminal/.cradle.php</file>
+        <file>src/Package/Config/.cradle.php</file>
+        <file>src/Package/PDO/.cradle.php</file>
       </exclude>
     </whitelist>
   </filter>
