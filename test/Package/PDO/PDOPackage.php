@@ -52,6 +52,7 @@ class Cradle_Framework_PDO_PDOPackage_Test extends TestCase
     $this->assertInstanceOf(PDOPackage::class, $actual);
 
     $this->framework->package('pdo')->loadConfig([
+      'type' => 'mysql',
       'host' => '127.0.0.1',
       'port' => '3306',
       'name' => 'testing_db',

@@ -15,7 +15,7 @@ use Cradle\Package\Package;
 use Cradle\Framework\FrameworkHandler;
 
 /**
- * Config Package
+ * PDO Package
  *
  * @vendor   Cradle
  * @package  Package
@@ -48,43 +48,63 @@ class PDOPackage
    */
   public function loadConfig(array $config): Package
   {
-    $options = [];
-    if (isset($config['options']) && is_array($config['options'])) {
-      $options = $config['options'];
-    }
-
     $host = $port = $name = $user = $pass = '';
+    //if host
     if (isset($config['host']) && $config['host']) {
+      //set host string
       $host = sprintf('host=%s;', $config['host']);
     }
 
+    //if port
     if (isset($config['port']) && $config['port']) {
+      //set port string
       $port = sprintf('port=%s;', $config['port']);
     }
 
+    //if bane
     if (isset($config['name']) && $config['name']) {
+      //set dbname string
       $name = sprintf('dbname=%s;', $config['name']);
     }
 
+    //if user
     if (isset($config['user']) && $config['user']) {
+      //set user string
       $user = $config['user'];
     }
 
+    //if pass
     if (isset($config['pass']) && $config['pass']) {
+      //set pass string
       $pass = $config['pass'];
     }
 
-    $connection = sprintf('mysql:%s%s%s', $host, $port, $name);
+    $options = [];
+    //if options
+    if (isset($config['options']) && is_array($config['options'])) {
+      //set options
+      $options = $config['options'];
+    }
 
-    $resource = $this->handler->package('resolver')->resolve(
+    $type = 'mysql';
+    if (isset($config['type']) && $config['type']) {
+      $type = $config['type'];
+    }
+
+    //make a connection string
+    $connection = sprintf('%s:%s%s%s', $type, $host, $port, $name);
+
+    //get the resolver
+    $resolver = $this->handler->package('resolver');
+
+    //load the pdo
+    return $this->loadPDO($resolver->resolve(
       PDO::class,
       $connection,
       $user,
       $pass,
       $options
-    );
-
-    return $this->loadPDO($resource);
+    ));
   }
 
   /**
@@ -96,7 +116,9 @@ class PDOPackage
    */
   public function loadPDO(PDO $resource): Package
   {
+    //get the PDO package
     $package = $this->handler->package('pdo');
+    //set the resource
     $package->mapPackageMethods($resource);
     return $package;
   }
