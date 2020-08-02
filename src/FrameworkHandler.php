@@ -77,14 +77,18 @@ class FrameworkHandler extends PackageHandler
       ->register('resolver', sprintf('%s/Package/Resolver', __DIR__))
       //register the event
       ->register('event', sprintf('%s/Package/Event', __DIR__))
-      //register the config
-      ->register('config', sprintf('%s/Package/Config', __DIR__))
       //register the http
       ->register('http', sprintf('%s/Package/Http', __DIR__))
       //register the terminal
       ->register('terminal', sprintf('%s/Package/Terminal', __DIR__))
       //register the PDO
       ->register('pdo', sprintf('%s/Package/PDO', __DIR__))
+      //register the config
+      ->register('config', sprintf('%s/Package/Config', __DIR__))
+      //register the lang
+      ->register('lang', sprintf('%s/Package/Language', __DIR__))
+      //register the tz
+      ->register('tz', sprintf('%s/Package/Timezone', __DIR__))
       //use one global resolver
       ->setResolverHandler($this('resolver')->getResolverHandler())
       //use one global event emitter
@@ -101,13 +105,14 @@ class FrameworkHandler extends PackageHandler
   public function error(callable $callback)
   {
     $this->errorIO($callback);
+    $callback = $this->bindCallback($callback);
 
     if ($this->isPackage('http')) {
-      $this->package('http')->error($callback);
+      $this->package('http')->getErrorProcessor()->register($callback);
     }
 
     if ($this->isPackage('terminal')) {
-      $this->package('terminal')->error($callback);
+      $this->package('terminal')->getErrorProcessor()->register($callback);
     }
 
     return $this;
@@ -152,13 +157,14 @@ class FrameworkHandler extends PackageHandler
   public function preprocess(callable $callback)
   {
     $this->preprocessIO($callback);
+    $callback = $this->bindCallback($callback);
 
     if ($this->isPackage('http')) {
-      $this->package('http')->preprocess($callback);
+      $this->package('http')->getPreprocessor()->register($callback);
     }
 
     if ($this->isPackage('terminal')) {
-      $this->package('terminal')->preprocess($callback);
+      $this->package('terminal')->getPreprocessor()->register($callback);
     }
 
     return $this;
@@ -174,13 +180,14 @@ class FrameworkHandler extends PackageHandler
   public function postprocess(callable $callback)
   {
     $this->postprocessIO($callback);
+    $callback = $this->bindCallback($callback);
 
     if ($this->isPackage('http')) {
-      $this->package('http')->postprocess($callback);
+      $this->package('http')->getPostprocessor()->register($callback);
     }
 
     if ($this->isPackage('terminal')) {
-      $this->package('terminal')->postprocess($callback);
+      $this->package('terminal')->getPostprocessor()->register($callback);
     }
 
     return $this;
