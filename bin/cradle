@@ -1,25 +1,25 @@
 #!/usr/bin/env php
 <?php //-->
 $cradleFrameworkCLI = function($cwd) {
-    foreach (array(
-        $cwd . '/../autoload.php',
-        $cwd . '/../../autoload.php',
-        $cwd . '/../vendor/autoload.php',
-        $cwd . '/vendor/autoload.php') as $file
-    ) {
-        if (file_exists($file)) {
-            break;
-        }
+  foreach (
+    [
+      $cwd . '/.cradle.php',
+      $cwd . '/.cradle'
+    ] as $file
+  ) {
+    if (file_exists($file)) {
+      break;
     }
+  }
 
-    if (!isset($file)) {
-        print PHP_EOL.'Cannot find /vendor/autoload.php'.PHP_EOL;
-        die(1);
-    }
+  if (!file_exists($file)) {
+    print PHP_EOL . 'Cannot find Cradle Bootstrap' . PHP_EOL;
+    die(1);
+  }
 
-    require $file;
+  require $file;
 
-    return new Cradle\Framework\CommandLine($cwd);
+  return cradle('terminal');
 };
 
-$cradleFrameworkCLI(getcwd())->run($argv);
+$cradleFrameworkCLI(getcwd())->run();

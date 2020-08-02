@@ -1,34 +1,34 @@
 {
-    "name": "cradlephp/framework",
-    "type": "library",
-    "description": "Cradle Meta Framework focused on the core features.",
-    "homepage": "https://cradlephp.github.io/",
-    "keywords": [
-        "framework",
-        "cradle",
-        "cradlephp"
-    ],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Christian Blanquera",
-            "email": "cblanquera@openovate.com"
-        }
-    ],
-    "require-dev": {
-        "phpunit/phpunit": "7.0.2",
-        "squizlabs/php_codesniffer": "3.2.3",
-        "php-coveralls/php-coveralls": "~2.1.0"
-    },
-    "require": {
-        "cradlephp/components": "~2.2.2"
-    },
-    "autoload": {
-        "psr-4": {
-            "Cradle\\Framework\\": "src/"
-        }
-    },
-    "bin": [
-        "bin/cradle"
-    ]
+  "name": "cradlephp/package",
+  "type": "library",
+  "description": "Cradle Package Manager focused on the core features.",
+  "homepage": "https://cradlephp.github.io/",
+  "keywords": [
+    "framework",
+    "cradle",
+    "cradlephp"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Christian Blanquera",
+      "email": "cblanquera@openovate.com"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "7.0.2",
+    "squizlabs/php_codesniffer": "3.2.3",
+    "php-coveralls/php-coveralls": "~2.1.0"
+  },
+  "require": {
+    "cradlephp/components": "~3.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Cradle\\Framework\\": "src/"
+    }
+  },
+  "bin": [
+    "bin/cradle"
+  ]
 }

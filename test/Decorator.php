@@ -4,6 +4,7 @@ namespace Cradle\Framework;
 
 use PHPUnit\Framework\TestCase;
 use Cradle\Resolver\ResolverException;
+use Cradle\Package\Package;
 
 Decorator::DECORATE;
 
@@ -12,45 +13,45 @@ Decorator::DECORATE;
  */
 class Cradle_Framework_Decorator_Test extends TestCase
 {
-    /**
-     * @var Decorator
-     */
-    protected $object;
+  /**
+   * @var Decorator
+   */
+  protected $object;
 
-    /**
-     * Sets up the fixture, for example, opens a network connection.
-     * This method is called before a test is executed.
-     */
-    protected function setUp()
-    {
+  /**
+   * Sets up the fixture, for example, opens a network connection.
+   * This method is called before a test is executed.
+   */
+  protected function setUp()
+  {
+  }
+
+  /**
+   * Tears down the fixture, for example, closes a network connection.
+   * This method is called after a test is executed.
+   */
+  protected function tearDown()
+  {
+  }
+
+  /**
+   * @covers ::cradle
+   */
+  public function testCradle()
+  {
+    $this->assertInstanceOf(FrameworkHandler::class, cradle());
+    $this->assertInstanceOf(Package::class, cradle('event'));
+    $this->assertEquals('foobar', cradle(function() {
+      return 'foobar';
+    }));
+
+    $trigger = false;
+    try {
+      cradle('foobar');
+    } catch(ResolverException $e) {
+      $trigger = true;
     }
 
-    /**
-     * Tears down the fixture, for example, closes a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()
-    {
-    }
-
-    /**
-     * @covers ::cradle
-     */
-    public function testCradle()
-    {
-        $this->assertInstanceOf('Cradle\Framework\FrameworkHandler', cradle());
-        $this->assertInstanceOf('Cradle\Framework\Package', cradle('global'));
-        $this->assertEquals('foobar', cradle(function() {
-            return 'foobar';
-        }));
-
-        $trigger = false;
-        try {
-            cradle('foobar');
-        } catch(ResolverException $e) {
-            $trigger = true;
-        }
-
-        $this->assertTrue($trigger);
-    }
+    $this->assertTrue($trigger);
+  }
 }
