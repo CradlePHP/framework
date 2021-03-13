@@ -97,6 +97,24 @@ class ConfigPackage
   }
 
   /**
+   * Returns the origin where all configs are located
+   *
+   * @return ?string
+   */
+  public function getFolder(string $extra = null): ?string
+  {
+    if ($extra) {
+      if (strpos($extra, '/') !== 0) {
+        $extra = '/' . $extra;
+      }
+
+      return $this->path . $extra;
+    }
+
+    return $this->path;
+  }
+
+  /**
    * Sets the origin where all configs are located
    *
    * @param *string $pathh whether to load the RnRs
@@ -139,7 +157,7 @@ class ConfigPackage
   /**
    * Sets the origin where all configs are located
    *
-   * @param *string $pathh whether to load the RnRs
+   * @param *string $path whether to load the RnRs
    *
    * @return ConfigPackage
    */

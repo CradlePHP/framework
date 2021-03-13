@@ -85,6 +85,8 @@ class FrameworkHandler extends PackageHandler
       ->register('pdo', sprintf('%s/Package/PDO', __DIR__))
       //register the config
       ->register('config', sprintf('%s/Package/Config', __DIR__))
+      //register the host
+      ->register('host', sprintf('%s/Package/Host', __DIR__))
       //register the lang
       ->register('lang', sprintf('%s/Package/Language', __DIR__))
       //register the tz
